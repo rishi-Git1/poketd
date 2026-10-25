@@ -17,7 +17,7 @@ export function enemyStats(p,wave,boss=null){const ease=openingEase(wave),boost=
 export function damageMultiplier(p,buffs){return (1+buffs.offense)*p.types.reduce((n,t)=>n*(1+(buffs.types[t]||0)),1)*(1+(buffs.stages[p.stage]||0))}
 export function recruitmentPool(roster,run){return roster.filter(p=>p.stage===1&&!run.team.some(a=>a.pokemon.id===p.id)&&Object.values(p.stats).reduce((a,b)=>a+b,0)<=Math.min(680,350+run.wave*30))}
 export function damage(ally,enemy,buffs,attackType=ally.pokemon.types[0]){const p=ally.pokemon;const special=p.stats['special-attack']>p.stats.attack;const atk=Math.max(p.stats.attack,p.stats['special-attack']);const defense=special?enemy.specialDefense??enemy.pokemon.stats['special-defense']*(1+.025*buffs.wave)*openingEase(buffs.wave):enemy.defense;const mult=damageMultiplier(p,buffs);return Math.max(0,(8+atk*.23)*mult*100/(100+defense)*effectiveness(attackType,enemy.pokemon.types))}
-export function newRun(){return {wave:0,range:335,growthWaves:[],swapWaves:[],starter:1,hp:250,maxHp:250,armor:0,offense:0,types:{},stages:{},team:[],kills:0,upgrades:[],upgradeHistory:[],phase:'starter'}}
+export function newRun(){return {wave:0,rewardQueue:[],tradeQueue:[],range:335,growthWaves:[],swapWaves:[],starter:1,hp:250,maxHp:250,armor:0,offense:0,types:{},stages:{},team:[],kills:0,upgrades:[],upgradeHistory:[],phase:'starter'}}
 export function applyUpgrade(run,card){
  if(card.kind==='recruit')run.team.push({pokemon:card.pokemon,cooldown:0});
  if(card.kind==='evolve'){const ally=run.team.find(a=>a.pokemon.id===card.from);if(ally)ally.pokemon=card.pokemon;}

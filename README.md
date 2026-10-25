@@ -1,4 +1,4 @@
-# Poké Bastion — Version 04
+# Poké Bastion — Version 05
 
 A playable browser roguelike tower defense prototype. Choose Bulbasaur, Charmander, or Squirtle, then defend a central bastion against a 151-round campaign of approaching Pokémon. After every cleared wave, choose exactly one of three rewards.
 
@@ -118,7 +118,7 @@ Open **? > Final evolution move guide** to preview all 81 final-form attacks wit
 
 ## Version 04 — campaign, Auto, growth, and premium trades
 
-AUTO ON starts each next wave after a 1.2-second real-time countdown once the starter/reward/trade choices are finished. It never selects cards or trades on the player's behalf. Disable Auto at any time. Open dialogs and hidden tabs suspend advancement. Auto respects a pending trade and stops after victory. Auto preference stays enabled between expeditions; speed still resets to 1×.
+AUTO ON starts the next wave immediately, with no countdown and no requirement to spend rewards. Each cleared round banks its own three-card reward set. Choices can be claimed during combat and apply immediately without resetting the current wave, enemies, or attack timers. Rewards are presented oldest first, one choice per earned set. Auto never picks cards on the player's behalf. Manual pause, help/inventory pause, hidden tabs, game over, and victory are still respected. Auto preference stays enabled between expeditions; speed resets to 1×.
 
 After each cleared round divisible by 10, attack range and maximum tower HP multiply by 1.05. Current HP gains the new maximum-HP capacity (no full heal). Effective armor multiplies by 1.05: `1 + armor` becomes `(1 + armor) * 1.05`, so this works even at zero initial armor. Growth occurs once per milestone, compounds, and appears in the sidebar and upgrade inventory. Attack range has no gameplay cap; its illustrated ring is clipped to the battlefield.
 
@@ -144,11 +144,23 @@ Boss rounds replace the normal enemy wave. Their teams arrive 0.85 seconds apart
 
 Boss HP, physical/special defense, and tower impact multiply the ordinary same-round stats by 1.25 for gyms, 1.45 for Elite Four, 1.6 for Blue, 4 for Mewtwo, and 8 for Mew. Mew's resulting HP, defenses, and damage exceed Mewtwo's. Boss speed uses the ordinary base-stat formula. The boss schedule is viewable in the field guide.
 
-After the normal reward at rounds 25, 50, 75, 100, 125 and 150, a mandatory decision screen offers an optional premium trade. Choose a category, select the exact party slot or collected upgrade instance to replace, then choose one of three generated replacements. Cancel or Escape preserves everything and continues. Offers are generated once per category at that trading post; switching targets does not reroll them.
+At rounds 25, 50, 75, 100, 125 and 150, an optional premium trade is banked independently of the normal reward. Choose a category, select the exact party slot or collected upgrade instance to replace, then choose one of three generated replacements. The PREMIUM TRADES button opens the oldest banked trade. Opening it does not pause combat or prevent Auto from starting another wave. Later or Escape closes the dialog and keeps that opportunity banked; Cancel skips that opportunity and keeps the party/upgrades unchanged. Offers are generated once per category at that trading post; switching targets does not reroll them. A Pokémon offer that has become owned while banked is replaced with an eligible choice.
 
 - Pokémon trades offer three distinct Kanto-final partners not already in the party, including one randomly selected available legendary (Articuno, Zapdos, Moltres, Mewtwo, or Mew). If every legendary is already owned, the third slot falls back to another eligible final form. Party size and all collected type/stage/global buffs are preserved.
 - Upgrade trades offer only premium buffs: +50% universal damage, +80% matching type/stage damage, +40 armor points, or +200 maximum HP and a 250 HP restoration. Replace exactly one existing buff instance, including one copy out of a repeated stack. Recruits and evolutions are not eligible upgrade targets.
 - Removing a health or armor card reverses its accumulated growth contribution while preserving unrelated tower growth. Historical healing is not reversed; current HP is capped at the reduced maximum before applying the replacement.
-- The round-150 trade occurs after defeating Mewtwo and before Mew. Round 151 ends at the Hall of Fame, with no round 152.
+- The round-150 trade is earned after defeating Mewtwo; in Auto mode Mew begins immediately, and the trade can be used during that encounter. Round 151 ends at the Hall of Fame, with no round 152.
 
-`tests/campaign.test.mjs` checks the exact schedule, all boss rosters, relative boss stats, growth, Auto guards, premium pools, one-for-one swaps and reversal of grown bonuses. `tests/flow.test.mjs` runs the actual app controller against an in-memory DOM stub to check Auto transitions, the round-25 trade gate/cancel, bosses attacking repeatedly, and round-151 victory. This validates flow and calculations; full 151-round balance still requires playtesting.
+`tests/campaign.test.mjs` checks the exact schedule, all boss rosters, relative boss stats, growth, Auto guards, premium pools, one-for-one swaps and reversal of grown bonuses. `tests/flow.test.mjs` runs the actual app controller against an in-memory DOM stub to check Auto transitions, the banked round-25 trade/cancel, bosses attacking repeatedly, and round-151 victory. This validates flow and calculations; full 151-round balance still requires playtesting.
+
+
+## Version 05 — uninterrupted Auto and banked decisions
+
+- Auto has no inter-wave timer. Starter selection begins round 1 immediately; clearing a round banks its reward and starts the next round within the same game update.
+- The reward bank displays how many three-card sets remain. Select a card with a click or keys 1/2/3 whenever ready, including during a boss fight. Only that reward set is consumed; the next set appears and keeps its original choices.
+- Banked cards are revalidated after party changes. If an evolution target no longer exists, or recruitment would duplicate a partner or exceed six slots, that invalid choice is replaced by a standard universal/health/armor buff. Other saved choices are preserved.
+- Premium trades accumulate separately and can be used mid-wave. Resolving, skipping, or deferring one does not reset the wave, pause combat, or discard other saved opportunities. Later/Escape preserves the trade; Cancel skips only that one opportunity.
+- Switching Auto off mid-wave lets that wave finish, then waits for outstanding normal rewards in manual mode. Switching Auto on at a reward screen starts the next wave immediately while keeping all banked sets.
+- A new expedition clears the queues. As before, browser reload does not preserve the active run.
+
+37 tests pass, including consecutive queued rewards, mid-combat application without enemy resets, instant Auto advancement, queued premium trades while their dialog is open, deferred/canceled trades, stale card recovery, and manual/Auto switching.
