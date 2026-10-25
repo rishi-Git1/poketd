@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: poke-bastion
+    runtime: static
+    buildCommand: npm run build
+    staticPublishPath: ./dist
