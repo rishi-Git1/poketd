@@ -1,6 +1,6 @@
-# Poké Bastion — Version 03
+# Poké Bastion — Version 04
 
-A playable browser roguelike tower defense prototype. Choose Bulbasaur, Charmander, or Squirtle, then defend a central bastion against endless waves of approaching Pokémon. After every cleared wave, choose exactly one of three rewards.
+A playable browser roguelike tower defense prototype. Choose Bulbasaur, Charmander, or Squirtle, then defend a central bastion against a 151-round campaign of approaching Pokémon. After every cleared wave, choose exactly one of three rewards.
 
 ## Run locally
 
@@ -114,3 +114,41 @@ Open **? > Final evolution move guide** to preview all 81 final-form attacks wit
 - Every one of the 81 Kanto-final Pokémon has a signature profile, including single-stage Pokémon. Existing signature damage is 80% higher than version 02, and final forms have 20% shorter attack cooldowns (25% faster attack rate). This is roughly 2.25× previous signature DPS before buffs and stats. Minimum cooldown is 0.28 seconds.
 - New type coverage includes fighting, ice, fairy, and steel, using PokéAPI's current types. Generic final-form move profiles are adapted by primary type, with species overrides for starters, Eeveelutions, legendaries and others.
 - 18 tests cover repeated buff copies, dual typing, evolution preservation, all 151 IDs and sprites, reachability of every species, branch choices, stronger final forms, progression gates and attack geometry/rendering.
+
+
+## Version 04 — campaign, Auto, growth, and premium trades
+
+AUTO ON starts each next wave after a 1.2-second real-time countdown once the starter/reward/trade choices are finished. It never selects cards or trades on the player's behalf. Disable Auto at any time. Open dialogs and hidden tabs suspend advancement. Auto respects a pending trade and stops after victory. Auto preference stays enabled between expeditions; speed still resets to 1×.
+
+After each cleared round divisible by 10, attack range and maximum tower HP multiply by 1.05. Current HP gains the new maximum-HP capacity (no full heal). Effective armor multiplies by 1.05: `1 + armor` becomes `(1 + armor) * 1.05`, so this works even at zero initial armor. Growth occurs once per milestone, compounds, and appears in the sidebar and upgrade inventory. Attack range has no gameplay cap; its illustrated ring is clipped to the battlefield.
+
+Boss rounds replace the normal enemy wave. Their teams arrive 0.85 seconds apart around the tower, have a gold aura and trainer banner, and remain near the tower to attack every 1.6 seconds until defeated. Clearing a boss requires defeating the entire roster. Teams use Pokémon Red/Blue rosters (https://pokemondb.net/red-blue/gymleaders-elitefour); Blue's party counters the player's original starter even if that starter was evolved or traded.
+
+| Round | Encounter |
+| --- | --- |
+| 15 | Brock — Geodude, Onix |
+| 30 | Misty — Staryu, Starmie |
+| 45 | Lt. Surge — Voltorb, Pikachu, Raichu |
+| 60 | Erika — Victreebel, Tangela, Vileplume |
+| 75 | Koga — Koffing, Koffing, Muk, Weezing |
+| 90 | Sabrina — Kadabra, Mr. Mime, Venomoth, Alakazam |
+| 105 | Blaine — Growlithe, Ponyta, Rapidash, Arcanine |
+| 120 | Giovanni — Rhyhorn, Dugtrio, Nidoqueen, Nidoking, Rhydon |
+| 125 | Lorelei |
+| 130 | Bruno |
+| 135 | Agatha |
+| 140 | Lance |
+| 145 | Champion Blue |
+| 150 | Mewtwo |
+| 151 | Mew — final encounter and campaign victory |
+
+Boss HP, physical/special defense, and tower impact multiply the ordinary same-round stats by 1.25 for gyms, 1.45 for Elite Four, 1.6 for Blue, 4 for Mewtwo, and 8 for Mew. Mew's resulting HP, defenses, and damage exceed Mewtwo's. Boss speed uses the ordinary base-stat formula. The boss schedule is viewable in the field guide.
+
+After the normal reward at rounds 25, 50, 75, 100, 125 and 150, a mandatory decision screen offers an optional premium trade. Choose a category, select the exact party slot or collected upgrade instance to replace, then choose one of three generated replacements. Cancel or Escape preserves everything and continues. Offers are generated once per category at that trading post; switching targets does not reroll them.
+
+- Pokémon trades offer three distinct Kanto-final partners not already in the party, including one randomly selected available legendary (Articuno, Zapdos, Moltres, Mewtwo, or Mew). If every legendary is already owned, the third slot falls back to another eligible final form. Party size and all collected type/stage/global buffs are preserved.
+- Upgrade trades offer only premium buffs: +50% universal damage, +80% matching type/stage damage, +40 armor points, or +200 maximum HP and a 250 HP restoration. Replace exactly one existing buff instance, including one copy out of a repeated stack. Recruits and evolutions are not eligible upgrade targets.
+- Removing a health or armor card reverses its accumulated growth contribution while preserving unrelated tower growth. Historical healing is not reversed; current HP is capped at the reduced maximum before applying the replacement.
+- The round-150 trade occurs after defeating Mewtwo and before Mew. Round 151 ends at the Hall of Fame, with no round 152.
+
+`tests/campaign.test.mjs` checks the exact schedule, all boss rosters, relative boss stats, growth, Auto guards, premium pools, one-for-one swaps and reversal of grown bonuses. `tests/flow.test.mjs` runs the actual app controller against an in-memory DOM stub to check Auto transitions, the round-25 trade gate/cancel, bosses attacking repeatedly, and round-151 victory. This validates flow and calculations; full 151-round balance still requires playtesting.
