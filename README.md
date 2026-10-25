@@ -1,4 +1,4 @@
-# Poké Bastion — Version 02
+# Poké Bastion — Version 03
 
 A playable browser roguelike tower defense prototype. Choose Bulbasaur, Charmander, or Squirtle, then defend a central bastion against endless waves of approaching Pokémon. After every cleared wave, choose exactly one of three rewards.
 
@@ -36,9 +36,9 @@ Alternatively, create a Render Blueprint from the repository using the included 
 
 ## Initial roster and PokéAPI
 
-This prototype uses a curated Kanto roster. Canonical base stats, types, names, and front sprites are fetched from https://pokeapi.co/api/v2/pokemon/{id}/ and bundled in public/assets. The browser refreshes roster stats and types in the background with three concurrent requests and a seven-day local cache. Failed requests keep the bundled snapshot usable. No server backend or authentication is needed. PokéAPI is the data service; the simulation runs in the browser.
+This prototype uses all 151 Kanto Pokémon. Canonical base stats, types, names, and front sprites are fetched from https://pokeapi.co/api/v2/pokemon/{id}/ and bundled in public/assets. The browser refreshes roster stats and types in the background with three concurrent requests and a seven-day local cache. Failed requests keep the bundled snapshot usable. No server backend or authentication is needed. PokéAPI is the data service; the simulation runs in the browser.
 
-Evolution stages and successor choices are curated for this first-version roster, rather than dynamically importing the full evolution graph. Pikachu starts at stage 1 within this Kanto-only roster. Eevee currently evolves only into Vaporeon. Branching evolutions and other generations can be added later.
+Evolution paths cover all Kanto-only chains, including all three Eevee branches. Later-generation babies and evolutions are excluded: Pikachu starts at stage 1, and Pokémon such as Golbat, Onix and Scyther count as final forms within Kanto. All 151 are reachable through recruitment/evolution. Stronger recruits are gated by base stat total (350 + 30 × cleared wave, capped at 680); Mewtwo becomes eligible after wave 11. Enemy stat-total limits increase across waves so powerful single-stage Pokémon do not appear in the opening.
 
 Regenerate the snapshot and sprites from the project root with `python3 scripts/fetch-data.py` (Python and curl required). The game uses local sprite files, so gameplay does not depend on a live image host.
 
@@ -57,10 +57,10 @@ These are game-specific formulas using official base stats, not the main-series 
 - Tower impact: ceil(max(attack, special attack) × 0.12 × (1 + 0.07 × wave) × min(1, 0.55 + max(0, wave − 1) × 0.09)).
 - Armor reduces incoming damage by dividing impact by (1 + armor), rounded up, minimum 1.
 - Allies use their larger attacking stat; special attacks use enemy special defense. Unevolved Pokémon use primary-type projectiles. Fully evolved partners use their signature move type. Both defender types affect effectiveness, including immunities.
-- Ally attack damage: (8 + attack × 0.23) × (1 + universal buff + primary-type buff + stage buff) × 100 / (100 + enemy defense) × type effectiveness.
-- Faster allies attack more often: max(0.38, 1.45 − base speed × 0.006) seconds.
+- Ally attack damage: (8 + attack × 0.23) × (universal multiplier × each matching type multiplier × current-stage multiplier) × 100 / (100 + enemy defense) × type effectiveness.
+- Attack cooldown: max(0.28, (1.45 − base speed × 0.006) × (0.8 for final forms, otherwise 1)) seconds.
 - Allies prioritize the nearest non-immune enemy within 335 units of the center. Signature attacks can also strike enemies near the selected target; immunity is evaluated separately for each victim.
-- Universal power: +18%; type and stage power: +35%; all stack additively. Armor cards add 12 displayed armor points (0.12 in the reduction formula). Health cards add 65 maximum HP and restore 105 current HP.
+- Universal power cards multiply by 1.18. Each type and stage card multiplies its category by 1.35. Repeated copies compound, and all applicable categories multiply together. Both types on dual-type Pokémon count. Two stage cards and one matching type card yield 1.35³ = 2.460375× buff damage. Armor cards add 12 displayed armor points (0.12 in the reduction formula). Health cards add 65 maximum HP and restore 105 current HP.
 - Buffs apply according to a Pokémon's current type/stage after evolution.
 
 ## Files
@@ -79,7 +79,7 @@ Pokémon and Pokémon character names are trademarks of Nintendo, Game Freak, an
 
 ## Signature moves
 
-Every final form in the current roster has a custom tower-defense signature move. These are game adaptations with custom mechanics, not an implementation of main-series move rules or learnsets. Earlier stages keep small type-colored projectiles.
+All 81 Kanto-final forms in the complete roster have a custom tower-defense signature move. These are game adaptations with custom mechanics, not an implementation of main-series move rules or learnsets. Earlier stages keep small type-colored projectiles.
 
 | Final form | Move | Behavior |
 | --- | --- | --- |
@@ -101,6 +101,16 @@ Every final form in the current roster has a custom tower-defense signature move
 | Vaporeon | Muddy Water | Water cone |
 | Dragonite | Dragon Pulse | Piercing dragon beam |
 
-Primary targets receive the move's power multiplier (1.2–1.65× depending on move). Beam/cone collateral gets 70% of that damage, blast/vortex/quake collateral 65%, and volley secondary targets 65%. Chain lightning jumps within 140 units, at 100%, 80%, and 64% damage. Blast radius is 75 units, vortex 95, quake 115, and volley secondary target radius 120. Beam half-width is 23; cones expand with distance. Signature visual effects retain their real-time duration at 5× speed for readability, while damage, cooldowns, projectiles and movement all follow game speed.
+Primary targets receive the move's power multiplier (2.16–3.42× depending on move). Beam/cone collateral gets 70% of that damage, blast/vortex/quake collateral 65%, and volley secondary targets 65%. Chain lightning jumps within 140 units, at 100%, 80%, and 64% damage. Blast radius is 75 units, vortex 95, quake 115, and volley secondary target radius 120. Beam half-width is 23; cones expand with distance. Signature visual effects retain their real-time duration at 5× speed for readability, while damage, cooldowns, projectiles and movement all follow game speed.
 
-Open **? > Final evolution move guide** to preview all 17 attacks without changing your current team or run.
+Open **? > Final evolution move guide** to preview all 81 final-form attacks without changing your current team or run.
+
+
+## Version 03 — stacking, full Kanto, and stronger evolutions
+
+- The party's UPGRADES button opens a popup of every collected reward grouped by stack count, category totals, and effective damage multipliers for each current partner. Opening it pauses active combat; resume using the pause control.
+- Each party slot displays its buff damage multiplier. GLOBAL in the tower bar refers only to universal damage; type/stage multipliers are shown per partner and in the popup.
+- Repeated damage cards and different applicable damage cards multiply. A stage bonus applies only to the current evolution stage; type bonuses apply to both current Pokémon types. Evolving does not reset any collected upgrade.
+- Every one of the 81 Kanto-final Pokémon has a signature profile, including single-stage Pokémon. Existing signature damage is 80% higher than version 02, and final forms have 20% shorter attack cooldowns (25% faster attack rate). This is roughly 2.25× previous signature DPS before buffs and stats. Minimum cooldown is 0.28 seconds.
+- New type coverage includes fighting, ice, fairy, and steel, using PokéAPI's current types. Generic final-form move profiles are adapted by primary type, with species overrides for starters, Eeveelutions, legendaries and others.
+- 18 tests cover repeated buff copies, dual typing, evolution preservation, all 151 IDs and sprites, reachability of every species, branch choices, stronger final forms, progression gates and attack geometry/rendering.
