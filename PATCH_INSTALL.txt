@@ -1,7 +1,11 @@
-POKE BASTION VERSION 20 — WAVE BUTTON PATCH
-Apply over Version 19. Changed/new files only.
-Extract into the existing project folder containing package.json. Merge public, dist and tests; replace matching files. Keep all other project files/assets. Redeploy on Render (npm run build; publish dist), then reload. Header: VERSION 20.
+POKE BASTION VERSION 21 — PARTY DOSSIER PATCH
+Apply over Version 20. Changed/new files only.
+Extract into the existing project folder containing package.json. Merge public, dist and tests; replace matching files. Keep all other existing files/assets. Redeploy on Render (npm run build; publish dist), then reload. Header: VERSION 21.
 
-The button displays Start wave with the next wave number between waves. During combat it displays Wave in progress and is disabled, including while paused. Claiming a reward between waves restores the ready message and enables starting the next wave. Claiming rewards during combat keeps the battle label. Story-ending New story behavior is preserved.
+Click a Pokemon in YOUR PARTY to inspect it beneath the battlefield. The starter is selected automatically. Selection and live counters do not pause combat or Auto.
 
-Validation: 131 automated checks passed, production build passed, and the real browser wave-clear/reward/start sequence was checked. Clean patch installation over Version 19 checked.
+The dossier shows all six base stats and total, types/stage/form/evolution path, move/attack class, move power, estimated neutral hit before enemy defense and conditional effects, attack interval in game seconds, targets, bounces and range. Live contributions: damage, share of run damage, defeats, boss defeats, damaging hits, volleys, strongest actual hit and actual tower HP restored.
+
+Relevant upgrades include universal power, matching type/stage buffs, party tactics and that individual's regional transformations. Repeated off-type/stage cards still appear when their repeat resonance applies. Tower support appears separately. Copy counts, master stack amounts and the compound damage breakdown are included. Evolution/transformations preserve individual records; replacements start fresh. The inspector updates without rebuilding a scrolled upgrade list on every hit. Small screens place it below the party section.
+
+Validation: 138 automated tests passed; production build passed; real browser wave/contribution/selection checks and a populated evolved/Tera fixture were reviewed; mobile width checked for overflow; clean patch installation over V20 verified. The preview image uses a demonstration party.

@@ -55,7 +55,8 @@ export function applyTransformation(run,card,key,roster,record){
   if(species(ally.nativePokemon)===1024)ally.zeroCharges=1;
  }
  ally.focusTarget=null;ally.focusTime=0;
- record(run,{...card,targetName:ally.pokemon.name,targetId:ally.nativePokemon.id,transformation:true});return ally;
+ const entry={...card,targetName:ally.pokemon.name,targetId:ally.nativePokemon.id,transformation:true};
+ (ally.formHistory??=[]).push(entry);record(run,entry);return ally;
 }
 export function evolveAlly(ally,pokemon){
  if(!canEvolve(ally))return false;

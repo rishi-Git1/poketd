@@ -47,11 +47,11 @@ export function movementFactor(enemy,run){const slow=1-.85**tacticStacks(run,'ch
 export function resolveHit(enemy,power,run,source=null){
  if(enemy.hp<=0||power<=0)return 0;
  const dealt=power*(enemy.hp<enemy.maxHp*.35?1.3**tacticStacks(run,'finish'):1)*(1+.05*tacticStacks(run,'wounds')*(enemy.marks||0));
- const removed=Math.min(enemy.hp,dealt);if(source)source.totalDamage=(source.totalDamage||0)+removed;enemy.hp-=dealt;
+ const removed=Math.min(enemy.hp,dealt);if(source){source.totalDamage=(source.totalDamage||0)+removed;source.damageHits=(source.damageHits||0)+1;source.strongestHit=Math.max(source.strongestHit||0,removed);run.totalDamage=(run.totalDamage||0)+removed}enemy.hp-=dealt;
  if(tacticStacks(run,'chill'))enemy.slowTime=2;
  if(tacticStacks(run,'wounds')){enemy.marks=Math.min(8,(enemy.marks||0)+1);enemy.markTime=3}
  if(enemy.hp>0&&enemy.hp<enemy.maxHp*.35&&tacticStacks(run,'execute')&&!(enemy.stunRecovery>0)){enemy.stunTime=.6*tacticStacks(run,'execute');enemy.stunRecovery=enemy.stunTime+2;}
- if(enemy.hp<=0){run.kills++;run.hp=Math.min(run.maxHp,run.hp+tacticStacks(run,'siphon'))}return dealt;
+ if(enemy.hp<=0){run.kills++;const before=run.hp;run.hp=Math.min(run.maxHp,run.hp+tacticStacks(run,'siphon'));if(source){source.defeats=(source.defeats||0)+1;if(enemy.boss)source.bossDefeats=(source.bossDefeats||0)+1;source.healing=(source.healing||0)+run.hp-before}}return dealt;
 }
 
 export function tacticSummary(run,kind){const n=tacticStacks(run,kind);return ({split:`Up to ${1+n} targets; divides damage among actual targets`,haste:`${(100*(1-.85**n)).toFixed(1)}% shorter cooldown`,reach:`${Math.round(run.range)} total range`,chill:`${(100*(1-.85**n)).toFixed(1)}% movement slow for 2s; bosses resist half`,pierce:`${(100*(1-.8**n)).toFixed(1)}% defense ignored`,finish:`${(1.3**n).toFixed(2)}× damage below 35% HP`,siphon:`Restore ${n} HP per defeat`,ricochet:`Up to ${n} bounces at 60% retained damage`,focus:`+${20*n}% per second; up to +${200*n}% on the locked target`,execute:`${(.6*n).toFixed(1)}s stun below 35% HP; 2s recovery`,cadence:`Every fourth volley: ×${(1.5**n).toFixed(2)}`,wounds:`+${5*n}% per mark; up to +${40*n}% for 3s`,nova:`${60*n}% killing-hit splash within 80 range`,shield:`${Math.ceil(run.shield||0)} shield remaining; ${10*n}% max HP each round`,surge:`${(100*(1-.8**n)).toFixed(1)}% shorter cooldown below 40% tower HP`})[kind]}

@@ -127,7 +127,7 @@ Sources:
 
 ## Validation
 
-Run `npm test` for **131 checks**. They cover all eight regional starters/endings, exact round caps, all 113 boss encounters, requested special-form IDs and stats, all 1087 local sprite files, regional roster isolation, evolution links, regional forms, region switching and best-record isolation, reward stacking, Auto flow, premium swaps, batch sizes, attack rendering and story completion with banked choices. Controller tests use an in-memory DOM; they do not constitute eight complete 150-round playthroughs. Long-run balance remains an iterative playtesting task.
+Run `npm test` for **138 checks**. They cover all eight regional starters/endings, exact round caps, all 113 boss encounters, requested special-form IDs and stats, all 1087 local sprite files, regional roster isolation, evolution links, regional forms, region switching and best-record isolation, reward stacking, Auto flow, premium swaps, batch sizes, attack rendering and story completion with banked choices. Controller tests use an in-memory DOM; they do not constitute eight complete 150-round playthroughs. Long-run balance remains an iterative playtesting task.
 
 The project uses a bundled VT323 pixel font with its SIL Open Font License in assets. Pokémon and character names are trademarks of Nintendo, Game Freak and Creatures. This is an unofficial fan prototype, unaffiliated with those companies.
 
@@ -289,3 +289,20 @@ Validation: **130 automated checks passed**, including dependency-hash propagati
 Apply over Version 19, merge folders, replace matching files and redeploy. The start button now derives its text and enabled state from the current run phase whenever the UI refreshes. While combat is active (including paused combat), it reads Wave in progress and is disabled. Between waves it reads Start wave with the correct next-wave number. It becomes enabled when the team is ready after choosing the pending reward. The adjacent message also returns to Your team is ready. Story-ending New story behavior is preserved.
 
 Validation: 131 automated checks, including actual wave clears, reward claims, the next wave start, paused combat, mid-battle reward claims and Auto toggles. Production build and browser review completed.
+
+
+## Version 0.21.0 — Selectable party dossiers
+
+Apply over Version 20, merging folders and replacing matching files, then redeploy on Render (`npm run build`, publish `dist`). Changed/new files only; existing Pokémon assets are retained.
+
+The left column now places a Partner Dossier beneath the battlefield, filling the former gap above rewards. Select a Pokémon using its party button (mouse, Enter or Space); the selected starter appears automatically. The panel follows that individual through normal evolution and regional transformations, and shows a newly swapped partner with fresh contribution totals. A new region clears selection and the dossier. Combat and Auto continue while selecting partners.
+
+The dossier shows all six PokéAPI base stats and their total, current types/stage/form and evolution path, current move/type/shape/physical-or-special attack class, signature power, neutral single-target hit before enemy defense/conditional effects, actual attack interval in game seconds, target capacity, ricochets and tower range. Damage factors separately show universal, matching types, matching evolution stage, personal forms/masks and repeat resonance. Base HP and defense are clearly labeled as species stats; partners do not take damage.
+
+Live contributions show actual damage, share of run damage (including former partners), defeats, boss defeats, damaging hits, attack volleys, strongest actual hit and actual tower HP restored by Victory Bloom. Overkill, zero/immune/dead-target hits and overhealing do not inflate these counters. Splash and ricochets credit their originating partner; old projectiles remain attributed to their former owner after a swap. Counters stay with an evolving/transformed ally; a replacement starts fresh. The run damage denominator includes all credited partners, including former ones.
+
+Relevant owned cards are grouped with copy counts and master tactic stack counts. Matching type/stage cards, party tactics and that individual's personal transformations appear with their effects. Unmatched type/stage cards appear only when their repeated copies still grant shared repeat resonance. Shared tower health, armor and shields are listed separately. Inactive ordinary Stellar bonuses are excluded after changing Tera, while power retained from earlier non-Stellar Tera applications is explained. Removed/traded upgrades disappear immediately. Live counters update text without rebuilding or resetting a scrolled upgrade list.
+
+The panel follows each region's palette. On smaller screens it moves below the party section, with responsive stat and contribution grids.
+
+Validation: **138 automated checks**, production build and browser checks. New coverage verifies stat/damage-factor math, repeat-only relevance, shared tower support, actual hit/heal/defeat credit, former-partner damage share, individual form-history ownership, Tera type replacement, selection during Auto, evolution/swap/reset behavior and stable live rendering. Browser review included actual wave clears, two-party selection, live counters and upgrade display.
