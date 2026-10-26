@@ -1,0 +1,1145 @@
+{
+  "gold-silver": [
+    {
+      "title": " id=\"gym-1\">Gym #1, Violet City",
+      "name": "Falkner",
+      "ids": [
+        16,
+        17
+      ]
+    },
+    {
+      "title": " id=\"gym-2\">Gym #2, Azalea Town",
+      "name": "Bugsy",
+      "ids": [
+        11,
+        14,
+        123
+      ]
+    },
+    {
+      "title": " id=\"gym-3\">Gym #3, Goldenrod City",
+      "name": "Whitney",
+      "ids": [
+        35,
+        241
+      ]
+    },
+    {
+      "title": " id=\"gym-4\">Gym #4, Ecruteak City",
+      "name": "Morty",
+      "ids": [
+        92,
+        93,
+        93,
+        94
+      ]
+    },
+    {
+      "title": " id=\"gym-5\">Gym #5, Cianwood City",
+      "name": "Chuck",
+      "ids": [
+        57,
+        62
+      ]
+    },
+    {
+      "title": " id=\"gym-6\">Gym #6, Olivine City",
+      "name": "Jasmine",
+      "ids": [
+        81,
+        81,
+        208
+      ]
+    },
+    {
+      "title": " id=\"gym-7\">Gym #7, Mahogany Town",
+      "name": "Pryce",
+      "ids": [
+        86,
+        87,
+        221
+      ]
+    },
+    {
+      "title": " id=\"gym-8\">Gym #8, Blackthorn City",
+      "name": "Clair",
+      "ids": [
+        148,
+        148,
+        148,
+        230
+      ]
+    },
+    {
+      "title": " id=\"gym-9\">Gym #9, Pewter City",
+      "name": "Brock",
+      "ids": [
+        75,
+        111,
+        139,
+        141,
+        95
+      ]
+    },
+    {
+      "title": " id=\"gym-10\">Gym #10, Cerulean City",
+      "name": "Misty",
+      "ids": [
+        55,
+        195,
+        131,
+        121
+      ]
+    },
+    {
+      "title": " id=\"gym-11\">Gym #11, Vermilion City",
+      "name": "Lt. Surge",
+      "ids": [
+        26,
+        101,
+        101,
+        82,
+        125
+      ]
+    },
+    {
+      "title": " id=\"gym-12\">Gym #12, Celadon City",
+      "name": "Erika",
+      "ids": [
+        114,
+        71,
+        189,
+        182
+      ]
+    },
+    {
+      "title": " id=\"gym-13\">Gym #13, Fuchsia City",
+      "name": "Janine",
+      "ids": [
+        169,
+        110,
+        110,
+        168,
+        49
+      ]
+    },
+    {
+      "title": " id=\"gym-14\">Gym #14, Saffron City",
+      "name": "Sabrina",
+      "ids": [
+        196,
+        122,
+        65
+      ]
+    },
+    {
+      "title": " id=\"gym-15\">Gym #15, Cinnabar Island",
+      "name": "Blaine",
+      "ids": [
+        219,
+        126,
+        78
+      ]
+    },
+    {
+      "title": " id=\"gym-16\">Gym #16, Viridian City",
+      "name": "Blue",
+      "ids": [
+        18,
+        65,
+        112,
+        130,
+        103,
+        59
+      ]
+    },
+    {
+      "title": " id=\"elite4-1\">Elite Four #1",
+      "name": "Will",
+      "ids": [
+        178,
+        124,
+        80,
+        103,
+        178
+      ]
+    },
+    {
+      "title": " id=\"elite4-2\">Elite Four #2",
+      "name": "Koga",
+      "ids": [
+        168,
+        49,
+        205,
+        89,
+        169
+      ]
+    },
+    {
+      "title": " id=\"elite4-3\">Elite Four #3",
+      "name": "Bruno",
+      "ids": [
+        237,
+        106,
+        107,
+        95,
+        68
+      ]
+    },
+    {
+      "title": " id=\"elite4-4\">Elite Four #4",
+      "name": "Karen",
+      "ids": [
+        197,
+        45,
+        198,
+        94,
+        229
+      ]
+    },
+    {
+      "title": " id=\"champion-5\">Champion",
+      "name": "Lance",
+      "ids": [
+        130,
+        149,
+        6,
+        142,
+        149,
+        149
+      ]
+    }
+  ],
+  "ruby-sapphire": [
+    {
+      "title": " id=\"gym-1\">Gym #1, Rustboro City",
+      "name": "Roxanne",
+      "ids": [
+        74,
+        299
+      ]
+    },
+    {
+      "title": " id=\"gym-2\">Gym #2, Dewford Town",
+      "name": "Brawly",
+      "ids": [
+        66,
+        296
+      ]
+    },
+    {
+      "title": " id=\"gym-3\">Gym #3, Mauville City",
+      "name": "Wattson",
+      "ids": [
+        81,
+        100,
+        82
+      ]
+    },
+    {
+      "title": " id=\"gym-4\">Gym #4, Lavaridge Town",
+      "name": "Flannery",
+      "ids": [
+        218,
+        218,
+        324
+      ]
+    },
+    {
+      "title": " id=\"gym-5\">Gym #5, Petalburg City",
+      "name": "Norman",
+      "ids": [
+        289,
+        288,
+        289
+      ]
+    },
+    {
+      "title": " id=\"gym-6\">Gym #6, Fortree City",
+      "name": "Winona",
+      "ids": [
+        277,
+        279,
+        227,
+        334
+      ]
+    },
+    {
+      "title": " id=\"gym-7\">Gym #7, Mossdeep City",
+      "name": "Tate & Liza",
+      "ids": [
+        337,
+        338
+      ]
+    },
+    {
+      "title": " id=\"gym-8\">Gym #8, Sootopolis City",
+      "name": "Wallace",
+      "ids": [
+        370,
+        340,
+        364,
+        119,
+        350
+      ]
+    },
+    {
+      "title": " id=\"elite4-1\">Elite Four #1",
+      "name": "Sidney",
+      "ids": [
+        262,
+        332,
+        275,
+        319,
+        359
+      ]
+    },
+    {
+      "title": " id=\"elite4-2\">Elite Four #2",
+      "name": "Phoebe",
+      "ids": [
+        356,
+        354,
+        354,
+        302,
+        356
+      ]
+    },
+    {
+      "title": " id=\"elite4-3\">Elite Four #3",
+      "name": "Glacia",
+      "ids": [
+        362,
+        364,
+        362,
+        364,
+        365
+      ]
+    },
+    {
+      "title": " id=\"elite4-4\">Elite Four #4",
+      "name": "Drake",
+      "ids": [
+        372,
+        334,
+        330,
+        330,
+        373
+      ]
+    },
+    {
+      "title": " id=\"champion-5\">Champion",
+      "name": "Steven",
+      "ids": [
+        227,
+        346,
+        344,
+        348,
+        306,
+        376
+      ]
+    }
+  ],
+  "platinum": [
+    {
+      "title": " id=\"gym-1\">Gym #1, Oreburgh City",
+      "name": "Roark",
+      "ids": [
+        74,
+        95,
+        408,
+        142,
+        476,
+        76,
+        409,
+        248
+      ]
+    },
+    {
+      "title": " id=\"gym-2\">Gym #2, Eterna City",
+      "name": "Gardenia",
+      "ids": [
+        387,
+        421,
+        407,
+        189,
+        182,
+        421,
+        389,
+        407
+      ]
+    },
+    {
+      "title": " id=\"gym-3\">Gym #3, Hearthome City",
+      "name": "Fantina",
+      "ids": [
+        355,
+        93,
+        429,
+        354,
+        429,
+        477,
+        94,
+        426
+      ]
+    },
+    {
+      "title": " id=\"gym-4\">Gym #4, Veilstone City",
+      "name": "Maylene",
+      "ids": [
+        307,
+        67,
+        448,
+        237,
+        286,
+        308,
+        68,
+        448
+      ]
+    },
+    {
+      "title": " id=\"gym-5\">Gym #5, Pastoria City",
+      "name": "Crasher Wake",
+      "ids": [
+        130,
+        195,
+        419,
+        319,
+        419,
+        195,
+        272,
+        130
+      ]
+    },
+    {
+      "title": " id=\"gym-6\">Gym #6, Canalave City",
+      "name": "Byron",
+      "ids": [
+        82,
+        208,
+        411,
+        227,
+        208,
+        462,
+        411,
+        306
+      ]
+    },
+    {
+      "title": " id=\"gym-7\">Gym #7, Snowpoint City",
+      "name": "Candice",
+      "ids": [
+        215,
+        221,
+        460,
+        478,
+        461,
+        460,
+        473,
+        478,
+        471
+      ]
+    },
+    {
+      "title": " id=\"gym-8\">Gym #8, Sunyshore City",
+      "name": "Volkner",
+      "ids": [
+        135,
+        26,
+        405,
+        466,
+        135,
+        26,
+        405,
+        171,
+        466
+      ]
+    },
+    {
+      "title": " id=\"elite4-1\">Elite Four #1",
+      "name": "Aaron",
+      "ids": [
+        469,
+        212,
+        416,
+        214,
+        452,
+        469,
+        212,
+        416,
+        214,
+        452
+      ]
+    },
+    {
+      "title": " id=\"elite4-2\">Elite Four #2",
+      "name": "Bertha",
+      "ids": [
+        340,
+        472,
+        76,
+        464,
+        450,
+        340,
+        472,
+        76,
+        464,
+        450
+      ]
+    },
+    {
+      "title": " id=\"elite4-3\">Elite Four #3",
+      "name": "Flint",
+      "ids": [
+        229,
+        136,
+        78,
+        392,
+        467,
+        229,
+        136,
+        78,
+        392,
+        467
+      ]
+    },
+    {
+      "title": " id=\"elite4-4\">Elite Four #4",
+      "name": "Lucian",
+      "ids": [
+        122,
+        196,
+        437,
+        65,
+        475,
+        122,
+        196,
+        437,
+        65,
+        475
+      ]
+    },
+    {
+      "title": " id=\"champion-5\">Champion",
+      "name": "Cynthia",
+      "ids": [
+        442,
+        407,
+        468,
+        448,
+        350,
+        445,
+        442,
+        407,
+        468,
+        448,
+        350,
+        445
+      ]
+    },
+    {
+      "title": " id=\"trainers-misc\">Other trainers",
+      "name": "Cheryl",
+      "ids": [
+        202,
+        297,
+        321,
+        426,
+        242,
+        213,
+        477,
+        324,
+        197,
+        344,
+        291,
+        101,
+        169,
+        461,
+        59,
+        359,
+        217,
+        376,
+        373,
+        448,
+        474,
+        94,
+        462,
+        468,
+        65
+      ]
+    }
+  ],
+  "black-white-2": [
+    {
+      "title": " id=\"gym-1\">Gym #1, Aspertia City",
+      "name": "Cheren",
+      "ids": [
+        504,
+        506
+      ]
+    },
+    {
+      "title": " id=\"gym-2\">Gym #2, Virbank City",
+      "name": "Roxie",
+      "ids": [
+        109,
+        544
+      ]
+    },
+    {
+      "title": " id=\"gym-3\">Gym #3, Castelia City",
+      "name": "Burgh",
+      "ids": [
+        541,
+        557,
+        542
+      ]
+    },
+    {
+      "title": " id=\"gym-4\">Gym #4, Nimbasa City",
+      "name": "Elesa",
+      "ids": [
+        587,
+        180,
+        523
+      ]
+    },
+    {
+      "title": " id=\"gym-5\">Gym #5, Driftveil City",
+      "name": "Clay",
+      "ids": [
+        552,
+        28,
+        530
+      ]
+    },
+    {
+      "title": " id=\"gym-6\">Gym #6, Mistralton City",
+      "name": "Skyla",
+      "ids": [
+        528,
+        227,
+        581
+      ]
+    },
+    {
+      "title": " id=\"gym-7\">Gym #7, Opelucid City",
+      "name": "Drayden",
+      "ids": [
+        621,
+        330,
+        612
+      ]
+    },
+    {
+      "title": " id=\"gym-8\">Gym #8, Humilau City",
+      "name": "Marlon",
+      "ids": [
+        565,
+        321,
+        593
+      ]
+    },
+    {
+      "title": " id=\"elite4-1\">Elite Four #1",
+      "name": "Shauntal",
+      "ids": [
+        563,
+        426,
+        623,
+        609,
+        563,
+        429,
+        478,
+        426,
+        623,
+        609
+      ]
+    },
+    {
+      "title": " id=\"elite4-2\">Elite Four #2",
+      "name": "Grimsley",
+      "ids": [
+        510,
+        560,
+        553,
+        625,
+        510,
+        229,
+        560,
+        430,
+        553,
+        625
+      ]
+    },
+    {
+      "title": " id=\"elite4-3\">Elite Four #3",
+      "name": "Caitlin",
+      "ids": [
+        518,
+        561,
+        579,
+        576,
+        518,
+        561,
+        579,
+        576,
+        475,
+        376
+      ]
+    },
+    {
+      "title": " id=\"elite4-4\">Elite Four #4",
+      "name": "Marshal",
+      "ids": [
+        538,
+        539,
+        620,
+        534,
+        538,
+        539,
+        620,
+        308,
+        448,
+        534
+      ]
+    },
+    {
+      "title": " id=\"champion-1\">Champion",
+      "name": "Iris",
+      "ids": [
+        635,
+        621,
+        306,
+        567,
+        131,
+        612,
+        635,
+        621,
+        306,
+        567,
+        131,
+        612
+      ]
+    },
+    {
+      "title": " id=\"trainers-misc\">Other trainers",
+      "name": "Team Plasma Colress",
+      "ids": [
+        82,
+        462,
+        375,
+        606,
+        601,
+        563,
+        604,
+        452,
+        454,
+        537,
+        635
+      ]
+    }
+  ],
+  "x-y": [
+    {
+      "title": " id=\"gym-1\">Gym #1, Santalune City",
+      "name": "Viola",
+      "ids": [
+        283,
+        666
+      ]
+    },
+    {
+      "title": " id=\"gym-2\">Gym #2, Cyllage City",
+      "name": "Grant",
+      "ids": [
+        698,
+        696
+      ]
+    },
+    {
+      "title": " id=\"gym-3\">Gym #3, Shalour City",
+      "name": "Korrina",
+      "ids": [
+        619,
+        67,
+        701
+      ]
+    },
+    {
+      "title": " id=\"gym-4\">Gym #4, Coumarine City",
+      "name": "Ramos",
+      "ids": [
+        189,
+        70,
+        673
+      ]
+    },
+    {
+      "title": " id=\"gym-5\">Gym #5, Lumiose City",
+      "name": "Clemont",
+      "ids": [
+        587,
+        82,
+        695
+      ]
+    },
+    {
+      "title": " id=\"gym-6\">Gym #6, Laverre City",
+      "name": "Valerie",
+      "ids": [
+        122,
+        303,
+        700
+      ]
+    },
+    {
+      "title": " id=\"gym-7\">Gym #7, Anistar City",
+      "name": "Olympia",
+      "ids": [
+        561,
+        199,
+        678
+      ]
+    },
+    {
+      "title": " id=\"gym-8\">Gym #8, Snowbelle City",
+      "name": "Wulfric",
+      "ids": [
+        460,
+        713,
+        615
+      ]
+    },
+    {
+      "title": " id=\"elite4-1\">Elite Four #1",
+      "name": "Wikstrom",
+      "ids": [
+        707,
+        476,
+        681,
+        212
+      ]
+    },
+    {
+      "title": " id=\"elite4-2\">Elite Four #2",
+      "name": "Malva",
+      "ids": [
+        668,
+        663,
+        324,
+        609
+      ]
+    },
+    {
+      "title": " id=\"elite4-3\">Elite Four #3",
+      "name": "Drasna",
+      "ids": [
+        691,
+        334,
+        715,
+        621
+      ]
+    },
+    {
+      "title": " id=\"elite4-4\">Elite Four #4",
+      "name": "Siebold",
+      "ids": [
+        693,
+        121,
+        130,
+        689
+      ]
+    },
+    {
+      "title": " id=\"champion-1\">Champion",
+      "name": "Diantha",
+      "ids": [
+        701,
+        699,
+        697,
+        706,
+        711,
+        282
+      ]
+    }
+  ],
+  "scarlet-violet": [
+    {
+      "title": " id=\"gym-1\">Gym #1, Cortondo",
+      "name": "Katy",
+      "ids": [
+        919,
+        917,
+        216,
+        920,
+        205,
+        918,
+        214,
+        217
+      ]
+    },
+    {
+      "title": " id=\"gym-2\">Gym #2, Artazon",
+      "name": "Brassius",
+      "ids": [
+        548,
+        928,
+        185,
+        549,
+        286,
+        763,
+        930,
+        185
+      ]
+    },
+    {
+      "title": " id=\"gym-3\">Gym #3, Levincia",
+      "name": "Iono",
+      "ids": [
+        940,
+        939,
+        404,
+        429,
+        941,
+        939,
+        101,
+        405,
+        429
+      ]
+    },
+    {
+      "title": " id=\"gym-4\">Gym #4, Cascarrafa",
+      "name": "Kofu",
+      "ids": [
+        976,
+        961,
+        740,
+        976,
+        279,
+        961,
+        693,
+        740
+      ]
+    },
+    {
+      "title": " id=\"gym-5\">Gym #5, Medali",
+      "name": "Larry",
+      "ids": [
+        775,
+        982,
+        398,
+        916,
+        775,
+        628,
+        982,
+        398
+      ]
+    },
+    {
+      "title": " id=\"gym-6\">Gym #6, Montenevera",
+      "name": "Ryme",
+      "ids": [
+        354,
+        778,
+        972,
+        849,
+        354,
+        778,
+        442,
+        972,
+        849
+      ]
+    },
+    {
+      "title": " id=\"gym-7\">Gym #7, Alfornada",
+      "name": "Tulip",
+      "ids": [
+        981,
+        282,
+        956,
+        671,
+        981,
+        282,
+        956,
+        475,
+        671
+      ]
+    },
+    {
+      "title": " id=\"gym-8\">Gym #8, Glaseado Mountain",
+      "name": "Grusha",
+      "ids": [
+        873,
+        614,
+        975,
+        334,
+        873,
+        614,
+        975,
+        461,
+        334
+      ]
+    },
+    {
+      "title": " id=\"teamstar-1\">Team Star Boss #1",
+      "name": "Giacomo",
+      "ids": [
+        624,
+        332,
+        430,
+        943,
+        553,
+        983
+      ]
+    },
+    {
+      "title": " id=\"teamstar-2\">Team Star Boss #2",
+      "name": "Mela",
+      "ids": [
+        324,
+        324,
+        839,
+        229,
+        59,
+        936
+      ]
+    },
+    {
+      "title": " id=\"teamstar-3\">Team Star Boss #3",
+      "name": "Atticus",
+      "ids": [
+        435,
+        89,
+        966,
+        435,
+        89,
+        691,
+        748,
+        966
+      ]
+    },
+    {
+      "title": " id=\"teamstar-4\">Team Star Boss #4",
+      "name": "Ortega",
+      "ids": [
+        184,
+        40,
+        927,
+        707,
+        184,
+        40,
+        858,
+        927
+      ]
+    },
+    {
+      "title": " id=\"teamstar-5\">Team Star Boss #5",
+      "name": "Eri",
+      "ids": [
+        454,
+        766,
+        448,
+        979,
+        57,
+        454,
+        766,
+        448,
+        979
+      ]
+    },
+    {
+      "title": " id=\"elite4-1\">Elite Four #1",
+      "name": "Rika",
+      "ids": [
+        340,
+        323,
+        232,
+        51,
+        980
+      ]
+    },
+    {
+      "title": " id=\"elite4-2\">Elite Four #2",
+      "name": "Poppy",
+      "ids": [
+        879,
+        462,
+        437,
+        823,
+        959
+      ]
+    },
+    {
+      "title": " id=\"elite4-3\">Elite Four #3",
+      "name": "Larry",
+      "ids": [
+        357,
+        741,
+        334,
+        398,
+        973
+      ]
+    },
+    {
+      "title": " id=\"elite4-4\">Elite Four #4",
+      "name": "Hassel",
+      "ids": [
+        715,
+        612,
+        691,
+        841,
+        998
+      ]
+    },
+    {
+      "title": " id=\"champion-5\">Champion",
+      "name": "Geeta",
+      "ids": [
+        956,
+        673,
+        976,
+        713,
+        983,
+        970,
+        956,
+        673,
+        976,
+        713,
+        983,
+        970
+      ]
+    },
+    {
+      "title": " id=\"trainers-misc\">Other trainers",
+      "name": "Nemona",
+      "ids": [
+        745,
+        706,
+        982,
+        968,
+        923,
+        914,
+        745,
+        706,
+        982,
+        968,
+        923,
+        908,
+        745,
+        706,
+        982,
+        968,
+        923,
+        911,
+        197,
+        134,
+        135,
+        136,
+        470,
+        700
+      ]
+    }
+  ]
+}

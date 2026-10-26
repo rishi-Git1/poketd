@@ -1,0 +1,65 @@
+import csv,json,pathlib,subprocess,concurrent.futures,time
+root=pathlib.Path(__file__).resolve().parents[1];assets=root/'public/assets';db=root/'scripts/pokeapi-csv'
+def rows(name):return list(csv.DictReader((db/(name+'.csv')).open()))
+pokemon={int(p['id']):p for p in rows('pokemon')};species={int(p['id']):p for p in rows('pokemon_species')};types={p['id']:p['identifier'] for p in rows('types')};statsnames={p['id']:p['identifier'] for p in rows('stats')};stats={};ptypes={}
+for s in rows('pokemon_stats'):stats.setdefault(int(s['pokemon_id']),{})[statsnames[s['stat_id']]]=int(s['base_stat'])
+for t in rows('pokemon_types'):ptypes.setdefault(int(t['pokemon_id']),[]).append((int(t['slot']),types[t['type_id']]))
+dex={}
+for d in rows('pokemon_dex_numbers'):dex.setdefault(int(d['pokedex_id']),set()).add(int(d['species_id']))
+regions=json.loads((assets/'regions.json').read_text());allids=set();regionalids={}
+galarforms=[10161,10162,10163,10166,10167,10168,10173,10174,10175,10176,10177,10179,10180]
+for r in regions:
+ ids=set().union(*(dex[d] for d in r['dexIds']));r['dexCount']=len(ids)
+ if r['id']=='galar':ids.update(galarforms)
+ if r['id']=='paldea':ids.update([10250,10251,10252,10253])
+ ids.update(r['starters']);ids.add(r['finale'])
+ for b in r['bosses']:ids.update(b['team'])
+ # Include base species for special-form finales, available as rare premium partners.
+ if r['id']=='galar':ids.add(890)
+ if r['id']=='paldea':ids.add(1024)
+ r['pokemonIds']=sorted(ids);allids.update(ids);regionalids[r['id']]=ids
+records={}
+for id in sorted(allids):
+ p=pokemon[id];sp=species[int(p['species_id'])]
+ records[id]={'id':id,'speciesId':int(p['species_id']),'name':p['identifier'],'types':[v for _,v in sorted(ptypes[id])],'stats':stats[id],'parentSpecies':int(sp['evolves_from_species_id'] or 0),'legendary':sp['is_legendary']=='1' or sp['is_mythical']=='1','bossOnly':id in [10190,10277],'sprite':f'assets/{id}.png','stage':1,'next':None,'nextOptions':[]}
+# Form-specific evolution connections; never evolve a normal form into a regional-only child.
+formchildren={10161:[863],10162:[10163],10163:[],10166:[865],10167:[],10168:[866],10173:[864],10174:[10175],10175:[862],10176:[10177],10177:[],10179:[867],10180:[],10250:[],10251:[],10252:[],10253:[980]}
+regionalchildren={863,865,866,864,862,867,980}
+for id,p in records.items():
+ if id in formchildren:p['nextOptions']=[n for n in formchildren[id] if n in records]
+ elif id>=10000:p['nextOptions']=[]
+ else:p['nextOptions']=[n for n,q in records.items() if n<10000 and q['parentSpecies']==p['speciesId'] and n not in regionalchildren]
+ if id==109 and 10167 in records:p['nextOptions'].append(10167)
+ if id==439 and 10168 in records:p['nextOptions'].append(10168)
+ p['next']=next(iter(p['nextOptions']),None)
+# Preserve the original Kanto snapshot for compatibility; app will load per-region files.
+(assets/'regions.json').write_text(json.dumps(regions,separators=(',',':')))
+(root/'public/regions.js').write_text('export const REGIONS = '+json.dumps(regions,separators=(',',':'))+';\nexport function getRegion(id="kanto"){const r=REGIONS.find(r=>r.id===id);if(!r)throw Error("Unknown region: "+id);return r}\n')
+(assets/'all-pokemon.json').write_text(json.dumps(list(records.values()),separators=(',',':')))
+(assets/'regions').mkdir(exist_ok=True)
+for r in regions:
+ ids=regionalids[r['id']];data=[]
+ for id in sorted(ids):
+  p={**records[id]};p['nextOptions']=[n for n in p['nextOptions'] if n in ids and not records[n]['bossOnly']];p['next']=next(iter(p['nextOptions']),None);data.append(p)
+ byid={p['id']:p for p in data};parents={}
+ for p in data:
+  for child in p['nextOptions']:parents.setdefault(child,[]).append(p['id'])
+ def stage(id,path=()):
+  if id in path:raise ValueError('Evolution cycle')
+  return min(3,1+max((stage(parent,path+(id,)) for parent in parents.get(id,[])),default=0))
+ for p in data:p['stage']=stage(p['id'])
+ (assets/'regions'/f"{r['id']}.json").write_text(json.dumps(data,separators=(',',':')))
+def sprite(id):
+ path=assets/f'{id}.png'
+ if path.exists() and path.stat().st_size>50:return True
+ urls=[f'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png',f'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{id}.png']
+ for url in urls:
+  for attempt in range(2):
+   result=subprocess.run(['curl','-fsSL','--max-time','25',url,'-o',str(path)],capture_output=True)
+   if result.returncode==0 and path.read_bytes().startswith(b'\x89PNG'):return True
+ raise RuntimeError(f'Missing sprite {id}')
+print(f'Built {len(records)} unique Pokémon/form records. Downloading sprites...',flush=True)
+with concurrent.futures.ThreadPoolExecutor(max_workers=10) as ex:
+ for i,result in enumerate(ex.map(sprite,sorted(records)),1):
+  if i%100==0:print(f'Sprites checked: {i}/{len(records)}',flush=True)
+print('All regional sprites ready.',flush=True)

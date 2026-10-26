@@ -1,180 +1,132 @@
-# Poké Bastion — Version 06
+# Poké Bastion — Version 07
 
-A playable browser roguelike tower defense prototype. Choose Bulbasaur, Charmander, or Squirtle, then defend a central bastion against a 151-round campaign of approaching Pokémon. After every cleared wave, choose exactly one of three rewards.
+A browser tower-defense roguelike with eight **Story-based** regional campaigns. Choose a region when the game opens, then select one of its three starters. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
+
+## Regional stories
+
+| Region | Regional Pokédex | Campaign basis | Champion | Finale | Ends at |
+| --- | ---: | --- | --- | --- | ---: |
+| Kanto | 151 | Red / Blue | Blue | Mew (Mewtwo at 150) | 151 |
+| Johto | 251 | Gold / Silver | Lance | Ho-Oh | 150 |
+| Hoenn | 202 | Ruby / Sapphire | Steven | Rayquaza | 150 |
+| Sinnoh | 210 | Platinum | Cynthia | Arceus | 150 |
+| Unova | 301 | Black 2 / White 2 | Iris | Kyurem | 150 |
+| Kalos | 457 | X / Y, combined Central/Coastal/Mountain dexes | Diantha | Yveltal | 150 |
+| Galar | 400 | Sword, adapted Champion Cup bracket | Leon | Eternamax Eternatus | 150 |
+| Paldea | 400 | Scarlet / Violet | Geeta | Stellar Terapagos | 150 |
+
+Alola has no selectable campaign yet. Regional Pokédexes contain overlapping species, including Pokémon originally introduced in other regions. These are actual regional dex lists from PokéAPI, not national-generation ID slices. Required finale exceptions are added: Arceus for Sinnoh; base and Stellar Terapagos for Paldea; Eternamax Eternatus for Galar. Relevant Galarian and Paldean forms are included alongside base species. The displayed dex count refers to the official regional species list, excluding additional forms/finale exceptions.
+
+The complete pack contains **968 distinct Pokémon/form records with local sprites**, including per-region evolution paths and legendary/mythical flags. Kanto retains its original three Eevee branches; later regions gain additional branches when those evolutions belong to their dex. Regional forms have their own evolution connections, such as Galarian Meowth → Perrserker and Paldean Wooper → Clodsire.
+
+The REGIONS button opens the selector again. Cancel returns to the current story; choosing another region starts a fresh run. New story at an ending restarts the same region; Choose a region returns to the selector. Best rounds are saved separately for each region on this device. Active runs are not saved across reloads. Legacy Kanto best scores are still recognized.
 
 ## Run locally
 
-Requires Node.js 20+ to build/test; no npm dependencies.
+Requires Node.js 20+ and Python for the example local server. No npm dependencies.
 
 ```sh
 npm run build
 python3 -m http.server 8080 --directory dist
 ```
 
-Open http://localhost:8080. Opening index.html directly with file:// will not load the roster.
+Open http://localhost:8080. The game must be served over HTTP rather than opening index.html with file://.
 
 ## Deploy on Render
 
-1. Unzip this project and push its contents to a GitHub repository. package.json and render.yaml should be at the repository root.
-2. In Render, select **New > Static Site** and connect the repository.
-3. Set **Build Command** to `npm run build`.
-4. Set **Publish Directory** to `dist`.
-5. Deploy. No environment variables or API keys are required.
+1. Unzip the project and push its contents to a GitHub repository, with package.json and render.yaml at its root.
+2. Create a Render **Static Site**, connect the repository, and select the branch.
+3. Build Command: `npm run build`.
+4. Publish Directory: `dist`.
+5. Deploy. No API keys or environment variables are required.
 
-Alternatively, create a Render Blueprint from the repository using the included render.yaml. If placing this project within a larger repository, set Render's Root Directory to this project folder.
+Alternatively create a Render Blueprint using render.yaml. If placing this folder inside a larger repository, set Render's Root Directory to this folder.
 
-## Playing
+## Playing and controls
 
-- Choose a starter (click or keys 1–3).
-- Click Start wave (or press Enter with page focus).
-- Allies attack automatically; enemies spawn in overlapping groups of three around the arena.
-- Space pauses; 1× / 2× / 5× changes simulation speed. Leaving the browser tab pauses battle.
-- After a wave, choose a new Pokémon, evolution, universal buff, type buff, evolution-stage buff, or tower upgrade.
-- Team limit: six. When full, reward slots can offer evolutions or buffs instead of new partners.
-- Tower damage persists. Repair & Reinforce is the healing option.
-- Local best-wave record persists; an active run intentionally resets on reload.
+- Choose a region, then a starter. Your party attacks automatically.
+- Click a card or press 1 / 2 / 3 to select one reward from the oldest banked set.
+- Space pauses, Enter starts a ready wave, and the speed button cycles 1× / 2× / 5×.
+- AUTO ON starts the next wave immediately with no timer. Every cleared wave banks its three-card reward set; rewards and optional premium trades never force an inter-wave pause.
+- Cards apply immediately, including during combat. Unused sets remain banked. If a saved evolution/recruit option becomes impossible after party changes, only that option is replaced with a valid tower buff.
+- Up to six party members. Evolution and new recruits are drawn only from the selected region's playable roster.
+- Damage persists between waves. Repair cards heal the bastion.
+- UPGRADES beside the party shows current reward stacks and each partner's combined damage multiplier.
+- Opening help or inventory pauses active combat. Opening a premium trade does not. Leaving the tab pauses battle.
+- The field guide shows the current regional boss schedule and animated previews of all regional final-form moves, including the requested finale forms.
 
-## Initial roster and PokéAPI
+## Campaign and bosses
 
-This prototype uses all 151 Kanto Pokémon. Canonical base stats, types, names, and front sprites are fetched from https://pokeapi.co/api/v2/pokemon/{id}/ and bundled in public/assets. The browser refreshes roster stats and types in the background with three concurrent requests and a seven-day local cache. Failed requests keep the bundled snapshot usable. No server backend or authentication is needed. PokéAPI is the data service; the simulation runs in the browser.
+Every region has eight gyms at rounds 15, 30, 45, 60, 75, 90, 105 and 120. League battles follow at 125, 130, 135 and 140, the champion at 145, and the requested regional finale at 150. Kanto uniquely continues to Mew at 151 after Mewtwo at 150.
 
-Evolution paths cover all Kanto-only chains, including all three Eevee branches. Later-generation babies and evolutions are excluded: Pikachu starts at stage 1, and Pokémon such as Golbat, Onix and Scyther count as final forms within Kanto. All 151 are reachable through recruitment/evolution. Stronger recruits are gated by base stat total (350 + 30 × cleared wave, capped at 680); Mewtwo becomes eligible after wave 11. Enemy stat-total limits increase across waves so powerful single-stage Pokémon do not appear in the opening.
+Galar does not have an Elite Four. Its four late League slots are an adapted Champion Cup bracket: Marnie, Hop, Bede and Raihan, followed by Leon. Its eight gym leaders use the Sword lineup (Bea and Gordie). Blue and Leon's parties counter the original player starter; Hop uses the weaker starter. These choices preserve the requested round formula while labeling Galar's structure accurately.
 
-Regenerate the snapshot and sprites from the project root with `python3 scripts/fetch-data.py` (Python and curl required). The game uses local sprite files, so gameplay does not depend on a live image host.
+Trainer species rosters follow the selected game's initial battles, rather than postgame rematches. Species, stats and available signature effects are modeled; main-series mechanics such as held items, abilities, Terastallization, Mega Evolution, ordinary Dynamax, and exact move learnsets are not simulated. The explicitly requested Eternamax Eternatus (`10190`) and Stellar Terapagos (`10277`) are separate forms with their real PokéAPI stats and sprites. Those two battle-only transformations cannot appear as ordinary enemies, recruits or premium trades. Their base forms remain available as rare regional partners.
 
-## Combat / balance
+Boss Pokémon have a gold aura and a trainer-team banner. They remain near the bastion and attack every 1.6 game seconds until defeated; a boss wave clears only when its entire team is defeated. HP, physical/special defense and impact damage multiply the normal same-round stats by 1.25 for gyms, 1.45 for League battles, 1.6 for champions, 4 for Kanto's Mewtwo, and 8 for the final regional encounter.
 
-These are game-specific formulas using official base stats, not the main-series Pokémon damage formula.
+Defeating the final boss opens the regional Hall of Fame screen, showing the champion party, final HP, enemies defeated, upgrades kept, and exact round total. Auto stops. The wave-start guard prevents any additional round beyond that region's story limit, even with banked rewards present.
 
-- Enemies per wave: 3 + 2 × wave through wave 5 (5, 7, 9, 11, 13); then 13 + 3 × (wave − 5).
-- Three enemies per group; 0.36 seconds between group members; 3.2 seconds between group starts in waves 1–3, then 2.4 seconds, plus up to 0.2 seconds jitter.
-- Stage 1 enemies from wave 1; stage 2 joins at wave 4; stage 3 joins at wave 9. Earlier stages remain in the pool.
-- Opening ease factor E = min(1, 0.65 + max(0, wave − 1) × 0.07).
-- Wave 1 enemy roster is capped at base stat total 280; wave 2 at 330. Normal stage-based roster begins at wave 3.
-- Enemy HP: (base HP × 0.53 + 9) × 1.115^(wave − 1) × E.
-- Enemy defense and special defense: base stat × (1 + 0.025 × wave) × E.
-- Move speed: (10 + base speed × 0.115 + wave × 0.35) × min(1, 0.78 + max(0, wave − 1) × 0.044) arena units/second.
-- Tower impact: ceil(max(attack, special attack) × 0.12 × (1 + 0.07 × wave) × min(1, 0.55 + max(0, wave − 1) × 0.09)).
-- Armor reduces incoming damage by dividing impact by (1 + armor), rounded up, minimum 1.
-- Allies use their larger attacking stat; special attacks use enemy special defense. Unevolved Pokémon use primary-type projectiles. Fully evolved partners use their signature move type. Both defender types affect effectiveness, including immunities.
-- Ally attack damage: (8 + attack × 0.23) × (universal multiplier × each matching type multiplier × current-stage multiplier) × 100 / (100 + enemy defense) × type effectiveness.
-- Attack cooldown: max(0.28, (1.45 − base speed × 0.006) × (0.8 for final forms, otherwise 1)) seconds.
-- Allies prioritize the nearest non-immune enemy within 335 units of the center. Signature attacks can also strike enemies near the selected target; immunity is evaluated separately for each victim.
-- Universal power cards multiply by 1.18. Each type and stage card multiplies its category by 1.35. Repeated copies compound, and all applicable categories multiply together. Both types on dual-type Pokémon count. Two stage cards and one matching type card yield 1.35³ = 2.460375× buff damage. Armor cards add 12 displayed armor points (0.12 in the reduction formula). Health cards add 65 maximum HP and restore 105 current HP.
-- Buffs apply according to a Pokémon's current type/stage after evolution.
+## Wave pacing and tower growth
 
-## Files
+- Enemy count: `3 + 2 * wave` through round 5; then `13 + 3 * (wave - 5)`.
+- Rounds 1–3 use groups of up to three, with 0.36 seconds between group members and 3.2 seconds between group starts. Rounds 4–50 use 2.4 seconds between starts. Random jitter is up to 0.2 seconds.
+- From round 51 onward, levels arrive in five balanced batches of about **20%**, at 0 / 3 / 6 / 9 / 12 game seconds. Thus 150 enemies arrive in five groups of 30. Uneven totals preserve all enemies; small boss teams use fewer groups. Solo finales spawn once at time zero.
+- Early waves limit enemy base-stat totals, soften HP/defense/impact and reduce movement speed. Stage 2 enemies unlock at round 4 and stage 3 at round 9.
+- After every tenth cleared round, range and max HP multiply by 1.05; current HP gains the new capacity. Effective defense also grows: `(1 + armor) *= 1.05`, so growth works even from zero armor. Each milestone applies only once.
 
-- public/attacks.js — move profiles, area/chain targeting, speed cycle, and signature renderers.
-- public/engine.js — stat scaling, type chart, wave scheduling, upgrade application.
-- public/app.js — game loop, canvas rendering, UI, data refresh and local record.
-- public/style.css and index.html — responsive interface.
-- tests/engine.test.mjs — meaningful rule and progression checks; run `npm test`.
-- scripts/build.mjs — dependency-free static build.
+## Upgrades, damage and final forms
 
-The prototype includes pause, speed toggle, keyboard choices, instructions, responsive layout, and a game-over/restart loop. Difficulty tuning remains an iterative design task; no claim of long-run balance testing is made.
+Damage cards compound with repeated copies and every matching category. Global cards multiply damage by 1.18; each type/stage card multiplies its category by 1.35. Both Pokémon types count. Two stage cards plus a matching type card give `1.35^3 = 2.460375×` damage. A stage bonus applies to the Pokémon's current stage; collected bonuses remain stored after evolution.
 
-Pokémon and Pokémon character names are trademarks of Nintendo, Game Freak, and Creatures. This is an unofficial fan prototype, not affiliated with those companies. Data and sprites are sourced through PokéAPI. The VT323 pixel font is bundled locally with its SIL Open Font License in public/assets; no font network request is needed.
+All regional final forms have signature attacks based on type or species overrides, including beams, flame/water cones, chaining lightning, explosions, shockwaves, slashes, volleys and vortices. Generic profiles cover all 18 types. Regional finales have named profiles: Sacred Fire, Dragon Ascent, Judgment, Glaciate, Oblivion Wing, Eternabeam and Tera Starstorm. These are tower-defense adaptations, not canonical battle animations or learnset rules.
 
+Final-form move power is typically 2.16–3.42× base attack damage, with larger overrides for some regional finales. Final forms have 20% shorter attack cooldowns. Visual effects retain real-time duration for readability at 5× speed; combat calculations follow game speed. Move type determines effectiveness against both enemy types, including immunities. The attacker uses its larger attacking stat and the corresponding enemy defense.
 
-## Signature moves
+Core formulas are in public/engine.js and public/attacks.js. Enemy HP scales as `(base HP * 0.53 + 9) * 1.115^(wave - 1)`, with the opening ease and boss factors applied. Normal tower armor reduces impact by division through `1 + armor`.
 
-All 81 Kanto-final forms in the complete roster have a custom tower-defense signature move. These are game adaptations with custom mechanics, not an implementation of main-series move rules or learnsets. Earlier stages keep small type-colored projectiles.
+## Premium trades
 
-| Final form | Move | Behavior |
-| --- | --- | --- |
-| Venusaur | Solar Beam | Piercing grass beam |
-| Charizard | Flamethrower | Expanding flame cone |
-| Blastoise | Hydro Pump | Piercing water beam |
-| Butterfree | Silver Wind | Area vortex |
-| Beedrill | Pin Missile | Up to three nearby targets |
-| Pidgeot | Hurricane | Flying-type area vortex |
-| Raticate | Hyper Fang | Powerful single-target slash |
-| Raichu | Thunderbolt | Up to three chained targets |
-| Sandslash | Earthquake | Ground shockwave area |
-| Ninetales | Fire Blast | Fire explosion area |
-| Golbat | Poison Fang | Powerful poison slash |
-| Vileplume | Petal Blizzard | Grass petal vortex |
-| Alakazam | Psychic | Piercing psychic beam |
-| Golem | Rock Slide | Rock impact area |
-| Gengar | Shadow Ball | Ghost explosion area |
-| Vaporeon | Muddy Water | Water cone |
-| Dragonite | Dragon Pulse | Piercing dragon beam |
+At every 25th cleared non-final round, an independent premium opportunity is banked. Click PREMIUM TRADES, choose Pokémon or upgrade, select the exact existing slot/card to replace, and choose one of three stronger replacements. Later/Escape preserves the trade; Cancel skips only that opportunity without changing the party or upgrades. Combat and Auto continue during the trade.
 
-Primary targets receive the move's power multiplier (2.16–3.42× depending on move). Beam/cone collateral gets 70% of that damage, blast/vortex/quake collateral 65%, and volley secondary targets 65%. Chain lightning jumps within 140 units, at 100%, 80%, and 64% damage. Blast radius is 75 units, vortex 95, quake 115, and volley secondary target radius 120. Beam half-width is 23; cones expand with distance. Signature visual effects retain their real-time duration at 5× speed for readability, while damage, cooldowns, projectiles and movement all follow game speed.
+Pokémon replacements are fully evolved regional partners and include a randomly selected available legendary/mythical when possible. Duplicate party members and battle-only finale transformations are excluded. Buff replacements are +50% global damage, +80% matching type/stage damage, +40 armor points, or +200 max HP with 250 HP healing. An upgrade trade removes exactly one existing buff copy. Removing health/armor reverses that card's accumulated tower-growth contribution while preserving other milestones.
 
-Open **? > Final evolution move guide** to preview all 81 final-form attacks without changing your current team or run.
+## Data and regeneration
 
+Bundled data comes from the official PokéAPI repository's CSV snapshots and sprite repository. Selecting a region loads its local JSON immediately; the browser refreshes stats/types through PokéAPI with a seven-day local cache and three concurrent requests. Failed requests preserve bundled data. No custom backend or account is required.
 
-## Version 03 — stacking, full Kanto, and stronger evolutions
+To regenerate the source snapshot (Python 3 and curl required):
 
-- The party's UPGRADES button opens a popup of every collected reward grouped by stack count, category totals, and effective damage multipliers for each current partner. Opening it pauses active combat; resume using the pause control.
-- Each party slot displays its buff damage multiplier. GLOBAL in the tower bar refers only to universal damage; type/stage multipliers are shown per partner and in the popup.
-- Repeated damage cards and different applicable damage cards multiply. A stage bonus applies only to the current evolution stage; type bonuses apply to both current Pokémon types. Evolving does not reset any collected upgrade.
-- Every one of the 81 Kanto-final Pokémon has a signature profile, including single-stage Pokémon. Existing signature damage is 80% higher than version 02, and final forms have 20% shorter attack cooldowns (25% faster attack rate). This is roughly 2.25× previous signature DPS before buffs and stats. Minimum cooldown is 0.28 seconds.
-- New type coverage includes fighting, ice, fairy, and steel, using PokéAPI's current types. Generic final-form move profiles are adapted by primary type, with species overrides for starters, Eeveelutions, legendaries and others.
-- 18 tests cover repeated buff copies, dual typing, evolution preservation, all 151 IDs and sprites, reachability of every species, branch choices, stronger final forms, progression gates and attack geometry/rendering.
+```sh
+python3 scripts/fetch-region-sources.py
+python3 scripts/make-regions.py
+python3 scripts/build-regional-data.py
+npm run build
+```
 
+- public/regions.js and assets/regions.json: region settings, regional dex membership, starters and boss schedules.
+- assets/regions/*.json: per-region stats, types, evolution graphs and form metadata.
+- assets/all-pokemon.json: shared data reference used by automated checks.
+- scripts/pokeapi-csv/: official PokéAPI metadata snapshots.
+- scripts/trainer-rosters.json and make-regions.py: chosen trainer-roster facts and campaign definitions.
+- scripts/fetch-data.py: retained legacy Kanto-only fetcher; use the regional commands above for this version.
 
-## Version 04 — campaign, Auto, growth, and premium trades
+Sources:
+- https://github.com/PokeAPI/pokeapi/tree/master/data/v2/csv
+- https://github.com/PokeAPI/sprites
+- https://pokeapi.co/docs/v2
+- https://pokemondb.net/red-blue/gymleaders-elitefour
+- https://pokemondb.net/gold-silver/gymleaders-elitefour
+- https://pokemondb.net/ruby-sapphire/gymleaders-elitefour
+- https://pokemondb.net/platinum/gymleaders-elitefour
+- https://pokemondb.net/black-white-2/gymleaders-elitefour
+- https://pokemondb.net/x-y/gymleaders-elitefour
+- https://pokemondb.net/scarlet-violet/gymleaders-elitefour
+- https://www.serebii.net/swordshield/gyms.shtml
+- https://www.serebii.net/swordshield/championcup.shtml
 
-AUTO ON starts the next wave immediately, with no countdown and no requirement to spend rewards. Each cleared round banks its own three-card reward set. Choices can be claimed during combat and apply immediately without resetting the current wave, enemies, or attack timers. Rewards are presented oldest first, one choice per earned set. Auto never picks cards on the player's behalf. Manual pause, help/inventory pause, hidden tabs, game over, and victory are still respected. Auto preference stays enabled between expeditions; speed resets to 1×.
+## Validation
 
-After each cleared round divisible by 10, attack range and maximum tower HP multiply by 1.05. Current HP gains the new maximum-HP capacity (no full heal). Effective armor multiplies by 1.05: `1 + armor` becomes `(1 + armor) * 1.05`, so this works even at zero initial armor. Growth occurs once per milestone, compounds, and appears in the sidebar and upgrade inventory. Attack range has no gameplay cap; its illustrated ring is clipped to the battlefield.
+Run `npm test` for **59 checks**. They cover all eight regional starters/endings, exact round caps, all 113 boss encounters, requested special-form IDs and stats, all 968 local sprite files, regional roster isolation, evolution links, regional forms, region switching and best-record isolation, reward stacking, Auto flow, premium swaps, batch sizes, attack rendering and story completion with banked choices. Controller tests use an in-memory DOM; they do not constitute eight complete 150-round playthroughs. Long-run balance remains an iterative playtesting task.
 
-Boss rounds replace the normal enemy wave. Their teams arrive 0.85 seconds apart through round 50, then in balanced groups of approximately 20% from round 51 onward around the tower, have a gold aura and trainer banner, and remain near the tower to attack every 1.6 seconds until defeated. Clearing a boss requires defeating the entire roster. Teams use Pokémon Red/Blue rosters (https://pokemondb.net/red-blue/gymleaders-elitefour); Blue's party counters the player's original starter even if that starter was evolved or traded.
-
-| Round | Encounter |
-| --- | --- |
-| 15 | Brock — Geodude, Onix |
-| 30 | Misty — Staryu, Starmie |
-| 45 | Lt. Surge — Voltorb, Pikachu, Raichu |
-| 60 | Erika — Victreebel, Tangela, Vileplume |
-| 75 | Koga — Koffing, Koffing, Muk, Weezing |
-| 90 | Sabrina — Kadabra, Mr. Mime, Venomoth, Alakazam |
-| 105 | Blaine — Growlithe, Ponyta, Rapidash, Arcanine |
-| 120 | Giovanni — Rhyhorn, Dugtrio, Nidoqueen, Nidoking, Rhydon |
-| 125 | Lorelei |
-| 130 | Bruno |
-| 135 | Agatha |
-| 140 | Lance |
-| 145 | Champion Blue |
-| 150 | Mewtwo |
-| 151 | Mew — final encounter and campaign victory |
-
-Boss HP, physical/special defense, and tower impact multiply the ordinary same-round stats by 1.25 for gyms, 1.45 for Elite Four, 1.6 for Blue, 4 for Mewtwo, and 8 for Mew. Mew's resulting HP, defenses, and damage exceed Mewtwo's. Boss speed uses the ordinary base-stat formula. The boss schedule is viewable in the field guide.
-
-At rounds 25, 50, 75, 100, 125 and 150, an optional premium trade is banked independently of the normal reward. Choose a category, select the exact party slot or collected upgrade instance to replace, then choose one of three generated replacements. The PREMIUM TRADES button opens the oldest banked trade. Opening it does not pause combat or prevent Auto from starting another wave. Later or Escape closes the dialog and keeps that opportunity banked; Cancel skips that opportunity and keeps the party/upgrades unchanged. Offers are generated once per category at that trading post; switching targets does not reroll them. A Pokémon offer that has become owned while banked is replaced with an eligible choice.
-
-- Pokémon trades offer three distinct Kanto-final partners not already in the party, including one randomly selected available legendary (Articuno, Zapdos, Moltres, Mewtwo, or Mew). If every legendary is already owned, the third slot falls back to another eligible final form. Party size and all collected type/stage/global buffs are preserved.
-- Upgrade trades offer only premium buffs: +50% universal damage, +80% matching type/stage damage, +40 armor points, or +200 maximum HP and a 250 HP restoration. Replace exactly one existing buff instance, including one copy out of a repeated stack. Recruits and evolutions are not eligible upgrade targets.
-- Removing a health or armor card reverses its accumulated growth contribution while preserving unrelated tower growth. Historical healing is not reversed; current HP is capped at the reduced maximum before applying the replacement.
-- The round-150 trade is earned after defeating Mewtwo; in Auto mode Mew begins immediately, and the trade can be used during that encounter. Round 151 ends at the Hall of Fame, with no round 152.
-
-`tests/campaign.test.mjs` checks the exact schedule, all boss rosters, relative boss stats, growth, Auto guards, premium pools, one-for-one swaps and reversal of grown bonuses. `tests/flow.test.mjs` runs the actual app controller against an in-memory DOM stub to check Auto transitions, the banked round-25 trade/cancel, bosses attacking repeatedly, and round-151 victory. This validates flow and calculations; full 151-round balance still requires playtesting.
-
-
-## Version 05 — uninterrupted Auto and banked decisions
-
-- Auto has no inter-wave timer. Starter selection begins round 1 immediately; clearing a round banks its reward and starts the next round within the same game update.
-- The reward bank displays how many three-card sets remain. Select a card with a click or keys 1/2/3 whenever ready, including during a boss fight. Only that reward set is consumed; the next set appears and keeps its original choices.
-- Banked cards are revalidated after party changes. If an evolution target no longer exists, or recruitment would duplicate a partner or exceed six slots, that invalid choice is replaced by a standard universal/health/armor buff. Other saved choices are preserved.
-- Premium trades accumulate separately and can be used mid-wave. Resolving, skipping, or deferring one does not reset the wave, pause combat, or discard other saved opportunities. Later/Escape preserves the trade; Cancel skips only that one opportunity.
-- Switching Auto off mid-wave lets that wave finish, then waits for outstanding normal rewards in manual mode. Switching Auto on at a reward screen starts the next wave immediately while keeping all banked sets.
-- A new expedition clears the queues. As before, browser reload does not preserve the active run.
-
-37 tests pass, including consecutive queued rewards, mid-combat application without enemy resets, instant Auto advancement, queued premium trades while their dialog is open, deferred/canceled trades, stale card recovery, and manual/Auto switching.
-
-
-## Version 05.1 — instant late-wave spawning
-
-Superseded by Version 06: rounds 51 onward now spawn in 20% batches rather than all at once.
-
-
-## Version 06 — Story-based mode, 20% batches, and a dedicated ending
-
-The mode is explicitly named **Story-based** in the header and completion screen. It is a finite 151-round story. Defeating Mew opens a Hall of Fame ending screen with rounds cleared, Pokémon defeated, upgrades kept, final tower HP, and the champion party. New story resets the run and reward/trade queues; Review expedition closes the ending while keeping the completed run. Auto stops, and startWave explicitly blocks any attempt to create round 152, even if a ready-state control is activated. The ending takes priority over banked choices, so saved rewards cannot hide the completion screen.
-
-From round 51 onward, regular levels and boss teams arrive in five balanced groups, roughly 20% each. Each group's members spawn together; groups start at 0, 3, 6, 9, and 12 game seconds. Thus 150 Pokémon arrive as five groups of 30. Uneven totals are divided as evenly as possible with no missing Pokémon. Teams with fewer than five members use fewer groups: a three-Pokémon boss sends one at 0, 3, and 6 seconds, while Mewtwo and Mew remain solo encounters. The group indicator is shown on the battlefield. Earlier rounds retain their existing timing. Auto and its reward/trade bank remain uninterrupted.
-
-41 tests pass, including batch sizes across totals 1–500, the round-50/51 boundary, grouped boss spawning, and completion with banked choices. The real ending handler's layout and Review action were additionally checked in-browser using a temporary visual QA scenario, not a full 151-round playthrough. Temporary QA pages/scripts are excluded from the deliverable.
+The project uses a bundled VT323 pixel font with its SIL Open Font License in assets. Pokémon and character names are trademarks of Nintendo, Game Freak and Creatures. This is an unofficial fan prototype, unaffiliated with those companies.
