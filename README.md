@@ -1,4 +1,4 @@
-# Poké Bastion — Version 07
+# Poké Bastion — Version 08
 
 A browser tower-defense roguelike with eight **Story-based** regional campaigns. Choose a region when the game opens, then select one of its three starters. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
 
@@ -130,3 +130,11 @@ Sources:
 Run `npm test` for **59 checks**. They cover all eight regional starters/endings, exact round caps, all 113 boss encounters, requested special-form IDs and stats, all 968 local sprite files, regional roster isolation, evolution links, regional forms, region switching and best-record isolation, reward stacking, Auto flow, premium swaps, batch sizes, attack rendering and story completion with banked choices. Controller tests use an in-memory DOM; they do not constitute eight complete 150-round playthroughs. Long-run balance remains an iterative playtesting task.
 
 The project uses a bundled VT323 pixel font with its SIL Open Font License in assets. Pokémon and character names are trademarks of Nintendo, Game Freak and Creatures. This is an unofficial fan prototype, unaffiliated with those companies.
+
+## Version 0.8.0 patch
+
+Apply Poke_Bastion_V8_Patch.zip over the Version 0.7.0 project root, preserving its public/, tests/, and dist/ paths; allow file replacements. No sprite or regional data download is needed. Render rebuilds dist from public with npm run build. For direct static uploads, updated dist files are included. Reload the browser after deploying.
+
+Every reward earned after round 50 guarantees at least one advanced tactic. Previously banked rewards retain their original choices. Split Volley adds one target per copy, dividing each attack's damage by the total target capacity even if fewer targets exist. Signature attacks retain their normal geometry for each selected target; overlapping areas can hit the same enemy. Other tactics grant shorter cooldowns, longer range, temporary movement slows (bosses resist half), defense penetration, bonus damage below 35% HP, and capped tower healing on defeats. Repeated copies stack, inventory displays their combined effects, and premium trades can replace or grant tactics. Premium tactic cards grant two stacks, excluding Split Volley. Slows refresh, rather than extending or multiplying themselves on each hit; slow copies multiply their movement reduction.
+
+All bosses in all regions gain 20% HP, physical defense, special defense, movement speed, and impact damage relative to Version 0.7.0. Existing wave scaling and tier boosts remain. These separate increases together raise combat difficulty by more than 20% overall; full campaign balance still needs playtesting.

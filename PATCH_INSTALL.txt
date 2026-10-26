@@ -1,0 +1,24 @@
+Poké Bastion 0.8.0 patch — requires 0.7.0
+
+Open your existing poke-bastion project folder (the folder containing package.json).
+Copy the contents of this ZIP directly into that folder. Merge folders and replace matching files. Do not replace the entire public or dist folder, since unchanged assets are not included.
+
+Commit/push the updated project to Render. Build command remains npm run build; publish directory remains dist. Direct static uploads can instead use the included updated dist files. Reload the browser after deploying.
+
+This is a patch only: no Pokémon images or regional rosters are duplicated.
+
+Changed files:
+README.md
+dist/app.js
+dist/campaign.js
+dist/engine.js
+dist/index.html
+package.json
+public/app.js
+public/campaign.js
+public/engine.js
+public/index.html
+tests/flow.test.mjs
+tests/tactics.test.mjs
+
+Validation: 66 automated checks passed. Full campaign balance and browser visual checks were not run for this patch.
