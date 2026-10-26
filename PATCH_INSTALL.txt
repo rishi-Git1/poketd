@@ -1,11 +1,12 @@
-POKE BASTION VERSION 16 — GIGANTAMAX PATCH
-Apply over Version 15. This ZIP contains only changed/new files, not the full game.
-1. Extract this ZIP.
-2. Copy its contents into the existing project folder containing package.json.
-3. Merge the public, dist, scripts and tests folders; replace matching files.
-4. Keep existing assets and all other files not included here.
-5. Redeploy on Render (npm run build; publish dist), then hard-refresh the browser.
+POKE BASTION VERSION 17 — REGIONAL MAPS PATCH
+Apply over Version 16. This ZIP contains only changed/new files.
+1. Extract the ZIP into the existing project folder containing package.json.
+2. Merge the public, dist and tests folders; replace matching files.
+3. Keep all other project files and existing assets.
+4. Redeploy on Render (npm run build; publish dist), then hard-refresh.
 
-Galar: Max Mushrooms enter regular reward rolls from round 25 when a partner has a genuine Gigantamax form. Select the card, then an eligible partner. Cancel keeps the reward banked and Auto/combat continue. Each partner can Gigantamax only once, gains 25% personal damage and a G-Max signature, and keeps its evolution stage and total damage. Gigantamax permanently prevents evolution, including Pikachu, Eevee and Meowth. Banked invalid evolution cards are replaced automatically. Eternatus and Eternamax are never eligible. Galarian Meowth cannot become ordinary Gigantamax Meowth. All 34 G-Max forms/32 species are bundled locally. Other regional transformation rules remain.
+Battlefields: Kanto — Indigo Plateau; Johto — Mt. Silver; Hoenn — Sky Pillar; Sinnoh — Spear Pillar; Unova — Dragonspiral Tower; Kalos — Lumiose City; Galar — Wild Area; Paldea — Area Zero.
 
-Validation: 128 automated checks passed, production build passed, and browser picker/party checks completed. See README.md for details.
+Each map has matching terrain, paths, tower/flag and scenery colors, plus a regional interface palette. Distinct scenery includes snow, ancient pillars, spiral stonework, city lamps, a pond and crystals. Names appear on the battlefield header and region picker. Gameplay rules and balance are unchanged.
+
+Validation: 128 tests passed; production build passed; eight-map label/render smoke check passed; all eight maps inspected in the browser; clean installation over Version 16 checked.

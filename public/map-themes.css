@@ -1,0 +1,23 @@
+/* Region palettes keep the same cartridge UI and readable cream panels. */
+body[data-region="kanto"]{--map-bg:#c9ccdf;--map-check:#bdc1d7;--map-accent:#485982;--map-soft:#e1e1ee;--map-panel:#f4efdf;--map-edge:#8b92b0;--map-muted:#485677}
+body[data-region="johto"]{--map-bg:#d5e1e8;--map-check:#c5d4de;--map-accent:#45637d;--map-soft:#e0eaf0;--map-panel:#f3f6ef;--map-edge:#8da6b6;--map-muted:#4c6576}
+body[data-region="hoenn"]{--map-bg:#c0d8cc;--map-check:#aecdbf;--map-accent:#2f6968;--map-soft:#d6e5cf;--map-panel:#f4f0d9;--map-edge:#7caa99;--map-muted:#416c60}
+body[data-region="sinnoh"]{--map-bg:#d0cadf;--map-check:#c3bbd5;--map-accent:#605378;--map-soft:#e3daed;--map-panel:#f4edf1;--map-edge:#a297b6;--map-muted:#625275}
+body[data-region="unova"]{--map-bg:#cdd2b4;--map-check:#bfc5a2;--map-accent:#586248;--map-soft:#dfe1c2;--map-panel:#f3ebd2;--map-edge:#969b76;--map-muted:#5a6248}
+body[data-region="kalos"]{--map-bg:#ded6c7;--map-check:#d0c7b7;--map-accent:#646078;--map-soft:#e8dfcb;--map-panel:#fff3dc;--map-edge:#a99a87;--map-muted:#686075}
+body[data-region="galar"]{--map-bg:#d0dfca;--map-check:#c0d2b9;--map-accent:#3d6b58;--map-soft:#deead1;--map-panel:#f7f0d8;--map-edge:#8fa78a;--map-muted:#49694e}
+body[data-region="paldea"]{--map-bg:#c3ded8;--map-check:#b1d1cf;--map-accent:#426b7b;--map-soft:#d8e9df;--map-panel:#f0f4e7;--map-edge:#89aeb1;--map-muted:#486d78}
+body[data-region]{--red:var(--map-accent);--blue:var(--map-accent);background-color:var(--map-bg);background-image:linear-gradient(45deg,var(--map-check) 25%,transparent 25%,transparent 75%,var(--map-check) 75%),linear-gradient(45deg,var(--map-check) 25%,transparent 25%,transparent 75%,var(--map-check) 75%)}
+body[data-region] header{box-shadow:inset 0 -5px #23334c50}body[data-region] .alpha{background:#23334c50;border-color:#23334c80}
+body[data-region] .battle-top{background:var(--map-accent)}body[data-region] .eyebrow,body[data-region] footer{color:var(--map-muted)}
+body[data-region] aside,body[data-region] .draft-section,body[data-region] .best,body[data-region] dialog{background:var(--map-panel)}
+body[data-region] aside,body[data-region] .draft-section,body[data-region] .best{box-shadow:4px 4px var(--map-edge)}
+body[data-region] .tower-bar,body[data-region] .tip,body[data-region] #wave-action,body[data-region] .upgrade-partner{background:var(--map-soft)}
+body[data-region] .tip,body[data-region] #wave-action,body[data-region] .upgrade-partner{border-color:var(--map-edge)}
+body[data-region] .battle-dialogue{background:var(--map-panel);box-shadow:inset 0 0 0 3px var(--map-edge)}
+body[data-region] .party-slot{background:var(--map-soft);border-color:var(--map-edge)}body[data-region] .party-slot.filled{background:var(--map-panel)}
+body[data-region] .card{background:var(--map-panel);box-shadow:3px 3px var(--map-edge)}body[data-region] #start,body[data-region] .primary{background:var(--map-accent)}
+body[data-region] .wave-chip{background:var(--map-panel);border-color:var(--map-accent);color:var(--ink)}
+body[data-region] .arena-bottom{color:#fffbea;text-shadow:1px 1px #23334c,0 1px 3px #23334c}
+body[data-region] #arena-caption>span{color:var(--ink);background:var(--map-panel);border-color:var(--map-accent)}
+body[data-region] #arena-caption p{color:var(--ink);text-shadow:1px 1px var(--map-panel)}

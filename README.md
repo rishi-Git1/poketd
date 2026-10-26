@@ -242,3 +242,23 @@ Gigantamax retains the partner's evolution stage, native type buffs and accumula
 Validation: **128 automated checks passed**, plus a production build and browser picker checks for eligible targets, Pikachu/Eevee transformation, one-time use, signature move names, retained stages and the visible evolution-lock labels. New coverage checks all 34 local form sprites, exact alternate-form mapping, Galar-only reward gates, Eternatus exclusion, no raw-form recruitment, master-roll preservation, direct/stale evolution rejection, and mid-combat application without resetting damage or pausing Auto. Long-run balance remains subject to playtesting.
 
 Form and sprite data: https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/pokemon.csv ; https://github.com/PokeAPI/sprites . Gigantamax and G-Max move reference: https://swordshield.pokemon.com/en-us/gameplay/gigantamax/ . Form-specific move areas and damage are custom game adaptations; Max Mushrooms also work on Melmetal in this game.
+
+
+## Version 0.17.0 — Named regional battlefields
+
+Apply this changed-files patch over Version 16, merge its folders, replace matching files, redeploy on Render, then hard-refresh. No new sprites or dependencies are required.
+
+| Region | Battlefield | Palette and scenery |
+| --- | --- | --- |
+| Kanto | Indigo Plateau | Indigo stone, pale gold paths, a ceremonial ring and blue-green trees |
+| Johto | Mt. Silver | Snowy blue-gray terrain, white drifts and frosted trees |
+| Hoenn | Sky Pillar | Jade tiles, turquoise surroundings, pale columns and terrace markings |
+| Sinnoh | Spear Pillar | Violet-gray ruins, broken columns and pale pink sigils |
+| Unova | Dragonspiral Tower | Moss green and weathered gold stone, spiral markings and ruined columns |
+| Kalos | Lumiose City | Warm cream paving, slate streets, a roundabout, lamps and planters |
+| Galar | Wild Area | Muted green grass, ochre trails, blue water and woodland |
+| Paldea | Area Zero | Teal terrain, pale luminous paths and lavender/cyan crystal formations |
+
+Names appear on the battlefield header and each region-selection card. Terrain, paths, stonework, foliage, tower and flag use regional palettes. Page background, header, battlefield title strip, party panels, reward panels and dialogs follow the selected region. The move-guide canvas uses the current map's colors too. Scenery remains decorative; spawn positions, range, targeting, wave timing, bosses and balance retain their existing rules.
+
+Validation: all 128 automated checks passed; production build passed; all eight names, selector labels and canvas renderers were checked in a smoke run; every regional map was inspected in the browser. Clean installation over Version 16 was checked before delivery.
