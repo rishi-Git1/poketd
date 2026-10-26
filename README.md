@@ -127,7 +127,7 @@ Sources:
 
 ## Validation
 
-Run `npm test` for **128 checks**. They cover all eight regional starters/endings, exact round caps, all 113 boss encounters, requested special-form IDs and stats, all 1087 local sprite files, regional roster isolation, evolution links, regional forms, region switching and best-record isolation, reward stacking, Auto flow, premium swaps, batch sizes, attack rendering and story completion with banked choices. Controller tests use an in-memory DOM; they do not constitute eight complete 150-round playthroughs. Long-run balance remains an iterative playtesting task.
+Run `npm test` for **130 checks**. They cover all eight regional starters/endings, exact round caps, all 113 boss encounters, requested special-form IDs and stats, all 1087 local sprite files, regional roster isolation, evolution links, regional forms, region switching and best-record isolation, reward stacking, Auto flow, premium swaps, batch sizes, attack rendering and story completion with banked choices. Controller tests use an in-memory DOM; they do not constitute eight complete 150-round playthroughs. Long-run balance remains an iterative playtesting task.
 
 The project uses a bundled VT323 pixel font with its SIL Open Font License in assets. Pokémon and character names are trademarks of Nintendo, Game Freak and Creatures. This is an unofficial fan prototype, unaffiliated with those companies.
 
@@ -271,3 +271,14 @@ Apply this changed-files patch over Version 17, merge folders and replace matchi
 Area Zero scenery now takes its colors and faceting from the bundled Stellar Terapagos sprite: bright blue lattice, rainbow hexagonal gem plates, pale glass faces and small etched markings. Eleven individually arranged formations use five silhouettes: crowned shell-like geodes, tall leaning prisms, blade fans, gem rosettes and broad honeycomb outcrops. Scales, angles, gem colors and heights vary without randomizing between frames. Formations sit around the perimeter to keep the central team readable. These are procedural canvas decorations; no new images or dependencies are needed.
 
 Validation: renderer smoke checks, production build and browser visual review. No gameplay rules were changed.
+
+
+## Version 0.19.0 — Crystal delivery and asset-cache repair
+
+Apply this cumulative repair patch over Version 17 or Version 18, merging folders and replacing matching files. It includes the full Stellar crystal renderer and prebuilt assets. Keep all other existing assets. Redeploy the updated project with `npm run build` and publish `dist`. The page header should read **VERSION 19**; a lower version means the new page has not loaded.
+
+The earlier screenshot showed the Version 17 crystal renderer. Its exact deployment/cache cause could not be established from the image alone. The build now names each JavaScript/CSS file with a content hash, rewrites local module dependencies to their matching hashed filenames, then points the HTML to the new assets. A change to map contents changes both the map URL and its importing entry script URL. Unchanged assets retain their hashes. A build-assets.json file records the version and mapping. Stable source filenames remain in public for editing; the source HTML and map import also carry a version query for direct-public hosting. Missing imported assets fail the build.
+
+Area Zero retains the Version 18 rainbow hexagonal shell facets and eleven diverse crystal formations. No additional gameplay rules were changed.
+
+Validation: **130 automated checks passed**, including dependency-hash propagation, unchanged-build stability and missing-asset rejection; production build passed. The shipped HTML-to-entry-to-map chain was inspected for the actual Stellar renderer, then the production output was checked in the browser. This patch was applied and rebuilt independently over both Version 17 and Version 18 before delivery.

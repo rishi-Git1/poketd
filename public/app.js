@@ -1,4 +1,4 @@
-import {mapFor,drawMap,drawBastion} from './maps.js';
+import {mapFor,drawMap,drawBastion} from './maps.js?v=19';
 import {regionalCards,isTransformation,transformationOptions,applyTransformation,regionalImpact,ordinaryStellar,canEvolve} from './transformations.js';
 import {REGIONS,getRegion} from './regions.js';
 import {bossFor,nextBoss,campaignPlan,applyTowerGrowth,canAutoAdvance,isBuff,premiumOffers,commitSwap,BOSSES,initTrade,rerollTrade,commitTradeChoice} from './campaign.js';
