@@ -1,4 +1,4 @@
-# Poké Bastion — Version 10
+# Poké Bastion — Version 11
 
 A browser tower-defense roguelike with eight **Story-based** regional campaigns. Choose a region when the game opens, then select one of its three starters. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
 
@@ -150,3 +150,9 @@ Apply after Version 0.9.0. The pause shade no longer blocks battle controls; cli
 From round 51, keep the five balanced 20% groups, but release the next group only when at most one living enemy remains. A single-Pokémon group must be defeated before the next is released, so small boss teams do not all arrive immediately. Time and 5x speed cannot bypass this condition. Early-round staggered spawns and Auto reward banking stay unchanged.
 
 On tower defeat, combat stops and region selection opens immediately with You Whited Out! and the lost round. It cannot return to the defeated story; choosing any region starts a fresh run. Regional best records remain.
+
+## Version 0.11.0 party damage tracker
+
+Apply after Version 10. SHOW TOTAL DAMAGE by the party changes all six party rows from buff multipliers to live cumulative damage; SHOW MULTIPLIERS switches back. Damage is tracked in both views, over the entire current expedition, and updates without rebuilding the party on every hit. Large values use compact notation; hover a value for the full rounded total.
+
+Totals count actual enemy HP removed after defenses, immunities, finishing bonuses, split damage and area/chain falloff; overkill is excluded. Basic projectiles and every signature hit credit the attacker. Evolution retains a partner's total. A swapped-in partner begins at zero; projectiles already in flight remain credited to the original partner. New expeditions reset all totals. No damage or balance formulas are changed.

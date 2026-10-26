@@ -1,24 +1,24 @@
-Poké Bastion Version 10 — Pause, pacing, and White Out
+Poké Bastion Version 11 — Live party damage totals
 
-Requires Version 9 (including the Version 8 upgrade patch). Copy these ZIP contents into the existing project folder containing package.json. Merge folders and overwrite matching files; preserve all other files.
+Requires Version 10 with prior patches applied. Merge these contents into the existing project folder containing package.json. Replace matching files and preserve all other files. Push updated files to Render; rebuild using npm run build. Hard-refresh after deployment. Updated dist files are included for direct static hosts.
 
-Render: push the changed files and rebuild with npm run build. Hard-refresh after deployment. Updated dist files are included for direct static uploads.
+SHOW TOTAL DAMAGE under YOUR PARTY switches all party rows to cumulative damage. SHOW MULTIPLIERS switches back. Both views keep tracking damage over the current expedition. Large values are abbreviated; hover for the full rounded value.
 
-Changes:
-- Pause remains clickable while paused and resumes the battle.
-- After round 50, the next 20% group waits until one enemy remains. Single-enemy boss groups must be defeated first. No timer can bypass this limit.
-- Losing immediately opens region selection with You Whited Out! Choosing a region starts a fresh expedition. Best records remain.
+Counts actual HP removed, excluding overkill. Includes projectile, signature, area, chain, split and finishing damage. Evolution retains totals. New recruits/swapped-in Pokémon begin at zero. In-flight attacks belong to their original attacker. New expeditions reset totals.
 
-Validation: 71 automated checks and build passed; pause/resume verified by mouse in the browser.
+Validation: 77 tests and build passed. Live display verified in browser.
 
 Changed files:
 public/app.js
+public/engine.js
+public/campaign.js
 public/index.html
 public/style.css
 dist/app.js
+dist/engine.js
+dist/campaign.js
 dist/index.html
 dist/style.css
-tests/flow.test.mjs
-tests/pacing-loss.test.mjs
+tests/damage-tracking.test.mjs
 package.json
 README.md
