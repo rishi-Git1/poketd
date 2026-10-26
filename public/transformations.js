@@ -1,7 +1,8 @@
 // Regional forms keep their evolution stage. Data comes from bundled PokéAPI records.
 export const MEGA_REGIONS=['hoenn','kalos'];
 export const TERA_TYPES=['normal','fire','water','grass','electric','ice','fighting','poison','ground','flying','psychic','bug','rock','ghost','dragon','dark','steel','fairy','stellar'];
-export const isTransformation=card=>card?.kind==='mega'||card?.kind==='tera';
+export const isTransformation=card=>['mega','tera','gmax'].includes(card?.kind);
+export const canEvolve=ally=>!ally.evolutionLocked&&!ally.gmaxCount&&!ally.pokemon.gigantamax&&!ally.pokemon.evolutionLocked;
 const species=p=>p.speciesId||p.megaFrom||p.id;
 const maskForms={grass:1017,water:10273,fire:10274,rock:10275};
 const combine=(base,type)=>[...new Set([...base,type])].slice(0,3);
@@ -17,6 +18,9 @@ export function transformationOptions(card,run,roster){
   if(card.kind==='mega'&&MEGA_REGIONS.includes(run.region)&&!ally.megaCount&&!ally.pokemon.mega){
    for(const form of roster.filter(p=>p.mega&&p.megaFrom===(base.speciesId||base.id)))result.push({key:`${slot}:${form.id}`,slot,ally,form,title:form.name,description:`Stage ${ally.pokemon.stage} stays unchanged. One-time Mega Evolution with +25% personal damage.`});
   }
+  if(card.kind==='gmax'&&run.region==='galar'&&species(base)!==890&&!ally.gmaxCount&&!ally.pokemon.gigantamax){
+   for(const form of roster.filter(p=>p.gigantamax&&p.gmaxFrom===base.id&&species(p)!==890))result.push({key:`${slot}:${form.id}`,slot,ally,form,title:form.name,description:`One-time Gigantamax: +25% personal damage and a signature G-Max move. Stage ${ally.pokemon.stage} stays unchanged. Permanent: this partner can never evolve afterward.`});
+  }
   if(card.kind==='tera'&&run.region==='paldea'&&TERA_TYPES.includes(card.type)){
    if(card.type===(ally.teraType||ally.pokemon.teraType))continue;
    const id=species(base);if(id===1017&&!maskForms[card.type]||id===1024&&card.type!=='stellar')continue;
@@ -31,6 +35,7 @@ export function regionalCards(run,roster){
  if(run.wave<25||!run.team.length)return [];
  const candidates=[];
  if(MEGA_REGIONS.includes(run.region))candidates.push({kind:'mega',title:'Mega Evolution',label:'REGIONAL POWER',badge:'HOENN / KALOS',symbol:'◈',accent:'#ba6fc4',description:'Choose an eligible partner and Mega form once. Preserve its stage and damage total; gain ×1.25 personal damage. Already Mega-Evolved partners cannot be selected again.'});
+ if(run.region==='galar')candidates.push({kind:'gmax',title:'Max Mushrooms',label:'GIGANTAMAX',badge:'GALAR POWER',symbol:'♣',accent:'#c95181',description:'Choose a partner with a Gigantamax form. Permanently Gigantamax it once: ×1.25 personal damage and a signature G-Max move. Keeps its stage and damage total. That partner can never evolve afterward. Eternatus is ineligible.'});
  if(run.region==='paldea')for(const type of TERA_TYPES)candidates.push({kind:'tera',type,title:`${type[0].toUpperCase()+type.slice(1)} Tera Crystal`,label:'TERASTALLIZATION',badge:`${type.toUpperCase()} TERA`,symbol:'◆',accent:'#67bdd0',description:type==='stellar'?'Keep native types and gain +20% damage only while Stellar. The bonus ends on another Tera type. Terapagos instead becomes its special Stellar Form. Cannot target an already Stellar partner.':`Choose a partner to add ${type} typing alongside its original types. Grants another ×1.20 personal damage. Replaces its previous Tera type. Partners already Tera ${type} cannot be selected.`});
  return candidates.filter(c=>transformationOptions(c,run,roster).length);
 }
@@ -40,6 +45,9 @@ export function applyTransformation(run,card,key,roster,record){
  if(card.kind==='mega'){
   ally.megaCount=1;
   ally.pokemon={...form,stage:ally.nativePokemon.stage,personalPower:1.25,megaCount:1};
+ }else if(card.kind==='gmax'){
+  ally.gmaxCount=1;ally.evolutionLocked=true;
+  ally.pokemon={...form,stage:ally.nativePokemon.stage,next:null,nextOptions:[],personalPower:1.25,gmaxCount:1,evolutionLocked:true};
  }else{
   ally.teraCount=(ally.teraCount||0)+1;ally.teraType=card.type;
   if(card.type!=='stellar'||species(ally.nativePokemon)===1024)ally.teraPowerCount=(ally.teraPowerCount||0)+1;
@@ -50,6 +58,7 @@ export function applyTransformation(run,card,key,roster,record){
  record(run,{...card,targetName:ally.pokemon.name,targetId:ally.nativePokemon.id,transformation:true});return ally;
 }
 export function evolveAlly(ally,pokemon){
+ if(!canEvolve(ally))return false;
  if(!ally.teraType){ally.pokemon=pokemon;return}
  ally.nativePokemon=pokemon;ally.pokemon=teraPokemon(ally,pokemon);
 }

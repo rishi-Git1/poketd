@@ -1,4 +1,4 @@
-import {evolveAlly,maskDamage} from './transformations.js';
+import {evolveAlly,maskDamage,canEvolve,isTransformation} from './transformations.js';
 import {getRegion} from './regions.js';
 export const TYPES={grass:'#78a857',poison:'#a970b3',fire:'#e9824e',water:'#61a6d4',bug:'#9baa4e',normal:'#afa58c',flying:'#9aafe0',electric:'#d4ad34',ground:'#ba9363',psychic:'#dc81a5',rock:'#a59569',ghost:'#8876ac',dragon:'#8379d3',ice:'#69c4d2',fighting:'#b76045',fairy:'#db91bb',steel:'#8c9fa7',dark:'#6c6084',stellar:'#86cfdf'};
 // Standard type chart, keyed by attacking type. Dual typing multiplies both factors.
@@ -58,6 +58,7 @@ export function tacticSummary(run,kind){const n=tacticStacks(run,kind);return ({
 export function damage(ally,enemy,buffs,attackType=ally.pokemon.types[0]){const p=ally.pokemon;const special=p.stats['special-attack']>p.stats.attack;const atk=Math.max(p.stats.attack,p.stats['special-attack']);const defense=special?enemy.specialDefense??enemy.pokemon.stats['special-defense']*(1+.025*buffs.wave)*openingEase(buffs.wave):enemy.defense;const mult=damageMultiplier(p,buffs);return Math.max(0,(8+atk*.23)*mult*100/(100+defense*.8**tacticStacks(buffs,'pierce'))*(attackType==='stellar'?(enemy.pokemon.teraType?2:1):effectiveness(attackType,enemy.pokemon.types)))}
 export function newRun(region="kanto"){const cfg=getRegion(region);return {region,rounds:cfg.rounds,wave:0,rewardQueue:[],tradeQueue:[],range:335,growthWaves:[],swapWaves:[],starter:1,hp:250,maxHp:250,shield:0,armor:0,offense:0,types:{},stages:{},tactics:{},team:[],kills:0,upgrades:[],upgradeHistory:[],phase:'starter'}}
 export function applyUpgrade(run,card){
+ if(card.kind==='evolve'&&!run.team.some(a=>a.pokemon.id===card.from&&canEvolve(a)))return false;
  if(card.kind==='reach'||ALL_TACTICS.some(c=>c.kind===card.kind)){const amount=card.amount??1;run.tactics[card.kind]=(run.tactics[card.kind]||0)+amount;if(card.kind==='reach')run.range*=1.12**amount;if(card.kind==='shield')run.shield=(run.shield||0)+run.maxHp*.1*amount;}
  if(card.kind==='recruit')run.team.push({pokemon:card.pokemon,cooldown:0,totalDamage:0});
  if(card.kind==='evolve'){const ally=run.team.find(a=>a.pokemon.id===card.from);if(ally)evolveAlly(ally,card.pokemon);}
@@ -111,7 +112,7 @@ export function masterUpgrades(run){
 export function rollMasterCards(cards,run,rng=Math.random){
  if(run.wave<80)return cards;
  const result=[...cards];for(let i=0;i<result.length;i++){
-  const c=result[i];if(['recruit','evolve','mega','tera'].includes(c.kind)||rng()>=.1)continue;
+  const c=result[i];if(['recruit','evolve'].includes(c.kind)||isTransformation(c)||rng()>=.1)continue;
   const candidates=masterUpgrades(run).filter(m=>!result.some((other,j)=>j!==i&&cardKey(m)===cardKey(other))&&(i!==1||!ALL_TACTICS.some(t=>t.kind===c.kind)||ALL_TACTICS.some(t=>t.kind===m.kind)));
   if(candidates.length)result[i]=drawDistinct(candidates,1,run,rng)[0];
  }return result;

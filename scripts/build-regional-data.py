@@ -8,9 +8,18 @@ dex={}
 for d in rows('pokemon_dex_numbers'):dex.setdefault(int(d['pokedex_id']),set()).add(int(d['species_id']))
 regions=json.loads((assets/'regions.json').read_text());allids=set();regionalids={}
 galarforms=[10161,10162,10163,10166,10167,10168,10173,10174,10175,10176,10177,10179,10180]
+gmaxbases={int(p['id']):int(p['species_id']) for p in pokemon.values() if p['identifier'].endswith('-gmax')}
+# Match alternate forms exactly: Galarian Meowth has no Gigantamax form.
+gmaxbases.update({10228:10184,10227:10191})
 for r in regions:
  ids=set().union(*(dex[d] for d in r['dexIds']));r['dexCount']=len(ids)
- if r['id']=='galar':ids.update(galarforms)
+ if r['id']=='galar':
+  ids.update(galarforms);ids.update(gmaxbases);ids.update(gmaxbases.values())
+  # Include DLC/transfer partners and their normal evolution lines so every G-Max is reachable.
+  for base in list(gmaxbases.values()):
+   parent=int(species[int(pokemon[base]['species_id'])]['evolves_from_species_id'] or 0)
+   while parent:
+    ids.add(parent);parent=int(species[parent]['evolves_from_species_id'] or 0)
  if r['id']=='paldea':ids.update([10250,10251,10252,10253,1017,10273,10274,10275,10276])
  if r['id'] in ['hoenn','kalos']:
   ids.update(int(p['id']) for p in pokemon.values() if '-mega' in p['identifier'] and int(p['species_id']) in ids)
@@ -25,13 +34,15 @@ for r in regions:
 records={}
 for id in sorted(allids):
  p=pokemon[id];sp=species[int(p['species_id'])]
- records[id]={'id':id,'speciesId':int(p['species_id']),'name':p['identifier'],'types':[v for _,v in sorted(ptypes[id])],'stats':stats[id],'parentSpecies':int(sp['evolves_from_species_id'] or 0),'legendary':sp['is_legendary']=='1' or sp['is_mythical']=='1','bossOnly':id in [10190,10273,10274,10275,10276,10277] or '-mega' in p['identifier'],'sprite':f'assets/{id}.png','stage':1,'next':None,'nextOptions':[]}
+ records[id]={'id':id,'speciesId':int(p['species_id']),'name':p['identifier'],'types':[v for _,v in sorted(ptypes[id])],'stats':stats[id],'parentSpecies':int(sp['evolves_from_species_id'] or 0),'legendary':sp['is_legendary']=='1' or sp['is_mythical']=='1','bossOnly':id in [10190,10273,10274,10275,10276,10277] or id in gmaxbases or '-mega' in p['identifier'],'sprite':f'assets/{id}.png','stage':1,'next':None,'nextOptions':[]}
 for id,p in records.items():
  if '-mega' in p['name']:
   p['mega']=True;p['megaFrom']=p['speciesId'];p['moveBaseId']=p['speciesId']
  if id in [10273,10274,10275,10276,10277]:p['transformOnly']=True
+ if id in gmaxbases:
+  p.update(gigantamax=True,gmaxFrom=gmaxbases[id],moveBaseId=gmaxbases[id],transformOnly=True,evolutionLocked=True)
 # Form-specific evolution connections; never evolve a normal form into a regional-only child.
-formchildren={10161:[863],10162:[10163],10163:[],10166:[865],10167:[],10168:[866],10173:[864],10174:[10175],10175:[862],10176:[10177],10177:[],10179:[867],10180:[],10250:[],10251:[],10252:[],10253:[980]}
+formchildren={10161:[863],10162:[10163],10163:[],10166:[865],10167:[],10168:[866],10173:[864],10174:[10175],10175:[862],10176:[10177],10177:[],10179:[867],10180:[],10250:[],10251:[],10252:[],10253:[980],848:[849,10184],891:[892,10191],10184:[],10191:[]}
 regionalchildren={863,865,866,864,862,867,980}
 for id,p in records.items():
  if id in formchildren:p['nextOptions']=[n for n in formchildren[id] if n in records]
@@ -58,6 +69,7 @@ for r in regions:
  for p in data:p['stage']=stage(p['id'])
  for p in data:
   if p.get('mega') and p['megaFrom'] in byid:p['stage']=byid[p['megaFrom']]['stage']
+  if p.get('gigantamax') and p['gmaxFrom'] in byid:p['stage']=byid[p['gmaxFrom']]['stage']
   if p['id'] in [10273,10274,10275,10276,10277]:p['stage']=1
   if p['id']==10277:p['teraType']='stellar'
  (assets/'regions'/f"{r['id']}.json").write_text(json.dumps(data,separators=(',',':')))

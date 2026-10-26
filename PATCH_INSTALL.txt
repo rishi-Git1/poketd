@@ -1,24 +1,11 @@
-Poké Bastion Version 15 — Mega and Stellar rules
+POKE BASTION VERSION 16 — GIGANTAMAX PATCH
+Apply over Version 15. This ZIP contains only changed/new files, not the full game.
+1. Extract this ZIP.
+2. Copy its contents into the existing project folder containing package.json.
+3. Merge the public, dist, scripts and tests folders; replace matching files.
+4. Keep existing assets and all other files not included here.
+5. Redeploy on Render (npm run build; publish dist), then hard-refresh the browser.
 
-Requires Version 14. Merge these contents into the existing project root containing package.json. Replace matching files and preserve all others. Push to Render, build with npm run build, and hard-refresh. Updated dist files are included. No new sprites are required.
+Galar: Max Mushrooms enter regular reward rolls from round 25 when a partner has a genuine Gigantamax form. Select the card, then an eligible partner. Cancel keeps the reward banked and Auto/combat continue. Each partner can Gigantamax only once, gains 25% personal damage and a G-Max signature, and keeps its evolution stage and total damage. Gigantamax permanently prevents evolution, including Pikachu, Eevee and Meowth. Banked invalid evolution cards are replaced automatically. Eternatus and Eternamax are never eligible. Galarian Meowth cannot become ordinary Gigantamax Meowth. All 34 G-Max forms/32 species are bundled locally. Other regional transformation rules remain.
 
-- One Mega Evolution per Pokémon. No repeat power-ups or Mega form switching afterward.
-- Ordinary Stellar Tera keeps native types and moves and grants only a temporary 20% damage bonus. Changing to another Tera type removes it. No permanent Stellar power or cooldown stacks.
-- Terapagos retains its special Stellar form/typing, Tera Starstorm and one Teraform Zero charge per round.
-- No Pokémon can choose its currently active Tera type again, including Terapagos and Ogerpon. Other eligible partners remain selectable.
-
-120 automated checks and build passed, including patch installation over Version 14. No browser visual or full campaign balance checks were run for this rules patch.
-
-Changed files:
-README.md
-dist/app.js
-dist/attacks.js
-dist/index.html
-dist/transformations.js
-package.json
-public/app.js
-public/attacks.js
-public/index.html
-public/transformations.js
-tests/form-restrictions.test.mjs
-tests/regional-powers.test.mjs
+Validation: 128 automated checks passed, production build passed, and browser picker/party checks completed. See README.md for details.
