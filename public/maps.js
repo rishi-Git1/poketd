@@ -17,7 +17,49 @@ const stones=Array.from({length:22},()=>({x:rand()*1000,y:rand()*690,r:rand()*5+
 const edgeSpots=[[25,70,1.6],[95,33,1.2],[950,80,1.8],[1010,150,1.7],[30,580,1.5],[0,650,1.7],[910,650,1.6],[987,590,1.7],[130,695,1.3],[800,-5,1.1]];
 function tree(ctx,x,y,s,t){ctx.save();ctx.translate(Math.round(x),Math.round(y));ctx.scale(s,s);ctx.fillStyle=t.foliage[0];ctx.fillRect(-26,19,54,15);ctx.fillStyle=t.stone;ctx.fillRect(-7,0,14,31);ctx.fillStyle=t.foliage[0];ctx.fillRect(-30,-25,60,45);ctx.fillRect(-22,-40,44,20);ctx.fillStyle=t.foliage[1];ctx.fillRect(-26,-25,52,37);ctx.fillRect(-18,-40,36,20);ctx.fillStyle=t.foliage[2];ctx.fillRect(-18,-28,34,24);ctx.fillRect(-10,-39,20,15);ctx.fillStyle=t.foliage[3];ctx.fillRect(-13,-29,18,7);ctx.restore()}
 function column(ctx,x,y,s,t,broken=false){ctx.save();ctx.translate(x,y);ctx.scale(s,s);oval(ctx,0,23,29,10,t.line+'60');ctx.fillStyle=t.stone;ctx.fillRect(-24,14,48,10);ctx.fillRect(-15,-52,30,68);ctx.fillStyle=t.stoneLight;ctx.fillRect(-12,-52,10,65);ctx.fillRect(-23,8,46,8);ctx.fillRect(-21,-61,42,12);ctx.strokeStyle=t.line;ctx.lineWidth=2;for(const dx of [-6,6]){ctx.beginPath();ctx.moveTo(dx,-47);ctx.lineTo(dx,7);ctx.stroke()}if(broken){ctx.fillStyle=t.ground;ctx.fillRect(1,-65,25,29);ctx.fillStyle=t.stone;ctx.fillRect(28,20,16,10)}ctx.restore()}
-function crystal(ctx,x,y,s,t){ctx.save();ctx.translate(x,y);ctx.scale(s,s);oval(ctx,0,18,27,10,t.line+'70');for(const [dx,h,c] of [[-17,29,'#967ac0'],[12,41,'#77d9d9'],[-2,59,'#d2ccf3']]){ctx.fillStyle=c;ctx.beginPath();ctx.moveTo(dx-9,15);ctx.lineTo(dx-8,-h+10);ctx.lineTo(dx,-h);ctx.lineTo(dx+9,-h+12);ctx.lineTo(dx+8,15);ctx.closePath();ctx.fill();ctx.fillStyle='#edfff5';ctx.fillRect(dx-3,-h+14,3,h-4)}ctx.restore()}
+// Stellar shell-inspired blue lattice, rainbow hexagonal plates and glassy facets.
+const stellarColors=['#ff779e','#ffae55','#f5e66b','#70df8b','#57d9ed','#739bff','#ba88ef','#f4a8e0'];
+const crystalSpots=[[65,158,1.35,0],[184,83,.85,3],[760,76,.9,2],[890,155,1.4,1],[967,310,1.1,4],[54,398,.8,2],[65,548,1.35,3],[193,625,1.1,4],[808,605,1.25,0],[938,548,1.4,2],[681,651,.75,1]];
+function facet(ctx,points,color,edge){ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fillStyle=color;ctx.fill();if(edge){ctx.strokeStyle=edge;ctx.lineWidth=1.3;ctx.stroke()}}
+function shellGem(ctx,x,y,r,index){
+ const color=stellarColors[index%stellarColors.length],hex=Array.from({length:6},(_,i)=>[x+Math.cos(i*Math.PI/3-Math.PI/2)*r,y+Math.sin(i*Math.PI/3-Math.PI/2)*r]);
+ facet(ctx,hex,'#a1f5ff','#294f95');facet(ctx,hex.map(([px,py])=>[x+(px-x)*.73,y+(py-y)*.73]),color);
+ facet(ctx,[hex[0],hex[1],[x,y],hex[5]],'#f4ffff88');facet(ctx,[hex[2],hex[3],hex[4],[x,y]],'#3551a63c');
+ ctx.strokeStyle='#31539b';ctx.lineWidth=.9;ctx.beginPath();
+ if(index%3===0){ctx.moveTo(x,y-r*.35);ctx.lineTo(x+r*.24,y);ctx.lineTo(x,y+r*.35);ctx.lineTo(x-r*.24,y);ctx.closePath()}
+ else if(index%3===1){ctx.moveTo(x-r*.25,y-r*.2);ctx.lineTo(x+r*.22,y+r*.2);ctx.moveTo(x+r*.22,y-r*.2);ctx.lineTo(x-r*.25,y+r*.2)}
+ else{ctx.moveTo(x+r*.2,y-r*.35);ctx.lineTo(x-r*.14,y);ctx.lineTo(x+r*.14,y);ctx.lineTo(x-r*.2,y+r*.35)}ctx.stroke();
+}
+function stellarShard(ctx,x,y,w,h,lean,index){
+ ctx.save();ctx.translate(x,y);ctx.rotate(lean);
+ facet(ctx,[[-w,8],[-w,-h*.65],[0,-h],[w,-h*.67],[w,8],[0,16]],'#9eeaf7','#345a9a');
+ facet(ctx,[[0,-h],[-w,-h*.65],[0,-h*.52]],'#f0ffff');facet(ctx,[[0,-h],[w,-h*.67],[0,-h*.52]],'#c5c1ff');
+ facet(ctx,[[-w,-h*.65],[0,-h*.52],[0,16],[-w,8]],'#62cce9');facet(ctx,[[0,-h*.52],[w,-h*.67],[w,8],[0,16]],'#8b9fe4');
+ ctx.strokeStyle='#e5ffff';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(0,-h*.48);ctx.lineTo(0,9);ctx.stroke();
+ shellGem(ctx,0,-h*.24,Math.min(w*.8,h*.17),index);ctx.restore();
+}
+function crystal(ctx,x,y,s,t,variant){
+ ctx.save();ctx.translate(x,y);ctx.scale(s,s);oval(ctx,0,20,variant===4?43:37,11,t.line+'60');
+ if(variant===0||variant===4){
+  // Low shell-like geodes, with a crown or a wide honeycomb of gem plates.
+  facet(ctx,[[-43,11],[-34,-14],[0,-29],[34,-14],[43,11],[0,29]],'#436fb9','#294f95');
+  facet(ctx,[[-34,-14],[0,-29],[34,-14],[0,2]],'#b2f4f7');facet(ctx,[[-43,11],[0,2],[0,29]],'#568fd0');facet(ctx,[[0,2],[43,11],[0,29]],'#3e72b0');
+  if(variant===0){stellarShard(ctx,-19,-18,9,37,-.25,4);stellarShard(ctx,4,-24,11,52,.08,6);stellarShard(ctx,24,-15,8,32,.36,0)}
+  const plates=variant===0?[[-28,5],[-10,13],[10,13],[28,5]]:[[-27,-3],[-9,-13],[10,-13],[28,-3],[-18,15],[2,10],[20,15]];
+  plates.forEach(([gx,gy],i)=>shellGem(ctx,gx,gy,variant===0?10:11,i+variant));
+ }else if(variant===1){
+  stellarShard(ctx,-18,7,10,43,-.4,1);stellarShard(ctx,9,1,17,84,.13,3);stellarShard(ctx,29,13,8,37,.52,7);shellGem(ctx,-4,15,12,0);
+ }else if(variant===2){
+  // A fan of differently angled rainbow-faced blades.
+  for(const [dx,dy,w,h,lean,i] of [[-23,10,8,39,-.65,0],[18,11,9,47,.6,6],[-12,4,10,58,-.3,2],[5,0,12,68,.16,4]])stellarShard(ctx,dx,dy,w,h,lean,i);
+ }else{
+  // A squat rosette exposes more of the multicolored shell mosaic.
+  facet(ctx,[[-33,8],[-24,-18],[0,-31],[28,-15],[39,12],[0,30]],'#68a3d4','#345a9a');
+  for(let i=0;i<6;i++){const a=i*Math.PI/3;shellGem(ctx,Math.cos(a)*22,Math.sin(a)*18-2,12,i+1)}shellGem(ctx,0,-2,13,0);stellarShard(ctx,6,-24,7,24,-.12,4);
+ }
+ // Fixed highlights keep the landscape steady between frames.
+ ctx.fillStyle='#ecffff';ctx.fillRect(-35,-20,3,3);ctx.fillRect(34,-5,2,2);ctx.restore();
+}
 function lamp(ctx,x,y,s,t){ctx.save();ctx.translate(x,y);ctx.scale(s,s);oval(ctx,0,16,18,6,t.line+'80');ctx.fillStyle=t.line;ctx.fillRect(-3,-58,6,73);ctx.fillRect(-12,12,24,5);ctx.fillRect(-11,-65,22,26);ctx.fillStyle='#ffe4a0';ctx.fillRect(-7,-61,14,18);ctx.fillStyle=t.line;ctx.fillRect(-3,-69,6,31);ctx.fillRect(-14,-68,28,5);ctx.restore()}
 export function drawMap(ctx,region,range=335){
  const t=mapFor(region);ctx.save();ctx.fillStyle=t.ground;ctx.fillRect(0,0,1000,690);oval(ctx,500,350,372,244,t.clearing);
@@ -30,7 +72,8 @@ export function drawMap(ctx,region,range=335){
  for(const q of stones){if(Math.hypot(q.x-500,q.y-345)<160)continue;oval(ctx,q.x,q.y,q.r,q.r*.5,t.stone);oval(ctx,q.x-1,q.y-2,q.r*.8,q.r*.4,t.stoneLight)}
  if(t.motif==='snow'){for(const [x,y] of [[100,180],[810,195],[140,540],[825,560]]){oval(ctx,x,y,75,22,'#e9f3f4');oval(ctx,x+21,y-6,39,13,'#f8fdfb')}}
  if(t.motif==='wild'){oval(ctx,850,165,88,43,'#4e8f9d');oval(ctx,850,161,72,32,'#77b7bd');ctx.strokeStyle='#bfd7c2';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(850,161,55,21,0,.2,2.8);ctx.stroke()}
- for(const [x,y,s] of edgeSpots){if(t.motif==='sky'||t.motif==='ruins')column(ctx,x,y,s,t,t.motif==='ruins');else if(t.motif==='crystal')crystal(ctx,x,y,s,t);else if(t.motif==='city'){lamp(ctx,x,y,s,t);ctx.fillStyle=t.stone;ctx.fillRect(x+25,y+9,33,18);ctx.fillStyle=t.foliage[2];ctx.fillRect(x+21,y-4,41,18)}else tree(ctx,x,y,s,t)}
+ if(t.motif==='crystal')for(const [x,y,s,variant] of crystalSpots)crystal(ctx,x,y,s,t,variant);
+ else for(const [x,y,s] of edgeSpots){if(t.motif==='sky'||t.motif==='ruins')column(ctx,x,y,s,t,t.motif==='ruins');else if(t.motif==='city'){lamp(ctx,x,y,s,t);ctx.fillStyle=t.stone;ctx.fillRect(x+25,y+9,33,18);ctx.fillStyle=t.foliage[2];ctx.fillRect(x+21,y-4,41,18)}else tree(ctx,x,y,s,t)}
  if(t.motif==='spiral'){column(ctx,175,178,1,t,true);column(ctx,850,560,1.2,t,true)}
  for(const [x,y] of [[170,240],[815,185],[730,580],[230,540],[150,640],[850,450]]){ctx.fillStyle=t.detail;ctx.fillRect(x,y,4,4);ctx.fillRect(x+8,y-5,3,3);ctx.fillStyle=t.path;ctx.fillRect(x+1,y+1,2,2)}
  ctx.strokeStyle=t.line+'70';ctx.lineWidth=1;ctx.setLineDash([5,8]);for(const r of [140,Math.min(range,480)]){ctx.beginPath();ctx.ellipse(500,345,r,r*.76,0,0,Math.PI*2);ctx.stroke()}ctx.setLineDash([]);ctx.restore();

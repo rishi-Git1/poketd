@@ -1,12 +1,7 @@
-POKE BASTION VERSION 17 — REGIONAL MAPS PATCH
-Apply over Version 16. This ZIP contains only changed/new files.
-1. Extract the ZIP into the existing project folder containing package.json.
-2. Merge the public, dist and tests folders; replace matching files.
-3. Keep all other project files and existing assets.
-4. Redeploy on Render (npm run build; publish dist), then hard-refresh.
+POKE BASTION VERSION 18 — STELLAR CRYSTALS PATCH
+Apply over Version 17. Changed/new files only.
+Extract into the existing project folder containing package.json, merge public/dist folders and replace matching files. Keep other files and assets. Redeploy on Render (npm run build; publish dist), then hard-refresh.
 
-Battlefields: Kanto — Indigo Plateau; Johto — Mt. Silver; Hoenn — Sky Pillar; Sinnoh — Spear Pillar; Unova — Dragonspiral Tower; Kalos — Lumiose City; Galar — Wild Area; Paldea — Area Zero.
+Area Zero crystals now use Stellar Terapagos shell-inspired rainbow hexagonal plates, blue lattice and glass facets. Eleven arrangements include five varied formation styles with different sizes, heights and angles. Gameplay rules are unchanged.
 
-Each map has matching terrain, paths, tower/flag and scenery colors, plus a regional interface palette. Distinct scenery includes snow, ancient pillars, spiral stonework, city lamps, a pond and crystals. Names appear on the battlefield header and region picker. Gameplay rules and balance are unchanged.
-
-Validation: 128 tests passed; production build passed; eight-map label/render smoke check passed; all eight maps inspected in the browser; clean installation over Version 16 checked.
+Validation: all regional renderer smoke checks passed, production build passed, browser visual review completed, and clean installation over Version 17 checked.

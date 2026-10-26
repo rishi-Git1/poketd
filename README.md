@@ -262,3 +262,12 @@ Apply this changed-files patch over Version 16, merge its folders, replace match
 Names appear on the battlefield header and each region-selection card. Terrain, paths, stonework, foliage, tower and flag use regional palettes. Page background, header, battlefield title strip, party panels, reward panels and dialogs follow the selected region. The move-guide canvas uses the current map's colors too. Scenery remains decorative; spawn positions, range, targeting, wave timing, bosses and balance retain their existing rules.
 
 Validation: all 128 automated checks passed; production build passed; all eight names, selector labels and canvas renderers were checked in a smoke run; every regional map was inspected in the browser. Clean installation over Version 16 was checked before delivery.
+
+
+## Version 0.18.0 — Stellar shell crystals
+
+Apply this changed-files patch over Version 17, merge folders and replace matching files, redeploy on Render, then hard-refresh.
+
+Area Zero scenery now takes its colors and faceting from the bundled Stellar Terapagos sprite: bright blue lattice, rainbow hexagonal gem plates, pale glass faces and small etched markings. Eleven individually arranged formations use five silhouettes: crowned shell-like geodes, tall leaning prisms, blade fans, gem rosettes and broad honeycomb outcrops. Scales, angles, gem colors and heights vary without randomizing between frames. Formations sit around the perimeter to keep the central team readable. These are procedural canvas decorations; no new images or dependencies are needed.
+
+Validation: renderer smoke checks, production build and browser visual review. No gameplay rules were changed.
