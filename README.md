@@ -127,7 +127,7 @@ Sources:
 
 ## Validation
 
-Run `npm test` for **130 checks**. They cover all eight regional starters/endings, exact round caps, all 113 boss encounters, requested special-form IDs and stats, all 1087 local sprite files, regional roster isolation, evolution links, regional forms, region switching and best-record isolation, reward stacking, Auto flow, premium swaps, batch sizes, attack rendering and story completion with banked choices. Controller tests use an in-memory DOM; they do not constitute eight complete 150-round playthroughs. Long-run balance remains an iterative playtesting task.
+Run `npm test` for **131 checks**. They cover all eight regional starters/endings, exact round caps, all 113 boss encounters, requested special-form IDs and stats, all 1087 local sprite files, regional roster isolation, evolution links, regional forms, region switching and best-record isolation, reward stacking, Auto flow, premium swaps, batch sizes, attack rendering and story completion with banked choices. Controller tests use an in-memory DOM; they do not constitute eight complete 150-round playthroughs. Long-run balance remains an iterative playtesting task.
 
 The project uses a bundled VT323 pixel font with its SIL Open Font License in assets. Pokémon and character names are trademarks of Nintendo, Game Freak and Creatures. This is an unofficial fan prototype, unaffiliated with those companies.
 
@@ -282,3 +282,10 @@ The earlier screenshot showed the Version 17 crystal renderer. Its exact deploym
 Area Zero retains the Version 18 rainbow hexagonal shell facets and eleven diverse crystal formations. No additional gameplay rules were changed.
 
 Validation: **130 automated checks passed**, including dependency-hash propagation, unchanged-build stability and missing-asset rejection; production build passed. The shipped HTML-to-entry-to-map chain was inspected for the actual Stellar renderer, then the production output was checked in the browser. This patch was applied and rebuilt independently over both Version 17 and Version 18 before delivery.
+
+
+## Version 0.20.0 — Wave button state
+
+Apply over Version 19, merge folders, replace matching files and redeploy. The start button now derives its text and enabled state from the current run phase whenever the UI refreshes. While combat is active (including paused combat), it reads Wave in progress and is disabled. Between waves it reads Start wave with the correct next-wave number. It becomes enabled when the team is ready after choosing the pending reward. The adjacent message also returns to Your team is ready. Story-ending New story behavior is preserved.
+
+Validation: 131 automated checks, including actual wave clears, reward claims, the next wave start, paused combat, mid-battle reward claims and Auto toggles. Production build and browser review completed.

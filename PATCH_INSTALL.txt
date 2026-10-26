@@ -1,12 +1,7 @@
-POKE BASTION VERSION 19 — CRYSTAL DELIVERY REPAIR
-Apply over Version 17 OR Version 18. Changed/new files only; the complete Stellar crystal renderer is included.
+POKE BASTION VERSION 20 — WAVE BUTTON PATCH
+Apply over Version 19. Changed/new files only.
+Extract into the existing project folder containing package.json. Merge public, dist and tests; replace matching files. Keep all other project files/assets. Redeploy on Render (npm run build; publish dist), then reload. Header: VERSION 20.
 
-1. Extract into the existing project folder containing package.json.
-2. Merge public, dist, scripts and tests; replace matching files. Keep other files and existing assets.
-3. Redeploy the updated project on Render with Build Command: npm run build and Publish Directory: dist.
-4. Reload the game. The page header must show VERSION 19. If it shows an earlier version, that page/deployment has not updated; try Ctrl+Shift+R.
-5. Select Paldea. Area Zero should have multicolored hexagonal gem plates and varied crystal clusters.
+The button displays Start wave with the next wave number between waves. During combat it displays Wave in progress and is disabled, including while paused. Claiming a reward between waves restores the ready message and enables starting the next wave. Claiming rewards during combat keeps the battle label. Story-ending New story behavior is preserved.
 
-This repair gives built JavaScript/CSS assets content-based filenames, including module dependency URLs. Changed maps and their entry script get fresh filenames automatically. The public source also includes versioned entry/map URLs for direct-public hosting. Prebuilt dist assets are included for static file deployments.
-
-Validation: 130 tests passed, production build and browser visual review passed, and the patch was rebuilt over both V17 and V18.
+Validation: 131 automated checks passed, production build passed, and the real browser wave-clear/reward/start sequence was checked. Clean patch installation over Version 19 checked.
