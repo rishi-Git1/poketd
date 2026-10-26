@@ -1,4 +1,4 @@
-# Poké Bastion — Version 08
+# Poké Bastion — Version 09
 
 A browser tower-defense roguelike with eight **Story-based** regional campaigns. Choose a region when the game opens, then select one of its three starters. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
 
@@ -138,3 +138,7 @@ Apply Poke_Bastion_V8_Patch.zip over the Version 0.7.0 project root, preserving 
 Every reward earned after round 50 guarantees at least one advanced tactic. Previously banked rewards retain their original choices. Split Volley adds one target per copy, dividing each attack's damage by the total target capacity even if fewer targets exist. Signature attacks retain their normal geometry for each selected target; overlapping areas can hit the same enemy. Other tactics grant shorter cooldowns, longer range, temporary movement slows (bosses resist half), defense penetration, bonus damage below 35% HP, and capped tower healing on defeats. Repeated copies stack, inventory displays their combined effects, and premium trades can replace or grant tactics. Premium tactic cards grant two stacks, excluding Split Volley. Slows refresh, rather than extending or multiplying themselves on each hit; slow copies multiply their movement reduction.
 
 All bosses in all regions gain 20% HP, physical defense, special defense, movement speed, and impact damage relative to Version 0.7.0. Existing wave scaling and tier boosts remain. These separate increases together raise combat difficulty by more than 20% overall; full campaign balance still needs playtesting.
+
+## Version 0.9.0 animation patch
+
+Apply after Version 0.8.0 by merging the patch contents into the project root. All 18 move types have distinct canvas geometry, rather than a shared recolored beam or burst. Fire and electric keep their recognizable flame and lightning effects. Other types now have water streams and splashes, grass vines and leaves (petals for Petal Blizzard), normal impact stars, poison sludge, bug blades or needle swarms, flying gusts and feathers, ground fissures, falling rocks, psychic rings, ghost wisps, dragon helices and jaws, ice crystals, fighting fists, fairy moons and glints, steel plates and sparks, and dark eclipse effects. Applies to all regions, battle signatures and the move preview. Basic pre-evolution projectile orbs remain. Damage, cooldown, targeting geometry and Version 0.8.0 tactics are unchanged. Canvas animation is procedural; no new image downloads are required.

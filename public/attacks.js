@@ -1,3 +1,4 @@
+import {drawTypeAttack} from './type-visuals.js';
 // Signature moves are custom tower-defense adaptations, unlocked at the final form.
 const finals={
  3:['Solar Beam','grass','beam',1.5,'#87e841'],
@@ -36,6 +37,10 @@ export function attackTargets(move,origin,target,enemies){
  return [{enemy:target,scale:1}];
 }
 export function drawAttack(ctx,f){
+ if(drawTypeAttack(ctx,f))return;
+ // Keep lightning and flame silhouettes even when a move supplies a generic shape.
+ if(f.move.type==='electric')f={...f,move:{...f.move,shape:'chain'}};
+ if(f.move.type==='fire'&&f.move.shape!=='blast')f={...f,move:{...f.move,shape:'cone'}};
  const progress=1-f.life/f.duration,alpha=Math.min(1,f.life*5),x=f.target.x,y=f.target.y,ox=f.origin.x,oy=f.origin.y,angle=Math.atan2(y-oy,x-ox),length=Math.hypot(x-ox,y-oy);
  ctx.save();ctx.globalAlpha=alpha;ctx.lineCap='square';ctx.lineJoin='miter';ctx.strokeStyle=f.move.color;ctx.fillStyle=f.move.color;
  const line=(points,width,color)=>{ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.stroke()};

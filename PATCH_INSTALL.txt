@@ -1,24 +1,18 @@
-Poké Bastion 0.8.0 patch — requires 0.7.0
+Poké Bastion 0.9.0 — Type animation patch
 
-Open your existing poke-bastion project folder (the folder containing package.json).
-Copy the contents of this ZIP directly into that folder. Merge folders and replace matching files. Do not replace the entire public or dist folder, since unchanged assets are not included.
+Apply AFTER the Version 8 patch. Copy these contents directly into the existing project folder containing package.json. Merge folders and overwrite matching files; keep all other existing files. The new public/type-visuals.js file is REQUIRED alongside public/attacks.js. Updated dist files are also included for direct static hosts.
 
-Commit/push the updated project to Render. Build command remains npm run build; publish directory remains dist. Direct static uploads can instead use the included updated dist files. Reload the browser after deploying.
+Render: push updated files and rebuild using npm run build. Hard-refresh the browser after deploying.
 
-This is a patch only: no Pokémon images or regional rosters are duplicated.
+All 18 types now have distinct signature silhouettes. All regions and the move guide use the same renderer. Damage, targeting, advanced tactics and boss balance are unchanged. Pre-evolution orbs remain.
 
-Changed files:
-README.md
-dist/app.js
-dist/campaign.js
-dist/engine.js
-dist/index.html
+Checks: 68 automated tests, build, and browser visual inspection of all 18 types.
+
+Files:
+public/attacks.js
+public/type-visuals.js
+dist/attacks.js
+dist/type-visuals.js
+tests/visuals.test.mjs
 package.json
-public/app.js
-public/campaign.js
-public/engine.js
-public/index.html
-tests/flow.test.mjs
-tests/tactics.test.mjs
-
-Validation: 66 automated checks passed. Full campaign balance and browser visual checks were not run for this patch.
+README.md
