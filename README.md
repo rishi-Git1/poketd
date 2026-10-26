@@ -1,4 +1,4 @@
-# Poké Bastion — Version 12
+# Poké Bastion — Version 13
 
 A browser tower-defense roguelike with eight **Story-based** regional campaigns. Choose a region when the game opens, then select one of its three starters. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
 
@@ -177,3 +177,13 @@ All eight mechanics are tracked in the upgrades popup and can be exchanged as up
 Each 25-round premium opportunity now grants **one Pokémon exchange AND one upgrade exchange**, in either order. Each category has a separate single reroll of its three options. Completing one exchange leaves the other available. Later/Escape preserves choices, spent rerolls and completed exchanges. The category buttons show completed exchanges; Skip remaining exchange forfeits only unused rights and never reverses a completed swap. The opportunity leaves the bank after both exchanges or when skipped. Auto and combat continue as before. Rerolls prefer entirely new choices; tiny regional pools may require repeats. Eligibility and available tiers follow the current round when offers are generated, including for previously banked trades.
 
 Automated validation covers unlock boundaries, the exact 10% threshold, stacking/removal, shields, target locks, ricochets, stuns and recovery, damage attribution, dual exchanges, reroll limits and bank persistence. Full-length campaign balance still requires playtesting.
+
+## Version 0.13.0 — Rally frequency and unique rolls
+
+Apply after Version 12. Starting with rewards earned after round 80 (round 81 onward), Rallying Power has **four times the selection weight** of other eligible ordinary upgrades. Master Rally receives the same relative weight in master selections and premium offers. This is a weighted chance, not a guaranteed card or a flat fourfold probability; party size, evolution options and reserved tactic slots affect the final frequency. The 10% per-upgrade-card master conversion chance is unchanged.
+
+All three-card rolls are sampled without replacement using upgrade identity: kind plus matching type or stage. Base/master versions of the same effect share one identity; different types or stages remain distinct choices. Pokémon recruit/evolution cards use their destination Pokémon ID. This prevents duplicate evolution choices, repeated ordinary upgrades, and ordinary/master duplicates in one roll. Applies to normal rewards, master conversions, premium offers, rerolls and stale banked-card repairs. The guaranteed round-51+ tactic and recruit/evolution opportunities remain. Acquiring the same upgrade on different rounds is still allowed and stacks.
+
+The upgrade audit verifies all tactic stack counters with repeated normal/master copies; multiplicative universal, dual-type and stage buffs; grown health/armor/range and removing one instance; actual cooldowns, movement slows, defense penetration, focus ramp, critical cadence, finishing damage, wound marks, healing and stun duration. Existing per-effect rules remain: wounds cap at 8 marks, focus ramps for up to 10 seconds per target, stuns have recovery, and Split Volley divides attack power across target capacity. Copies strengthen these effects according to each card rather than bypassing those rules. No additional stacking balance changes were needed.
+
+Validation includes repeated regional controller drafts for all eight regions and both growing/full parties, deterministic reward/master/premium/reroll uniqueness checks (including fixed RNG edge cases), frequency checks and upgrade stack/removal checks.

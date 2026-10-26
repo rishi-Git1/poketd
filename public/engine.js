@@ -70,7 +70,35 @@ export function applyUpgrade(run,card){
 
 export function formatDamageTotal(value){const total=Math.max(0,value||0);return total>=1e6?new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:1}).format(total):Math.round(total).toLocaleString('en-US')}
 
-export const cardKey=c=>[c.kind,c.type||'',c.stage||''].join(':');
+// Normal and master versions share one identity; Pokémon use their destination ID.
+export const cardKey=c=>c.pokemon?`pokemon:${c.pokemon.id}`:[c.kind,c.type||'',c.stage||''].join(':');
+export const upgradeWeight=(card,run)=>run.wave>80&&card.kind==='offense'?4:1;
+export function drawDistinct(pool,count,run,rng=Math.random,excluded=[]){
+ const seen=new Set(excluded.map(cardKey)),available=[];
+ for(const card of pool){if(!card||seen.has(cardKey(card)))continue;seen.add(cardKey(card));available.push(card)}
+ const result=[];
+ while(result.length<count&&available.length){
+  const total=available.reduce((n,c)=>n+upgradeWeight(c,run),0);let roll=rng()*total,index=available.length-1;
+  for(let i=0;i<available.length;i++){roll-=upgradeWeight(available[i],run);if(roll<0){index=i;break}}
+  result.push(...available.splice(index,1));
+ }return result;
+}
+export function distinctRoll(cards,fallback,run,rng=Math.random){
+ const seen=new Set(),result=[];
+ for(const card of cards){if(card&&!seen.has(cardKey(card))){seen.add(cardKey(card));result.push(card)}}
+ return [...result,...drawDistinct(fallback,3-result.length,run,rng,result)].slice(0,3);
+}
+export function selectRewardCards(run,pool,partners,evolutions,rng=Math.random){
+ const special=drawDistinct(partners.length?partners:evolutions,1,run,rng)[0];
+ const tactic=run.wave>50?drawDistinct(lateUpgrades(run),1,run,rng)[0]:null;
+ const fixed=[special,tactic].filter(Boolean);
+ let first=drawDistinct(pool,1,run,rng,fixed)[0];
+ if(evolutions.length&&rng()<.6)first=drawDistinct(evolutions,1,run,rng,fixed)[0]||first;
+ const cards=[first,tactic||drawDistinct(pool,1,run,rng,[first,special].filter(Boolean))[0],special];
+ const unique=distinctRoll(cards,pool,run,rng);
+ // The guaranteed tactic stays in slot 1 during master conversion.
+ return distinctRoll(rollMasterCards(unique,run,rng),pool,run,rng);
+}
 export function masterUpgrades(run){
  const cards=[{kind:'offense',title:'Master Rally',amount:.5,description:'×1.50 universal damage'},{kind:'armor',title:'Master Fortification',amount:.4,description:'+40 armor points'},{kind:'health',title:'Master Restoration',amount:200,heal:250,description:'+200 max HP; restore 250 HP'}];
  for(const type of new Set(run.team.flatMap(a=>a.pokemon.types)))cards.push({kind:'type',type,title:`Master ${type}`,amount:.8,description:`×1.80 damage for ${type} partners`});
@@ -84,7 +112,7 @@ export function rollMasterCards(cards,run,rng=Math.random){
  const result=[...cards];for(let i=0;i<result.length;i++){
   const c=result[i];if(['recruit','evolve'].includes(c.kind)||rng()>=.1)continue;
   const candidates=masterUpgrades(run).filter(m=>!result.some((other,j)=>j!==i&&cardKey(m)===cardKey(other))&&(i!==1||!ALL_TACTICS.some(t=>t.kind===c.kind)||ALL_TACTICS.some(t=>t.kind===m.kind)));
-  if(candidates.length)result[i]=candidates[Math.floor(rng()*candidates.length)];
+  if(candidates.length)result[i]=drawDistinct(candidates,1,run,rng)[0];
  }return result;
 }
 export function updateFocus(ally,candidates,dt,run){

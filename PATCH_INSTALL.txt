@@ -1,28 +1,22 @@
-Poké Bastion Version 12 — Round-80 builds and dual premium trades
+Poké Bastion Version 13 — Rally frequency, distinct rolls, upgrade audit
 
-Requires Version 11 with previous patches applied. Merge these ZIP contents into the existing project folder containing package.json. Overwrite matching files and keep all other files.
+Requires Version 12 with prior patches. Merge these contents into the project folder containing package.json. Replace matching files and retain everything else. Push to Render, build using npm run build, then hard-refresh the browser. Updated dist files are included for direct static uploads.
 
-Render: push changes and rebuild with npm run build. Hard-refresh after deployment. Updated dist files are included for direct static hosts. No sprites or regional rosters are duplicated.
+From round 81, Rallying Power / Master Rally receive 4x selection weight. The 10% master-card chance is unchanged.
 
-From round 80, each upgrade-card slot has a 10% chance to become a master card. New options: Ricochet Volley, Lock-On Link, Master Execute, Critical Cadence, Marked Wounds, Victory Nova, Guardian Shell, and Last Stand Relay. Full effects and stacking rules are documented in README.md and card descriptions. Master Execute works with Finishing Instinct and on bosses. Ricochets work with basic and signature attacks.
+No duplicate upgrade identities within a roll: base/master versions count as the same effect; different matching types/stages remain distinct. Duplicate recruit/evolution destinations are also prevented. Includes normal rewards, premium offers/rerolls and stale banked-card repairs. Repeated acquisitions across separate rounds remain allowed and stack.
 
-Each premium opportunity now supports one Pokémon exchange AND one upgrade exchange. Each category has one independent reroll. Later/Escape preserves all progress, cached choices and used rerolls. Skip remaining exchange forfeits only unused exchanges.
-
-89 automated checks and the build passed, including a clean installation of this patch on Version 11. Premium category exchanges, reroll limits and new master-card UI were also checked in the browser using a round-80 fixture. Full campaign balance remains to be playtested. No QA controls are included.
+All upgrade stacking and single-instance removal audited, including normal/master mixtures, tower milestones and live combat-effect formulas. 98 automated tests and build pass, including patch installation over Version 12. No browser visual checks or full campaign balance run for this patch.
 
 Changed files:
 public/app.js
 public/engine.js
 public/campaign.js
 public/index.html
-public/style.css
 dist/app.js
 dist/engine.js
 dist/campaign.js
 dist/index.html
-dist/style.css
-tests/elite.test.mjs
-tests/flow-harness.mjs
-tests/tactics.test.mjs
+tests/upgrade-audit.test.mjs
 package.json
 README.md

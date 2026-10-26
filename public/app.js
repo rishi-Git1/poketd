@@ -1,6 +1,6 @@
 import {REGIONS,getRegion} from './regions.js';
 import {bossFor,nextBoss,campaignPlan,applyTowerGrowth,canAutoAdvance,isBuff,premiumOffers,commitSwap,BOSSES,initTrade,rerollTrade,commitTradeChoice} from './campaign.js';
-import {TYPES,wavePlan,enemyStats,damage,newRun,applyUpgrade,damageMultiplier,recruitmentPool,lateUpgrades,targetCapacity,cooldownFactor,movementFactor,resolveHit,tacticSummary,formatDamageTotal,tacticStacks,rollMasterCards,updateFocus,focusFactor,volleyFactor,advanceStatus,absorbTowerHit,nextBounce} from './engine.js';
+import {TYPES,wavePlan,enemyStats,damage,newRun,applyUpgrade,damageMultiplier,recruitmentPool,lateUpgrades,targetCapacity,cooldownFactor,movementFactor,resolveHit,tacticSummary,formatDamageTotal,tacticStacks,updateFocus,focusFactor,volleyFactor,advanceStatus,absorbTowerHit,nextBounce,selectRewardCards,distinctRoll,cardKey} from './engine.js';
 import {attackFor,attackTargets,drawAttack,nextSpeed,attackCooldown} from './attacks.js';
 const $=id=>document.getElementById(id),canvas=$('arena'),ctx=canvas.getContext('2d');
 let partyStatMode='multiplier';
@@ -25,16 +25,9 @@ function generateRewards(){
  // Only offer type buffs that help an existing primary type.
  const eligible=pool;
  for(const stage of [...new Set(run.team.map(a=>a.pokemon.stage))])eligible.push({kind:'stage',stage,title:`Stage ${stage} Spirit`,label:'EVOLUTION SPECIALIST',description:`+35% damage for every stage ${stage} partner.`,symbol:'↟',badge:`STAGE ${stage} POWER`,accent:'#9a8cbb'});
- const recruits=recruitmentPool(roster,run);
- if(run.team.length<6&&recruits.length)eligible.push(pokemonCard(pick(recruits)));
+ const partners=run.team.length<6?recruitmentPool(roster,run).map(p=>pokemonCard(p)):[];
  const evolutions=run.team.flatMap(a=>(a.pokemon.nextOptions||[a.pokemon.next]).filter(Boolean).map(id=>pokemonCard(roster.find(p=>p.id===id),'evolve',a.pokemon.id))).filter(c=>c.pokemon);
- // One guaranteed partner or evolution slot when available, two randomized upgrades.
- const special=run.team.length<6&&recruits.length?pokemonCard(pick(recruits)):pick(evolutions);
- let cards=shuffle(eligible.filter(c=>c.kind!=='recruit')).slice(0,2);
- cards.push(special||pick(eligible.filter(c=>!cards.includes(c))));
- if(evolutions.length&&Math.random()<.6)cards[0]=pick(evolutions);
- if(run.wave>50)cards[1]=pick(lateUpgrades(run).filter(c=>!cards.some(x=>x.kind===c.kind)));
- return shuffle(rollMasterCards(cards,run));
+ return shuffle(selectRewardCards(run,eligible,partners,evolutions));
 }
 function draft(){
  const wave=run.wave;if(!run.rewardQueue.some(q=>q.wave===wave))run.rewardQueue.push({wave,cards:generateRewards()});
@@ -43,11 +36,11 @@ function draft(){
  renderPendingRewards();updateUI();advanceAuto();
 }
 function validReward(c){return c.kind==='recruit'?run.team.length<6&&!run.team.some(a=>a.pokemon.id===c.pokemon.id):c.kind==='evolve'?run.team.some(a=>a.pokemon.id===c.from):true}
-function refreshRewardCards(entry){const fallback=[{kind:'offense',title:'Rallying Power',label:'UNIVERSAL BUFF',description:'+18% universal damage. Stacks multiplicatively.',symbol:'✷'},{kind:'health',title:'Repair & Reinforce',label:'BASTION UPGRADE',description:'+65 maximum HP and restore 105 HP.',symbol:'♡'},{kind:'armor',title:'Fortified Walls',label:'UNIVERSAL BUFF',description:'+12 armor points.',symbol:'⬡'}];entry.cards=entry.cards.map(c=>validReward(c)?c:null);for(let i=0;i<entry.cards.length;i++)if(!entry.cards[i])entry.cards[i]=fallback.find(c=>!entry.cards.some(x=>x?.kind===c.kind))||fallback[0]}
+function refreshRewardCards(entry){const fallback=[{kind:'offense',title:'Rallying Power',label:'UNIVERSAL BUFF',description:'+18% universal damage. Stacks multiplicatively.',symbol:'✷'},{kind:'health',title:'Repair & Reinforce',label:'BASTION UPGRADE',description:'+65 maximum HP and restore 105 HP.',symbol:'♡'},{kind:'armor',title:'Fortified Walls',label:'UNIVERSAL BUFF',description:'+12 armor points.',symbol:'⬡'}];entry.cards=distinctRoll(entry.cards.filter(c=>c&&validReward(c)),fallback,run)}
 function renderPendingRewards(){
  if(run.phase==='starter'||run.phase==='over')return;
  const entry=run.rewardQueue[0];
- if(entry){refreshRewardCards(entry);const key=entry.wave+':'+entry.cards.map(c=>[c.kind,c.from,c.pokemon?.id,c.type,c.stage].join('/')).join('|');if(key!==rewardRenderKey){renderCards(entry.cards);rewardRenderKey=key}else offers=entry.cards;
+ if(entry){refreshRewardCards(entry);const key=entry.wave+':'+entry.cards.map(c=>[cardKey(c),c.from,c.amount,c.master,c.title].join('/')).join('|');if(key!==rewardRenderKey){renderCards(entry.cards);rewardRenderKey=key}else offers=entry.cards;
  $('cards').hidden=false;$('choose-tag').hidden=false;$('wave-action').hidden=true;$('draft-kicker').textContent=`${run.rewardQueue.length} BANKED REWARD${run.rewardQueue.length===1?'':'S'} • FROM ROUND ${entry.wave}`;$('draft-title').textContent='Choose whenever you are ready.';$('draft-description').textContent=run.phase==='battle'?'Combat continues. Pick one card to apply it immediately.':'One choice per cleared round. Your remaining choices stay banked.';
  }else{offers=[];rewardRenderKey='';$('cards').hidden=true;$('choose-tag').hidden=true;$('wave-action').hidden=false;if(!['won','over'].includes(run.phase)){$('draft-kicker').textContent=`ROUND ${run.wave} • ${autoMode?'AUTO CONTINUES':'YOUR EXPEDITION'}`;$('draft-title').textContent=run.phase==='battle'?'Your rewards will wait for you.':'Ready for the next wave.';$('draft-description').textContent='Each cleared round banks a choice of three cards.'}}
 }
