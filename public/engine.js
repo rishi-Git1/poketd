@@ -4,6 +4,7 @@ const chart={ice:{fire:.5,water:.5,grass:2,ice:.5,ground:2,flying:2,dragon:2,ste
 export function effectiveness(type,types){return types.reduce((n,t)=>n*(chart[type]?.[t]??1),1)}
 export function waveCount(wave){return wave<=5?3+wave*2:13+(wave-5)*3}
 export function openingEase(wave){return Math.min(1,.65+Math.max(0,wave-1)*.07)}
+export function batchSpawnTime(index,total){return Math.floor(index*Math.min(5,total)/total)*3}
 export function wavePlan(wave,roster,rng=Math.random){
  const maxStage=wave>=9?3:wave>=4?2:1;
  const eligible=roster.filter(p=>p.stage<=maxStage);
@@ -11,7 +12,7 @@ export function wavePlan(wave,roster,rng=Math.random){
  const gentle=eligible.filter(p=>Object.values(p.stats).reduce((a,b)=>a+b,0)<=limit);
  const pool=gentle.length?gentle:eligible;
  const spacing=wave<=3?3.2:2.4;
- return Array.from({length:waveCount(wave)},(_,i)=>({at:wave>50?0:Math.floor(i/3)*spacing+(i%3)*.36+rng()*.2,pokemon:pool[Math.floor(rng()*pool.length)],angle:rng()*Math.PI*2}));
+ return Array.from({length:waveCount(wave)},(_,i)=>({at:wave>50?batchSpawnTime(i,waveCount(wave)):Math.floor(i/3)*spacing+(i%3)*.36+rng()*.2,pokemon:pool[Math.floor(rng()*pool.length)],angle:rng()*Math.PI*2}));
 }
 export function enemyStats(p,wave,boss=null){const ease=openingEase(wave),boost=boss?.boost||1;return {specialDefense:p.stats['special-defense']*(1+.025*wave)*ease*boost,maxHp:(p.stats.hp*.53+9)*Math.pow(1.115,wave-1)*ease*boost,defense:p.stats.defense*(1+.025*wave)*ease*boost,speed:(10+p.stats.speed*.115+wave*.35)*Math.min(1,.78+Math.max(0,wave-1)*.044),impact:Math.ceil(Math.max(p.stats.attack,p.stats['special-attack'])*.12*(1+.07*wave)*Math.min(1,.55+Math.max(0,wave-1)*.09)*boost)}}
 export function damageMultiplier(p,buffs){return (1+buffs.offense)*p.types.reduce((n,t)=>n*(1+(buffs.types[t]||0)),1)*(1+(buffs.stages[p.stage]||0))}

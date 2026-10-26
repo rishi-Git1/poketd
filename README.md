@@ -1,4 +1,4 @@
-# Poké Bastion — Version 05.1
+# Poké Bastion — Version 06
 
 A playable browser roguelike tower defense prototype. Choose Bulbasaur, Charmander, or Squirtle, then defend a central bastion against a 151-round campaign of approaching Pokémon. After every cleared wave, choose exactly one of three rewards.
 
@@ -122,7 +122,7 @@ AUTO ON starts the next wave immediately, with no countdown and no requirement t
 
 After each cleared round divisible by 10, attack range and maximum tower HP multiply by 1.05. Current HP gains the new maximum-HP capacity (no full heal). Effective armor multiplies by 1.05: `1 + armor` becomes `(1 + armor) * 1.05`, so this works even at zero initial armor. Growth occurs once per milestone, compounds, and appears in the sidebar and upgrade inventory. Attack range has no gameplay cap; its illustrated ring is clipped to the battlefield.
 
-Boss rounds replace the normal enemy wave. Their teams arrive 0.85 seconds apart through round 50, then all at once from round 51 onward around the tower, have a gold aura and trainer banner, and remain near the tower to attack every 1.6 seconds until defeated. Clearing a boss requires defeating the entire roster. Teams use Pokémon Red/Blue rosters (https://pokemondb.net/red-blue/gymleaders-elitefour); Blue's party counters the player's original starter even if that starter was evolved or traded.
+Boss rounds replace the normal enemy wave. Their teams arrive 0.85 seconds apart through round 50, then in balanced groups of approximately 20% from round 51 onward around the tower, have a gold aura and trainer banner, and remain near the tower to attack every 1.6 seconds until defeated. Clearing a boss requires defeating the entire roster. Teams use Pokémon Red/Blue rosters (https://pokemondb.net/red-blue/gymleaders-elitefour); Blue's party counters the player's original starter even if that starter was evolved or traded.
 
 | Round | Encounter |
 | --- | --- |
@@ -168,4 +168,13 @@ At rounds 25, 50, 75, 100, 125 and 150, an optional premium trade is banked inde
 
 ## Version 05.1 — instant late-wave spawning
 
-All enemies in rounds 51 onward spawn on the first combat update, with zero per-enemy delay. This applies to both regular waves and boss teams. Rounds 1–50 retain their existing staggered timing. Enemy counts, stats, positions, progression, and banked rewards are preserved. 39 tests pass, including the 50/51 boundary and actual first-tick spawning for regular waves, gyms, Blue, Mewtwo, and Mew.
+Superseded by Version 06: rounds 51 onward now spawn in 20% batches rather than all at once.
+
+
+## Version 06 — Story-based mode, 20% batches, and a dedicated ending
+
+The mode is explicitly named **Story-based** in the header and completion screen. It is a finite 151-round story. Defeating Mew opens a Hall of Fame ending screen with rounds cleared, Pokémon defeated, upgrades kept, final tower HP, and the champion party. New story resets the run and reward/trade queues; Review expedition closes the ending while keeping the completed run. Auto stops, and startWave explicitly blocks any attempt to create round 152, even if a ready-state control is activated. The ending takes priority over banked choices, so saved rewards cannot hide the completion screen.
+
+From round 51 onward, regular levels and boss teams arrive in five balanced groups, roughly 20% each. Each group's members spawn together; groups start at 0, 3, 6, 9, and 12 game seconds. Thus 150 Pokémon arrive as five groups of 30. Uneven totals are divided as evenly as possible with no missing Pokémon. Teams with fewer than five members use fewer groups: a three-Pokémon boss sends one at 0, 3, and 6 seconds, while Mewtwo and Mew remain solo encounters. The group indicator is shown on the battlefield. Earlier rounds retain their existing timing. Auto and its reward/trade bank remain uninterrupted.
+
+41 tests pass, including batch sizes across totals 1–500, the round-50/51 boundary, grouped boss spawning, and completion with banked choices. The real ending handler's layout and Review action were additionally checked in-browser using a temporary visual QA scenario, not a full 151-round playthrough. Temporary QA pages/scripts are excluded from the deliverable.
