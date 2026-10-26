@@ -5,10 +5,10 @@ kanto=[('Brock',[74,95]),('Misty',[120,121]),('Lt. Surge',[100,25,26]),('Erika',
 base=[
  ('kanto','Kanto','Red / Blue',[2],[1,4,7],151,151,'Mew','#cf3f47',kanto),
  ('johto','Johto','Gold / Silver',[3],[152,155,158],150,250,'Ho-Oh','#ba8a3c',None),
- ('hoenn','Hoenn','Ruby / Sapphire',[4],[252,255,258],150,384,'Rayquaza','#319975',None),
+ ('hoenn','Hoenn','Ruby / Sapphire',[4],[252,255,258],150,10079,'Mega Rayquaza','#319975',None),
  ('sinnoh','Sinnoh','Platinum',[6],[387,390,393],150,493,'Arceus','#6582b9',None),
  ('unova','Unova','Black 2 / White 2',[9],[495,498,501],150,646,'Kyurem','#647b8b',None),
- ('kalos','Kalos','X / Y',[12,13,14],[650,653,656],150,717,'Yveltal','#a44b71',None),
+ ('kalos','Kalos','X / Y',[12,13,14],[650,653,656],150,10301,'Mega Zygarde','#a44b71',None),
  ('galar','Galar','Sword • Champion Cup',[27],[810,813,816],150,10190,'Eternamax Eternatus','#745b9d',None),
  ('paldea','Paldea','Scarlet / Violet',[31],[906,909,912],150,10277,'Stellar Terapagos','#3c9dba',None)]
 games={'johto':'gold-silver','hoenn':'ruby-sapphire','sinnoh':'platinum','unova':'black-white-2','kalos':'x-y','paldea':'scarlet-violet'}

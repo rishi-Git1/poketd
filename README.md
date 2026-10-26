@@ -1,4 +1,4 @@
-# Poké Bastion — Version 13
+# Poké Bastion — Version 15
 
 A browser tower-defense roguelike with eight **Story-based** regional campaigns. Choose a region when the game opens, then select one of its three starters. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
 
@@ -8,16 +8,16 @@ A browser tower-defense roguelike with eight **Story-based** regional campaigns.
 | --- | ---: | --- | --- | --- | ---: |
 | Kanto | 151 | Red / Blue | Blue | Mew (Mewtwo at 150) | 151 |
 | Johto | 251 | Gold / Silver | Lance | Ho-Oh | 150 |
-| Hoenn | 202 | Ruby / Sapphire | Steven | Rayquaza | 150 |
+| Hoenn | 202 | Ruby / Sapphire | Steven | Mega Rayquaza | 150 |
 | Sinnoh | 210 | Platinum | Cynthia | Arceus | 150 |
 | Unova | 301 | Black 2 / White 2 | Iris | Kyurem | 150 |
-| Kalos | 457 | X / Y, combined Central/Coastal/Mountain dexes | Diantha | Yveltal | 150 |
+| Kalos | 457 | X / Y, combined Central/Coastal/Mountain dexes | Diantha | Mega Zygarde | 150 |
 | Galar | 400 | Sword, adapted Champion Cup bracket | Leon | Eternamax Eternatus | 150 |
 | Paldea | 400 | Scarlet / Violet | Geeta | Stellar Terapagos | 150 |
 
 Alola has no selectable campaign yet. Regional Pokédexes contain overlapping species, including Pokémon originally introduced in other regions. These are actual regional dex lists from PokéAPI, not national-generation ID slices. Required finale exceptions are added: Arceus for Sinnoh; base and Stellar Terapagos for Paldea; Eternamax Eternatus for Galar. Relevant Galarian and Paldean forms are included alongside base species. The displayed dex count refers to the official regional species list, excluding additional forms/finale exceptions.
 
-The complete pack contains **968 distinct Pokémon/form records with local sprites**, including per-region evolution paths and legendary/mythical flags. Kanto retains its original three Eevee branches; later regions gain additional branches when those evolutions belong to their dex. Regional forms have their own evolution connections, such as Galarian Meowth → Perrserker and Paldean Wooper → Clodsire.
+The complete pack contains **1047 distinct Pokémon/form records with local sprites**, including per-region evolution paths and legendary/mythical flags. Kanto retains its original three Eevee branches; later regions gain additional branches when those evolutions belong to their dex. Regional forms have their own evolution connections, such as Galarian Meowth → Perrserker and Paldean Wooper → Clodsire.
 
 The REGIONS button opens the selector again. Cancel returns to the current story; choosing another region starts a fresh run. New story at an ending restarts the same region; Choose a region returns to the selector. Best rounds are saved separately for each region on this device. Active runs are not saved across reloads. Legacy Kanto best scores are still recognized.
 
@@ -61,7 +61,7 @@ Every region has eight gyms at rounds 15, 30, 45, 60, 75, 90, 105 and 120. Leagu
 
 Galar does not have an Elite Four. Its four late League slots are an adapted Champion Cup bracket: Marnie, Hop, Bede and Raihan, followed by Leon. Its eight gym leaders use the Sword lineup (Bea and Gordie). Blue and Leon's parties counter the original player starter; Hop uses the weaker starter. These choices preserve the requested round formula while labeling Galar's structure accurately.
 
-Trainer species rosters follow the selected game's initial battles, rather than postgame rematches. Species, stats and available signature effects are modeled; main-series mechanics such as held items, abilities, Terastallization, Mega Evolution, ordinary Dynamax, and exact move learnsets are not simulated. The explicitly requested Eternamax Eternatus (`10190`) and Stellar Terapagos (`10277`) are separate forms with their real PokéAPI stats and sprites. Those two battle-only transformations cannot appear as ordinary enemies, recruits or premium trades. Their base forms remain available as rare regional partners.
+Trainer species rosters follow the selected game's initial battles, rather than postgame rematches. Species, stats and available signature effects are modeled; Held items, ordinary Dynamax and exact move learnsets are not simulated. Mega Evolution is available only in Hoenn/Kalos, and Terastallization only in Paldea, with the explicit tower-defense adaptations documented below. The explicitly requested Eternamax Eternatus (`10190`) and Stellar Terapagos (`10277`) are separate forms with their real PokéAPI stats and sprites. Those two battle-only transformations cannot appear as ordinary enemies, recruits or premium trades. Their base forms remain available as rare regional partners.
 
 Boss Pokémon have a gold aura and a trainer-team banner. They remain near the bastion and attack every 1.6 game seconds until defeated; a boss wave clears only when its entire team is defeated. HP, physical/special defense and impact damage multiply the normal same-round stats by 1.25 for gyms, 1.45 for League battles, 1.6 for champions, 4 for Kanto's Mewtwo, and 8 for the final regional encounter.
 
@@ -77,9 +77,9 @@ Defeating the final boss opens the regional Hall of Fame screen, showing the cha
 
 ## Upgrades, damage and final forms
 
-Damage cards compound with repeated copies and every matching category. Global cards multiply damage by 1.18; each type/stage card multiplies its category by 1.35. Both Pokémon types count. Two stage cards plus a matching type card give `1.35^3 = 2.460375×` damage. A stage bonus applies to the Pokémon's current stage; collected bonuses remain stored after evolution.
+Damage cards compound with repeated copies and every matching category. Global cards multiply damage by 1.18; each type/stage card multiplies its category by 1.35. All active Pokémon types count, including the added Tera type (up to three). Two stage cards plus a matching type card give `1.35^3 × 1.10 = 2.7064125×` damage, including the repeated-stage resonance bonus. A stage bonus applies to the Pokémon's current stage; collected bonuses remain stored after evolution.
 
-All regional final forms have signature attacks based on type or species overrides, including beams, flame/water cones, chaining lightning, explosions, shockwaves, slashes, volleys and vortices. Generic profiles cover all 18 types. Regional finales have named profiles: Sacred Fire, Dragon Ascent, Judgment, Glaciate, Oblivion Wing, Eternabeam and Tera Starstorm. These are tower-defense adaptations, not canonical battle animations or learnset rules.
+All regional final forms have signature attacks based on type or species overrides, including beams, flame/water cones, chaining lightning, explosions, shockwaves, slashes, volleys and vortices. Generic profiles cover the 18 ordinary types plus Stellar. Regional finales have named profiles: Sacred Fire, Dragon Ascent, Judgment, Glaciate, Nihil Light, Eternabeam and Tera Starstorm. These are tower-defense adaptations, not canonical battle animations or learnset rules.
 
 Final-form move power is typically 2.16–3.42× base attack damage, with larger overrides for some regional finales. Final forms have 20% shorter attack cooldowns. Visual effects retain real-time duration for readability at 5× speed; combat calculations follow game speed. Move type determines effectiveness against both enemy types, including immunities. The attacker uses its larger attacking stat and the corresponding enemy defense.
 
@@ -87,7 +87,7 @@ Core formulas are in public/engine.js and public/attacks.js. Enemy HP scales as 
 
 ## Premium trades
 
-At every 25th cleared non-final round, an independent premium opportunity is banked. Click PREMIUM TRADES, choose Pokémon or upgrade, select the exact existing slot/card to replace, and choose one of three stronger replacements. Later/Escape preserves the trade; Cancel skips only that opportunity without changing the party or upgrades. Combat and Auto continue during the trade.
+At every 25th cleared non-final round, an independent premium opportunity is banked with one Pokémon exchange AND one passive-upgrade exchange, plus a separate one-time reroll per category. Choose the slot/card to replace, then a replacement. Later/Escape preserves remaining rights, offers and used rerolls. Skipping forfeits remaining rights without undoing completed exchanges. Combat and Auto continue during the trade. Regional form cards are transformations rather than tradable passive buffs; exchanging a Pokémon replaces its transformations with the new partner.
 
 Pokémon replacements are fully evolved regional partners and include a randomly selected available legendary/mythical when possible. Duplicate party members and battle-only finale transformations are excluded. Buff replacements are +50% global damage, +80% matching type/stage damage, +40 armor points, or +200 max HP with 250 HP healing. An upgrade trade removes exactly one existing buff copy. Removing health/armor reverses that card's accumulated tower-growth contribution while preserving other milestones.
 
@@ -127,7 +127,7 @@ Sources:
 
 ## Validation
 
-Run `npm test` for **59 checks**. They cover all eight regional starters/endings, exact round caps, all 113 boss encounters, requested special-form IDs and stats, all 968 local sprite files, regional roster isolation, evolution links, regional forms, region switching and best-record isolation, reward stacking, Auto flow, premium swaps, batch sizes, attack rendering and story completion with banked choices. Controller tests use an in-memory DOM; they do not constitute eight complete 150-round playthroughs. Long-run balance remains an iterative playtesting task.
+Run `npm test` for **120 checks**. They cover all eight regional starters/endings, exact round caps, all 113 boss encounters, requested special-form IDs and stats, all 1047 local sprite files, regional roster isolation, evolution links, regional forms, region switching and best-record isolation, reward stacking, Auto flow, premium swaps, batch sizes, attack rendering and story completion with banked choices. Controller tests use an in-memory DOM; they do not constitute eight complete 150-round playthroughs. Long-run balance remains an iterative playtesting task.
 
 The project uses a bundled VT323 pixel font with its SIL Open Font License in assets. Pokémon and character names are trademarks of Nintendo, Game Freak and Creatures. This is an unofficial fan prototype, unaffiliated with those companies.
 
@@ -187,3 +187,43 @@ All three-card rolls are sampled without replacement using upgrade identity: kin
 The upgrade audit verifies all tactic stack counters with repeated normal/master copies; multiplicative universal, dual-type and stage buffs; grown health/armor/range and removing one instance; actual cooldowns, movement slows, defense penetration, focus ramp, critical cadence, finishing damage, wound marks, healing and stun duration. Existing per-effect rules remain: wounds cap at 8 marks, focus ramps for up to 10 seconds per target, stuns have recovery, and Split Volley divides attack power across target capacity. Copies strengthen these effects according to each card rather than bypassing those rules. No additional stacking balance changes were needed.
 
 Validation includes repeated regional controller drafts for all eight regions and both growing/full parties, deterministic reward/master/premium/reroll uniqueness checks (including fixed RNG edge cases), frequency checks and upgrade stack/removal checks.
+
+## Version 0.14.0 — Repeat resonance, Mega Evolution and Terastallization
+
+Apply after Version 13 by merging the patch into the existing project. This patch includes new form sprites and regional data, in addition to changed source and dist files. No external image request is needed at runtime. All forms use the bundled official PokéAPI CSV stats/types; sprites come from the PokéAPI sprite repository.
+
+### Repeats always strengthen your team
+
+Every repeat acquisition of the same passive upgrade grants another **1.10x party damage**, in addition to that card's existing effect. Normal/master versions share a repeat identity; master amounts still apply their full listed effects. The multiplier is shown in the upgrades inventory and included in party damage multipliers. Repeated cards display a repeat-bonus notice. Removing a passive upgrade through a trade recomputes repeat resonance correctly. This guarantees that extra targets, bounces, healing or conditional bonuses remain useful even when their primary effect currently cannot help. Caps on focus time, wound count and stun recovery remain, while repeats still increase their listed strength and resonance.
+
+Split Volley now divides damage by the number of actual targets fired on, rather than unused capacity. A single boss therefore takes full damage. Master Split Volley is available and grants two target-capacity stacks. Long Reach and Master Long Reach have been removed from all reward/premium pools. Old banked range cards are replaced with valid alternatives. Automatic tower milestones remain. Banked type/stage cards that no longer help the current party are replaced before selection.
+
+### Hoenn and Kalos: Mega Evolution
+
+From round 25, the Mega Evolution card is available if the team has an eligible regional Pokémon. Choosing it opens a partner/form picker. Cancel retains the banked reward. Mega forms use their PokéAPI stats/types and retain their base partner's exact regional evolution stage: Mega Heracross is stage 1 and Mega Medicham stage 2. Damage totals remain with the same partner. Each partner can Mega Evolve exactly once and gains 1.25x personal damage. Choose X/Y or another available variant at that first evolution; the form cannot be switched or powered up with another Mega card afterward. More than one party member can Mega Evolve in this custom game. Mega forms cannot be recruited directly or appear in ordinary waves.
+
+All Mega forms in the bundled PokéAPI snapshot whose base species belongs to that region are included, including the newer Kalos starter forms. Other regions do not offer Megas. Hoenn round 150 is now **Mega Rayquaza (10079)**; Kalos round 150 is **Mega Zygarde (10301)**. Kanto remains 151 rounds and other regions remain 150.
+
+### Paldea: Tera Crystals
+
+From round 25, typed Tera Crystal cards appear for eligible partners. Select the crystal, then select its target. Combat and Auto continue during the picker, and cancel retains the reward. The partner keeps its original current-form types and adds the selected Tera type, up to three unique types. Both original type buffs continue applying. Re-Terastallizing replaces the old added type and its matching-buff influence; old Tera types do not accumulate. Duplicate original/added types count only once. A crystal cannot target a partner already using that Tera type, including Stellar Terapagos. Non-Stellar type changes retain the existing cumulative 1.20x personal damage and 3% shorter-cooldown rules. Ordinary Stellar instead preserves native types and moves and adds only a temporary 20% damage bonus, removed on switching away; it adds no permanent power or speed stack. Normal evolution preserves the Tera type/power and uses the newly evolved form's native types and stage. Party stats show the active types and Tera power level; battlefield partners have crystal markers.
+
+Non-Stellar Tera attacks take the active Tera type and use that type's distinct animation. Ordinary Stellar preserves the native move type and animation; Terapagos's special Stellar move is the exception. Stellar damage is neutral against ordinary enemies and doubled against Terastallized enemies. Stellar has its own rainbow star animation.
+
+**Ogerpon** is available as a rare Paldea partner, with its four mask transformations. Grass/Teal grants 20% faster attacks. Water/Wellspring reduces incoming special tower impacts by 10% per Tera power level. Fire/Hearthflame grants 1.50x personal damage. Rock/Cornerstone reduces physical tower impacts by 10% per power level. Ivy Cudgel takes the active mask type. Replacing a mask removes the old mask/type bonuses. Ogerpon accepts only Grass, Water, Fire and Rock crystals.
+
+**Terapagos** accepts Stellar crystals, becomes its actual Stellar Form (10277), and uses Stellar Tera Starstorm. Teraform Zero is adapted to this tower-defense game: it blocks one incoming tower impact each round. Terapagos cannot take another Stellar crystal while already Stellar. The single charge refreshes each round. Paldea's finale remains Stellar Terapagos. These mask/ability effects are explicit game adaptations; ordinary Pokémon battle rules such as weather and terrain are not otherwise simulated.
+
+Form/source references: https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/pokemon.csv ; https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/pokemon_stats.csv ; https://scarletviolet.pokemon.com/en-au/pokemon/ogerpon/ ; https://scarletviolet.pokemon.com/en-gb/pokemon/terapagos_stellar_form/ .
+
+Validation covers repeat benefits for every passive card, removal, absent range offers, actual-target split damage, form restrictions/stages, both Mega finales, one-time Mega Evolution and valid Tera type changes, changing Tera types without old-type leakage, original type buffs, evolution and damage-total preservation, Ogerpon masks, Stellar damage, Teraform Zero, and two-step/cancel behavior during combat. Full-campaign balance remains to be playtested.
+
+## Version 0.15.0 — One-time Mega and temporary Stellar rules
+
+Apply after Version 14. Each Pokémon can Mega Evolve once. Already-Mega partners are removed from all Mega target lists, including alternate forms, and the card disappears when no eligible partners remain. Unused/banked impossible Mega choices turn into valid alternatives.
+
+Ordinary Stellar Tera keeps the partner's native types and move and grants exactly a temporary 1.20x damage modifier. It does not add Stellar typing, grant Stellar-type attacks, add permanent Tera power, or add a cooldown stack. Changing to another Tera type removes that modifier. Cycling away and back reapplies one temporary modifier without accumulating Stellar stacks. Existing power from non-Stellar Tera changes remains under the previous rules. Normal evolution preserves the active Stellar effect and uses the evolved form's native typing.
+
+Terapagos is exempt from those ordinary Stellar type/move rules: it still becomes its special Stellar Form, has Normal/Stellar typing, uses Tera Starstorm and receives Teraform Zero's single charge each round. The prohibition on choosing an already-active Tera type applies to every partner, including Terapagos and Ogerpon. Other eligible partners can still be selected with that crystal; if none exist, that crystal is not offered. A Pokémon may return to a previously used type after changing to a different type first, unless its species-specific restrictions prevent it.
+
+Validation: 120 automated checks, including state-preserving rejection, stale banked-card repair, ordinary Stellar native moves/types, temporary-bonus removal, evolution, Stellar cycling without permanent damage/speed gains, independent eligible Mega partners, and Terapagos's exception. Full campaign balance is not rerun for this rules patch.

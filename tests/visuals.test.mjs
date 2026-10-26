@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {TYPE_VISUALS} from '../public/type-visuals.js';
 import {drawAttack} from '../public/attacks.js';
 import {TYPES} from '../public/engine.js';
-test('all 18 types produce distinct geometry even with the same color and beam shape',()=>{
+test('all 19 types produce distinct geometry even with the same color and beam shape',()=>{
  assert.deepEqual(Object.keys(TYPE_VISUALS).sort(),Object.keys(TYPES).sort());
  const traces=new Set();
  for(const type of Object.keys(TYPES)){
@@ -12,7 +12,7 @@ test('all 18 types produce distinct geometry even with the same color and beam s
   drawAttack(ctx,{origin:{x:0,y:0},target:{x:250,y:50},move:{type,name:'Test',shape:'beam',color:'#ffffff'},points:[{x:250,y:50}],duration:.48,life:.24});
   assert.equal(balance,0,type);traces.add(JSON.stringify(trace));
  }
- assert.equal(traces.size,18);
+ assert.equal(traces.size,19);
 });
 test('type renderers handle all gameplay shapes and animation endpoints without leaking canvas state',()=>{
  for(const type of Object.keys(TYPE_VISUALS))for(const shape of ['beam','blast','cone','chain','slash','volley','vortex','quake'])for(const life of [0,.01,.24,.48]){

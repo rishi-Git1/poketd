@@ -11,17 +11,25 @@ galarforms=[10161,10162,10163,10166,10167,10168,10173,10174,10175,10176,10177,10
 for r in regions:
  ids=set().union(*(dex[d] for d in r['dexIds']));r['dexCount']=len(ids)
  if r['id']=='galar':ids.update(galarforms)
- if r['id']=='paldea':ids.update([10250,10251,10252,10253])
+ if r['id']=='paldea':ids.update([10250,10251,10252,10253,1017,10273,10274,10275,10276])
+ if r['id'] in ['hoenn','kalos']:
+  ids.update(int(p['id']) for p in pokemon.values() if '-mega' in p['identifier'] and int(p['species_id']) in ids)
  ids.update(r['starters']);ids.add(r['finale'])
  for b in r['bosses']:ids.update(b['team'])
  # Include base species for special-form finales, available as rare premium partners.
  if r['id']=='galar':ids.add(890)
  if r['id']=='paldea':ids.add(1024)
+ if r['id']=='hoenn':ids.add(384)
+ if r['id']=='kalos':ids.add(718)
  r['pokemonIds']=sorted(ids);allids.update(ids);regionalids[r['id']]=ids
 records={}
 for id in sorted(allids):
  p=pokemon[id];sp=species[int(p['species_id'])]
- records[id]={'id':id,'speciesId':int(p['species_id']),'name':p['identifier'],'types':[v for _,v in sorted(ptypes[id])],'stats':stats[id],'parentSpecies':int(sp['evolves_from_species_id'] or 0),'legendary':sp['is_legendary']=='1' or sp['is_mythical']=='1','bossOnly':id in [10190,10277],'sprite':f'assets/{id}.png','stage':1,'next':None,'nextOptions':[]}
+ records[id]={'id':id,'speciesId':int(p['species_id']),'name':p['identifier'],'types':[v for _,v in sorted(ptypes[id])],'stats':stats[id],'parentSpecies':int(sp['evolves_from_species_id'] or 0),'legendary':sp['is_legendary']=='1' or sp['is_mythical']=='1','bossOnly':id in [10190,10273,10274,10275,10276,10277] or '-mega' in p['identifier'],'sprite':f'assets/{id}.png','stage':1,'next':None,'nextOptions':[]}
+for id,p in records.items():
+ if '-mega' in p['name']:
+  p['mega']=True;p['megaFrom']=p['speciesId'];p['moveBaseId']=p['speciesId']
+ if id in [10273,10274,10275,10276,10277]:p['transformOnly']=True
 # Form-specific evolution connections; never evolve a normal form into a regional-only child.
 formchildren={10161:[863],10162:[10163],10163:[],10166:[865],10167:[],10168:[866],10173:[864],10174:[10175],10175:[862],10176:[10177],10177:[],10179:[867],10180:[],10250:[],10251:[],10252:[],10253:[980]}
 regionalchildren={863,865,866,864,862,867,980}
@@ -48,6 +56,10 @@ for r in regions:
   if id in path:raise ValueError('Evolution cycle')
   return min(3,1+max((stage(parent,path+(id,)) for parent in parents.get(id,[])),default=0))
  for p in data:p['stage']=stage(p['id'])
+ for p in data:
+  if p.get('mega') and p['megaFrom'] in byid:p['stage']=byid[p['megaFrom']]['stage']
+  if p['id'] in [10273,10274,10275,10276,10277]:p['stage']=1
+  if p['id']==10277:p['teraType']='stellar'
  (assets/'regions'/f"{r['id']}.json").write_text(json.dumps(data,separators=(',',':')))
 def sprite(id):
  path=assets/f'{id}.png'
