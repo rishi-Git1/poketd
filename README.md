@@ -1,4 +1,4 @@
-# Poké Bastion — Version 11
+# Poké Bastion — Version 12
 
 A browser tower-defense roguelike with eight **Story-based** regional campaigns. Choose a region when the game opens, then select one of its three starters. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
 
@@ -156,3 +156,24 @@ On tower defeat, combat stops and region selection opens immediately with You Wh
 Apply after Version 10. SHOW TOTAL DAMAGE by the party changes all six party rows from buff multipliers to live cumulative damage; SHOW MULTIPLIERS switches back. Damage is tracked in both views, over the entire current expedition, and updates without rebuilding the party on every hit. Large values use compact notation; hover a value for the full rounded total.
 
 Totals count actual enemy HP removed after defenses, immunities, finishing bonuses, split damage and area/chain falloff; overkill is excluded. Basic projectiles and every signature hit credit the attacker. Evolution retains a partner's total. A swapped-in partner begins at zero; projectiles already in flight remain credited to the original partner. New expeditions reset all totals. No damage or balance formulas are changed.
+
+## Version 0.12.0 — Round-80 builds and dual premium trades
+
+Apply this patch after Version 11. Round-80 rewards unlock seven elite tactics. Each non-Pokémon upgrade slot independently has a 10% chance to become a master upgrade. Recruit/evolution slots keep their purpose, and the guaranteed tactic slot remains a tactic. Older banked reward sets retain their original choices. Master cards use the premium values (50% universal power, 80% matching type/stage, 40 armor points, 200 max HP plus 250 healing, or two tactic stacks). Master Execute is a special one-stack master option available from round 80.
+
+| Upgrade | Effect per stack |
+| --- | --- |
+| Ricochet Volley | One additional bounce to a fresh enemy within 160 range; each bounce retains 60% damage. Primary basic and signature attacks can bounce. No enemy is revisited by the same bounce chain. |
+| Lock-On Link | Retain one target while alive, in range, and vulnerable to the move. Gain +20% primary-target damage per second, capped at +200%. Retargeting or a new round resets the ramp; a visible tether shows the lock. Area victims do not inherit the primary-target ramp. |
+| Master Execute | Damaging hits stun surviving enemies below 35% HP for 0.6 seconds. Includes bosses; stops movement and tower attacks. After the stun ends there are 2 seconds of recovery before the next stun. Works with Finishing Instinct. |
+| Critical Cadence | Every fourth attack volley gains a 1.50x damage multiplier. Repeated copies multiply. The volley includes split and ricochet attacks. |
+| Marked Wounds | Hits add marks lasting 3 seconds, refreshed on hit. The party deals +5% damage per mark, up to 8 marks. Copies increase damage per mark. |
+| Victory Nova | Defeats splash 60% of the killing hit's damage within 80 range. Copies increase the fraction. Splash is credited to the attacker and ignores immune targets; secondary explosions cannot chain. |
+| Guardian Shell | Gain a shield equal to 10% of max HP immediately and at every round start. Copies add shield capacity. Absorbs impacts before HP and appears beside tower HP. |
+| Last Stand Relay | Below 40% tower HP, multiply cooldown by 0.80. Copies compound with Quick Claw Relay. |
+
+All eight mechanics are tracked in the upgrades popup and can be exchanged as upgrades. Damage tracking credits ricochets, ramping, criticals, marked targets and defeat splash, while still excluding overkill.
+
+Each 25-round premium opportunity now grants **one Pokémon exchange AND one upgrade exchange**, in either order. Each category has a separate single reroll of its three options. Completing one exchange leaves the other available. Later/Escape preserves choices, spent rerolls and completed exchanges. The category buttons show completed exchanges; Skip remaining exchange forfeits only unused rights and never reverses a completed swap. The opportunity leaves the bank after both exchanges or when skipped. Auto and combat continue as before. Rerolls prefer entirely new choices; tiny regional pools may require repeats. Eligibility and available tiers follow the current round when offers are generated, including for previously banked trades.
+
+Automated validation covers unlock boundaries, the exact 10% threshold, stacking/removal, shields, target locks, ricochets, stuns and recovery, damage attribution, dual exchanges, reroll limits and bank persistence. Full-length campaign balance still requires playtesting.

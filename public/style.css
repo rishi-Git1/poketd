@@ -15,3 +15,5 @@
 .arena-top{z-index:2}#paused{z-index:1;pointer-events:none}
 
 .party-stat-controls{display:flex;align-items:center;justify-content:space-between;gap:6px;grid-column:1/-1;margin:8px 0}.party-stat-controls .side-subtitle{margin:0;font-size:16px}#party-stat-toggle{font:inherit;font-size:15px;color:var(--ink,#23334c);background:#fff8df;border:2px solid #283d47;padding:3px 5px;cursor:pointer}#party-stat-toggle:hover,#party-stat-toggle[aria-pressed="true"]{background:#ffdf70}#party-stat-toggle:focus-visible{outline:3px solid #416eaa;outline-offset:2px}.party-multiplier{font-variant-numeric:tabular-nums}
+
+#swap-reroll{border:3px solid #283c57;background:#ffdf70;color:#23334c;padding:7px 12px;font:inherit;font-size:21px;margin:6px 0}#swap-status{font-size:19px;min-height:2.4em}.swap-buttons button:disabled,#swap-reroll:disabled{opacity:.5;cursor:default}

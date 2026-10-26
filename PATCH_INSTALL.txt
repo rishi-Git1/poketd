@@ -1,12 +1,14 @@
-Poké Bastion Version 11 — Live party damage totals
+Poké Bastion Version 12 — Round-80 builds and dual premium trades
 
-Requires Version 10 with prior patches applied. Merge these contents into the existing project folder containing package.json. Replace matching files and preserve all other files. Push updated files to Render; rebuild using npm run build. Hard-refresh after deployment. Updated dist files are included for direct static hosts.
+Requires Version 11 with previous patches applied. Merge these ZIP contents into the existing project folder containing package.json. Overwrite matching files and keep all other files.
 
-SHOW TOTAL DAMAGE under YOUR PARTY switches all party rows to cumulative damage. SHOW MULTIPLIERS switches back. Both views keep tracking damage over the current expedition. Large values are abbreviated; hover for the full rounded value.
+Render: push changes and rebuild with npm run build. Hard-refresh after deployment. Updated dist files are included for direct static hosts. No sprites or regional rosters are duplicated.
 
-Counts actual HP removed, excluding overkill. Includes projectile, signature, area, chain, split and finishing damage. Evolution retains totals. New recruits/swapped-in Pokémon begin at zero. In-flight attacks belong to their original attacker. New expeditions reset totals.
+From round 80, each upgrade-card slot has a 10% chance to become a master card. New options: Ricochet Volley, Lock-On Link, Master Execute, Critical Cadence, Marked Wounds, Victory Nova, Guardian Shell, and Last Stand Relay. Full effects and stacking rules are documented in README.md and card descriptions. Master Execute works with Finishing Instinct and on bosses. Ricochets work with basic and signature attacks.
 
-Validation: 77 tests and build passed. Live display verified in browser.
+Each premium opportunity now supports one Pokémon exchange AND one upgrade exchange. Each category has one independent reroll. Later/Escape preserves all progress, cached choices and used rerolls. Skip remaining exchange forfeits only unused exchanges.
+
+89 automated checks and the build passed, including a clean installation of this patch on Version 11. Premium category exchanges, reroll limits and new master-card UI were also checked in the browser using a round-80 fixture. Full campaign balance remains to be playtested. No QA controls are included.
 
 Changed files:
 public/app.js
@@ -19,6 +21,8 @@ dist/engine.js
 dist/campaign.js
 dist/index.html
 dist/style.css
-tests/damage-tracking.test.mjs
+tests/elite.test.mjs
+tests/flow-harness.mjs
+tests/tactics.test.mjs
 package.json
 README.md
