@@ -1,4 +1,4 @@
-# Poké Bastion — Version 09
+# Poké Bastion — Version 10
 
 A browser tower-defense roguelike with eight **Story-based** regional campaigns. Choose a region when the game opens, then select one of its three starters. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
 
@@ -71,7 +71,7 @@ Defeating the final boss opens the regional Hall of Fame screen, showing the cha
 
 - Enemy count: `3 + 2 * wave` through round 5; then `13 + 3 * (wave - 5)`.
 - Rounds 1–3 use groups of up to three, with 0.36 seconds between group members and 3.2 seconds between group starts. Rounds 4–50 use 2.4 seconds between starts. Random jitter is up to 0.2 seconds.
-- From round 51 onward, levels arrive in five balanced batches of about **20%**, at 0 / 3 / 6 / 9 / 12 game seconds. Thus 150 enemies arrive in five groups of 30. Uneven totals preserve all enemies; small boss teams use fewer groups. Solo finales spawn once at time zero.
+- From round 51 onward, levels arrive in five balanced batches of about **20%**, with each next group waiting until at most one living enemy remains (single-enemy groups must be defeated first). Thus 150 enemies arrive in five groups of 30. Uneven totals preserve all enemies; small boss teams use fewer groups. Solo finales spawn once at time zero.
 - Early waves limit enemy base-stat totals, soften HP/defense/impact and reduce movement speed. Stage 2 enemies unlock at round 4 and stage 3 at round 9.
 - After every tenth cleared round, range and max HP multiply by 1.05; current HP gains the new capacity. Effective defense also grows: `(1 + armor) *= 1.05`, so growth works even from zero armor. Each milestone applies only once.
 
@@ -142,3 +142,11 @@ All bosses in all regions gain 20% HP, physical defense, special defense, moveme
 ## Version 0.9.0 animation patch
 
 Apply after Version 0.8.0 by merging the patch contents into the project root. All 18 move types have distinct canvas geometry, rather than a shared recolored beam or burst. Fire and electric keep their recognizable flame and lightning effects. Other types now have water streams and splashes, grass vines and leaves (petals for Petal Blizzard), normal impact stars, poison sludge, bug blades or needle swarms, flying gusts and feathers, ground fissures, falling rocks, psychic rings, ghost wisps, dragon helices and jaws, ice crystals, fighting fists, fairy moons and glints, steel plates and sparks, and dark eclipse effects. Applies to all regions, battle signatures and the move preview. Basic pre-evolution projectile orbs remain. Damage, cooldown, targeting geometry and Version 0.8.0 tactics are unchanged. Canvas animation is procedural; no new image downloads are required.
+
+## Version 0.10.0 pacing and loss patch
+
+Apply after Version 0.9.0. The pause shade no longer blocks battle controls; clicking Pause again resumes. Its accessible name changes to Resume battle while paused.
+
+From round 51, keep the five balanced 20% groups, but release the next group only when at most one living enemy remains. A single-Pokémon group must be defeated before the next is released, so small boss teams do not all arrive immediately. Time and 5x speed cannot bypass this condition. Early-round staggered spawns and Auto reward banking stay unchanged.
+
+On tower defeat, combat stops and region selection opens immediately with You Whited Out! and the lost round. It cannot return to the defeated story; choosing any region starts a fresh run. Regional best records remain.
