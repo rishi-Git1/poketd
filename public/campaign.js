@@ -18,7 +18,7 @@ export const BOSSES=[
 ];
 export function bossFor(wave,starter=1){const b=BOSSES.find(b=>b.wave===wave);if(!b)return null;const team=b.name==='Blue'?(starter===4?[18,65,112,59,103,9]:starter===7?[18,65,112,130,59,3]:b.team):b.team;return {...b,team:[...team],boost:b.boost||1.25}}
 export function nextBoss(wave,starter){return BOSSES.find(b=>b.wave>wave)||null}
-export function campaignPlan(wave,roster,starter){const b=bossFor(wave,starter);return b?b.team.map((id,i)=>({pokemon:roster.find(p=>p.id===id),at:i*.85,angle:i*Math.PI*2/b.team.length,boss:b})):null}
+export function campaignPlan(wave,roster,starter){const b=bossFor(wave,starter);return b?b.team.map((id,i)=>({pokemon:roster.find(p=>p.id===id),at:wave>50?0:i*.85,angle:i*Math.PI*2/b.team.length,boss:b})):null}
 export function applyTowerGrowth(run){if(run.wave===0||run.wave%10||run.growthWaves.includes(run.wave))return false;run.growthWaves.push(run.wave);run.range*=1.05;run.armor=(1+run.armor)*1.05-1;const increase=run.maxHp*.05;run.maxHp+=increase;run.hp+=increase;return true}
 export function canAutoAdvance(run,{enabled,paused,dialogOpen,hidden}){return enabled&&run.phase==='ready'&&!paused&&!dialogOpen&&!hidden&&run.wave<151}
 export const isBuff=c=>['offense','type','stage','health','armor'].includes(c.kind);

@@ -1,4 +1,4 @@
-# Poké Bastion — Version 05
+# Poké Bastion — Version 05.1
 
 A playable browser roguelike tower defense prototype. Choose Bulbasaur, Charmander, or Squirtle, then defend a central bastion against a 151-round campaign of approaching Pokémon. After every cleared wave, choose exactly one of three rewards.
 
@@ -122,7 +122,7 @@ AUTO ON starts the next wave immediately, with no countdown and no requirement t
 
 After each cleared round divisible by 10, attack range and maximum tower HP multiply by 1.05. Current HP gains the new maximum-HP capacity (no full heal). Effective armor multiplies by 1.05: `1 + armor` becomes `(1 + armor) * 1.05`, so this works even at zero initial armor. Growth occurs once per milestone, compounds, and appears in the sidebar and upgrade inventory. Attack range has no gameplay cap; its illustrated ring is clipped to the battlefield.
 
-Boss rounds replace the normal enemy wave. Their teams arrive 0.85 seconds apart around the tower, have a gold aura and trainer banner, and remain near the tower to attack every 1.6 seconds until defeated. Clearing a boss requires defeating the entire roster. Teams use Pokémon Red/Blue rosters (https://pokemondb.net/red-blue/gymleaders-elitefour); Blue's party counters the player's original starter even if that starter was evolved or traded.
+Boss rounds replace the normal enemy wave. Their teams arrive 0.85 seconds apart through round 50, then all at once from round 51 onward around the tower, have a gold aura and trainer banner, and remain near the tower to attack every 1.6 seconds until defeated. Clearing a boss requires defeating the entire roster. Teams use Pokémon Red/Blue rosters (https://pokemondb.net/red-blue/gymleaders-elitefour); Blue's party counters the player's original starter even if that starter was evolved or traded.
 
 | Round | Encounter |
 | --- | --- |
@@ -164,3 +164,8 @@ At rounds 25, 50, 75, 100, 125 and 150, an optional premium trade is banked inde
 - A new expedition clears the queues. As before, browser reload does not preserve the active run.
 
 37 tests pass, including consecutive queued rewards, mid-combat application without enemy resets, instant Auto advancement, queued premium trades while their dialog is open, deferred/canceled trades, stale card recovery, and manual/Auto switching.
+
+
+## Version 05.1 — instant late-wave spawning
+
+All enemies in rounds 51 onward spawn on the first combat update, with zero per-enemy delay. This applies to both regular waves and boss teams. Rounds 1–50 retain their existing staggered timing. Enemy counts, stats, positions, progression, and banked rewards are preserved. 39 tests pass, including the 50/51 boundary and actual first-tick spawning for regular waves, gyms, Blue, Mewtwo, and Mew.
