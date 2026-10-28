@@ -1,5 +1,5 @@
 // Regional forms keep their evolution stage. Data comes from bundled PokéAPI records.
-export const MEGA_REGIONS=['hoenn','kalos'];
+export const MEGA_REGIONS=['hoenn','kalos','alola'];
 export const TERA_TYPES=['normal','fire','water','grass','electric','ice','fighting','poison','ground','flying','psychic','bug','rock','ghost','dragon','dark','steel','fairy','stellar'];
 export const isTransformation=card=>['mega','tera','gmax'].includes(card?.kind);
 export const canEvolve=ally=>!ally.evolutionLocked&&!ally.gmaxCount&&!ally.pokemon.gigantamax&&!ally.pokemon.evolutionLocked;
@@ -34,7 +34,7 @@ export function transformationOptions(card,run,roster){
 export function regionalCards(run,roster){
  if(run.wave<25||!run.team.length)return [];
  const candidates=[];
- if(MEGA_REGIONS.includes(run.region))candidates.push({kind:'mega',title:'Mega Evolution',label:'REGIONAL POWER',badge:'HOENN / KALOS',symbol:'◈',accent:'#ba6fc4',description:'Choose an eligible partner and Mega form once. Preserve its stage and damage total; gain ×1.25 personal damage. Already Mega-Evolved partners cannot be selected again.'});
+ if(MEGA_REGIONS.includes(run.region))candidates.push({kind:'mega',title:'Mega Evolution',label:'REGIONAL POWER',badge:'REGIONAL MEGA POWER',symbol:'◈',accent:'#ba6fc4',description:'Choose an eligible partner and Mega form once. Preserve its stage and damage total; gain ×1.25 personal damage. Already Mega-Evolved partners cannot be selected again.'});
  if(run.region==='galar')candidates.push({kind:'gmax',title:'Max Mushrooms',label:'GIGANTAMAX',badge:'GALAR POWER',symbol:'♣',accent:'#c95181',description:'Choose a partner with a Gigantamax form. Permanently Gigantamax it once: ×1.25 personal damage and a signature G-Max move. Keeps its stage and damage total. That partner can never evolve afterward. Eternatus is ineligible.'});
  if(run.region==='paldea')for(const type of TERA_TYPES)candidates.push({kind:'tera',type,title:`${type[0].toUpperCase()+type.slice(1)} Tera Crystal`,label:'TERASTALLIZATION',badge:`${type.toUpperCase()} TERA`,symbol:'◆',accent:'#67bdd0',description:type==='stellar'?'Keep native types and gain +20% damage only while Stellar. The bonus ends on another Tera type. Terapagos instead becomes its special Stellar Form. Cannot target an already Stellar partner.':`Choose a partner to add ${type} typing alongside its original types. Grants another ×1.20 personal damage. Replaces its previous Tera type. Partners already Tera ${type} cannot be selected.`});
  return candidates.filter(c=>transformationOptions(c,run,roster).length);

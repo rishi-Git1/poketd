@@ -1,5 +1,6 @@
 // Original pixel scenery and palettes for each Story-based battlefield.
 export const MAPS={
+ alola:{name:'Ultra Wormhole',ground:'#211940',clearing:'#4e367b',path:'#a178bd',line:'#9a7aba',detail:'#fff1b5',stone:'#57407d',stoneLight:'#d4bff2',foliage:['#312349','#5c3d85','#a878bd','#ecd5ff'],tower:['#62517a','#c1a985','#f5e2a0'],flag:'#f7bc54',motif:'wormhole'},
  kanto:{name:'Indigo Plateau',ground:'#727ca5',clearing:'#8f99bf',path:'#e0d4aa',line:'#505d89',detail:'#b8c4de',stone:'#596786',stoneLight:'#a9b5d1',foliage:['#253f60','#365b79','#568a92','#8bb9b7'],tower:['#777a9b','#c2c1d5','#e4e0e9'],flag:'#e7ba52',motif:'plateau'},
  johto:{name:'Mt. Silver',ground:'#a5b7c7',clearing:'#d5e1e5',path:'#8c9eae',line:'#667c93',detail:'#f5fbfb',stone:'#607488',stoneLight:'#c8d7df',foliage:['#344c5b','#4d6873','#7f9ca4','#e0edf0'],tower:['#60788e','#a6bccb','#dfedf2'],flag:'#7199d1',motif:'snow'},
  hoenn:{name:'Sky Pillar',ground:'#478e96',clearing:'#94b6a5',path:'#d4d1a8',line:'#427f78',detail:'#b8d9bb',stone:'#5b8b86',stoneLight:'#cedbc1',foliage:['#285f65','#397c76','#70a68b','#b0cf9a'],tower:['#527f79','#a0bd9e','#d7dfb6'],flag:'#d8c369',motif:'sky'},
@@ -62,7 +63,7 @@ function crystal(ctx,x,y,s,t,variant){
 }
 function lamp(ctx,x,y,s,t){ctx.save();ctx.translate(x,y);ctx.scale(s,s);oval(ctx,0,16,18,6,t.line+'80');ctx.fillStyle=t.line;ctx.fillRect(-3,-58,6,73);ctx.fillRect(-12,12,24,5);ctx.fillRect(-11,-65,22,26);ctx.fillStyle='#ffe4a0';ctx.fillRect(-7,-61,14,18);ctx.fillStyle=t.line;ctx.fillRect(-3,-69,6,31);ctx.fillRect(-14,-68,28,5);ctx.restore()}
 export function drawMap(ctx,region,range=335){
- const t=mapFor(region);ctx.save();ctx.fillStyle=t.ground;ctx.fillRect(0,0,1000,690);oval(ctx,500,350,372,244,t.clearing);
+ const t=mapFor(region);if(t.motif==='wormhole'){drawWormhole(ctx,range,t);return}ctx.save();ctx.fillStyle=t.ground;ctx.fillRect(0,0,1000,690);oval(ctx,500,350,372,244,t.clearing);
  if(['sky','ruins','city'].includes(t.motif)){ctx.strokeStyle=t.line+'45';ctx.lineWidth=1;for(let x=0;x<1000;x+=48){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,690);ctx.stroke()}for(let y=0;y<690;y+=32){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(1000,y);ctx.stroke()}}
  ctx.strokeStyle=t.path;ctx.lineWidth=t.motif==='city'?53:35;ctx.beginPath();ctx.moveTo(0,390);ctx.bezierCurveTo(180,405,350,328,500,345);ctx.bezierCurveTo(680,350,810,500,1000,500);ctx.stroke();ctx.lineWidth=t.motif==='city'?44:26;ctx.beginPath();ctx.moveTo(515,0);ctx.bezierCurveTo(550,160,470,240,500,345);ctx.bezierCurveTo(520,470,430,580,385,690);ctx.stroke();
  if(t.motif==='spiral'){ctx.strokeStyle=t.stone;ctx.lineWidth=9;ctx.beginPath();for(let i=0;i<=160;i++){const a=i*.08,r=110+i*.8;const x=500+Math.cos(a)*r,y=345+Math.sin(a)*r*.68;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke()}
@@ -80,4 +81,13 @@ export function drawMap(ctx,region,range=335){
 }
 export function drawBastion(ctx,region){
  const t=mapFor(region),[dark,mid,light]=t.tower;ctx.save();oval(ctx,500,363,82,36,t.line+'40');oval(ctx,500,348,81,34,mid);oval(ctx,500,343,73,30,light);ctx.fillStyle=dark;ctx.fillRect(472,286,56,62);ctx.fillStyle=mid;ctx.fillRect(478,286,43,59);ctx.fillStyle=dark;ctx.fillRect(500,286,21,59);ctx.fillStyle=light;ctx.fillRect(467,278,66,13);ctx.fillStyle=dark;ctx.fillRect(470,289,60,7);ctx.fillStyle=mid;for(let i=0;i<4;i++)ctx.fillRect(467+i*17,266,12,15);ctx.fillStyle=t.line;ctx.fillRect(493,304,13,19);ctx.fillStyle=light;ctx.fillRect(497,304,3,19);ctx.strokeStyle=dark;ctx.lineWidth=1;for(let y=315;y<346;y+=12){ctx.beginPath();ctx.moveTo(478,y);ctx.lineTo(521,y);ctx.stroke()}ctx.fillStyle=dark;ctx.fillRect(500,235,3,32);ctx.fillStyle=t.flag;ctx.beginPath();ctx.moveTo(503,235);ctx.lineTo(526,242);ctx.lineTo(503,250);ctx.fill();oval(ctx,500,351,18,7,dark);oval(ctx,500,348,18,7,light);ctx.restore();
+}
+
+function drawWormhole(ctx,range,t){
+ ctx.save();ctx.fillStyle=t.ground;ctx.fillRect(0,0,1000,690);
+ for(let i=8;i>=0;i--)oval(ctx,500,345,130+i*47,90+i*31,['#62478f','#3c2c64','#523977','#33254f'][i%4]);
+ for(let arm=0;arm<6;arm++){ctx.beginPath();for(let j=0;j<=55;j++){const a=arm*Math.PI/3+j*.038,r=120+j*8,x=500+Math.cos(a)*r,y=345+Math.sin(a)*r*.68;j?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.strokeStyle=['#b2b6ee','#d192ca','#8263b3'][arm%3];ctx.lineWidth=arm%2?7:3;ctx.stroke()}
+ for(const [i,q] of tufts.entries()){if(Math.hypot(q.x-500,(q.y-345)*1.4)<120)continue;ctx.fillStyle=i%3?'#ead9ff':'#ffe5a1';ctx.fillRect(q.x,q.y,i%5?2:4,2);if(i%5===0)ctx.fillRect(q.x+1,q.y-3,2,8)}
+ oval(ctx,500,345,154,106,'#33214e');ctx.strokeStyle='#d2a6e3';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(500,345,160,110,0,0,Math.PI*2);ctx.stroke();
+ ctx.strokeStyle=t.line+'80';ctx.setLineDash([5,8]);ctx.lineWidth=1;for(const r of [140,Math.min(range,480)]){ctx.beginPath();ctx.ellipse(500,345,r,r*.76,0,0,Math.PI*2);ctx.stroke()}ctx.setLineDash([]);ctx.restore();
 }

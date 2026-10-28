@@ -1,11 +1,19 @@
-POKE BASTION VERSION 21 — PARTY DOSSIER PATCH
-Apply over Version 20. Changed/new files only.
-Extract into the existing project folder containing package.json. Merge public, dist and tests; replace matching files. Keep all other existing files/assets. Redeploy on Render (npm run build; publish dist), then reload. Header: VERSION 21.
+POKE BASTION VERSION 22 — REGIONAL EXPANSION PATCH
+Cumulative changed/new files only. Installs over Version 20 OR Version 21. Includes the party dossier and all eight requested expansion features. The full game ZIP is not regenerated.
 
-Click a Pokemon in YOUR PARTY to inspect it beneath the battlefield. The starter is selected automatically. Selection and live counters do not pause combat or Auto.
+1. Extract into the existing project root containing package.json.
+2. Merge public, dist, scripts and tests; replace matching files. Keep all other assets/files.
+3. Redeploy on Render: Build Command npm run build; Publish Directory dist.
+4. Reload and confirm VERSION 22. Choose starter/campaign options before selecting a region.
 
-The dossier shows all six base stats and total, types/stage/form/evolution path, move/attack class, move power, estimated neutral hit before enemy defense and conditional effects, attack interval in game seconds, targets, bounces and range. Live contributions: damage, share of run damage, defeats, boss defeats, damaging hits, volleys, strongest actual hit and actual tower HP restored.
+Features:
+- Post-round-100 Mega/Gigantamax matching +35% damage rallies; master rules and stacking preserved.
+- Sinnoh includes the Hisui dex and forms/evolution routes.
+- Early waves arrive in batches and have a lighter opening nerf.
+- Non-finale bosses double HP, both defenses, movement speed and impact. Kanto Mewtwo/Mew and other finales retain previous multipliers.
+- Full screen simulation via the button beside speed: no party/stats panels; choices appear at the bottom. Exit restores the same run.
+- Classic or three random first-stage regional starters.
+- Classic or Endless: same story route, then random bosses every 10 rounds after the cap (160/170...; Kanto161/171...). Extra 5% compounded enemy stats each round after151, on top of normal scaling.
+- Alola: 3x3 selector, Ultra Wormhole scenery, Mega Evolution, Totem/Ultra Beast boss route, Ultra Necrozma finale150.
 
-Relevant upgrades include universal power, matching type/stage buffs, party tactics and that individual's regional transformations. Repeated off-type/stage cards still appear when their repeat resonance applies. Tower support appears separately. Copy counts, master stack amounts and the compound damage breakdown are included. Evolution/transformations preserve individual records; replacements start fresh. The inspector updates without rebuilding a scrolled upgrade list on every hit. Small screens place it below the party section.
-
-Validation: 138 automated tests passed; production build passed; real browser wave/contribution/selection checks and a populated evolved/Tera fixture were reviewed; mobile width checked for overflow; clean patch installation over V20 verified. The preview image uses a demonstration party.
+Validation: 152 automated checks passed; production build passed; browser checks covered region options and live full-screen Auto rewards. Patch rebuilt and tested over V20 and V21. See README for exact rules and balance/playtesting limits.

@@ -1,6 +1,6 @@
-# Poké Bastion — Version 15
+# Poké Bastion — Version 22
 
-A browser tower-defense roguelike with eight **Story-based** regional campaigns. Choose a region when the game opens, then select one of its three starters. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
+A browser tower-defense roguelike with nine regional campaigns and **Classic / Endless** modes. Choose a region when the game opens, choose Classic or Random starters, then select one of three partners. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
 
 ## Regional stories
 
@@ -9,17 +9,18 @@ A browser tower-defense roguelike with eight **Story-based** regional campaigns.
 | Kanto | 151 | Red / Blue | Blue | Mew (Mewtwo at 150) | 151 |
 | Johto | 251 | Gold / Silver | Lance | Ho-Oh | 150 |
 | Hoenn | 202 | Ruby / Sapphire | Steven | Mega Rayquaza | 150 |
-| Sinnoh | 210 | Platinum | Cynthia | Arceus | 150 |
+| Sinnoh | 264 | Platinum + Hisui | Cynthia | Arceus | 150 |
 | Unova | 301 | Black 2 / White 2 | Iris | Kyurem | 150 |
 | Kalos | 457 | X / Y, combined Central/Coastal/Mountain dexes | Diantha | Mega Zygarde | 150 |
+| Alola | 403 | Ultra Sun / Ultra Moon | Totems / Ultra Beasts | Ultra Necrozma | 150 |
 | Galar | 400 | Sword, adapted Champion Cup bracket | Leon | Eternamax Eternatus | 150 |
 | Paldea | 400 | Scarlet / Violet | Geeta | Stellar Terapagos | 150 |
 
-Alola has no selectable campaign yet. Regional Pokédexes contain overlapping species, including Pokémon originally introduced in other regions. These are actual regional dex lists from PokéAPI, not national-generation ID slices. Required finale exceptions are added: Arceus for Sinnoh; base and Stellar Terapagos for Paldea; Eternamax Eternatus for Galar. Relevant Galarian and Paldean forms are included alongside base species. The displayed dex count refers to the official regional species list, excluding additional forms/finale exceptions.
+Alola features Totem and Ultra Beast encounters in the Ultra Wormhole. Regional Pokédexes contain overlapping species, including Pokémon originally introduced in other regions. These are actual regional dex lists from PokéAPI, not national-generation ID slices. Required finale exceptions are added: Arceus for Sinnoh; base and Stellar Terapagos for Paldea; Eternamax Eternatus for Galar. Relevant Galarian and Paldean forms are included alongside base species. The displayed dex count refers to the official regional species list, excluding additional forms/finale exceptions.
 
-The complete pack contains **1087 distinct Pokémon/form records with local sprites**, including per-region evolution paths and legendary/mythical flags. Kanto retains its original three Eevee branches; later regions gain additional branches when those evolutions belong to their dex. Regional forms have their own evolution connections, such as Galarian Meowth → Perrserker and Paldean Wooper → Clodsire.
+The complete pack contains **1198 distinct Pokémon/form records with local sprites**, including per-region evolution paths and legendary/mythical flags. Kanto retains its original three Eevee branches; later regions gain additional branches when those evolutions belong to their dex. Regional forms have their own evolution connections, such as Galarian Meowth → Perrserker and Paldean Wooper → Clodsire.
 
-The REGIONS button opens the selector again. Cancel returns to the current story; choosing another region starts a fresh run. New story at an ending restarts the same region; Choose a region returns to the selector. Best rounds are saved separately for each region on this device. Active runs are not saved across reloads. Legacy Kanto best scores are still recognized.
+The REGIONS button opens the selector again. Cancel returns to the current story; choosing another region starts a fresh run. New story at an ending restarts the same region; Choose a region returns to the selector. Best rounds are saved separately for each region and Classic/Endless mode on this device. Active runs are not saved across reloads. Legacy Kanto best scores are still recognized.
 
 ## Run locally
 
@@ -127,7 +128,7 @@ Sources:
 
 ## Validation
 
-Run `npm test` for **138 checks**. They cover all eight regional starters/endings, exact round caps, all 113 boss encounters, requested special-form IDs and stats, all 1087 local sprite files, regional roster isolation, evolution links, regional forms, region switching and best-record isolation, reward stacking, Auto flow, premium swaps, batch sizes, attack rendering and story completion with banked choices. Controller tests use an in-memory DOM; they do not constitute eight complete 150-round playthroughs. Long-run balance remains an iterative playtesting task.
+Run `npm test` for **152 checks**. They cover all nine regional starters/endings, exact round caps, all 127 boss encounters, requested special-form IDs and stats, all 1198 local sprite files, regional roster isolation, evolution links, regional forms, region switching and best-record isolation, reward stacking, Auto flow, premium swaps, batch sizes, attack rendering and story completion with banked choices. Controller tests use an in-memory DOM; they do not constitute nine complete 150-round playthroughs. Long-run balance remains an iterative playtesting task.
 
 The project uses a bundled VT323 pixel font with its SIL Open Font License in assets. Pokémon and character names are trademarks of Nintendo, Game Freak and Creatures. This is an unofficial fan prototype, unaffiliated with those companies.
 
@@ -306,3 +307,53 @@ Relevant owned cards are grouped with copy counts and master tactic stack counts
 The panel follows each region's palette. On smaller screens it moves below the party section, with responsive stat and contribution grids.
 
 Validation: **138 automated checks**, production build and browser checks. New coverage verifies stat/damage-factor math, repeat-only relevance, shared tower support, actual hit/heal/defeat credit, former-partner damage share, individual form-history ownership, Tera type replacement, selection during Auto, evolution/swap/reset behavior and stable live rendering. Browser review included actual wave clears, two-party selection, live counters and upgrade display.
+
+
+## Version 0.22.0 — Regional expansion, Endless and simulation view
+
+This cumulative changed-files patch installs over **Version 20 or Version 21**. It includes the party dossier, all new regional assets and prebuilt dist files. Merge its folders into the existing project, replace matching files, keep all other assets, then redeploy on Render with npm run build / dist. Confirm VERSION 22 in the header. The original full-game ZIP is not regenerated.
+
+### Starters and modes
+
+The region selector is a 3×3 grid, with **Classic / Random starters** and **Classic / Endless** campaign controls. Classic starters retain each region's traditional three. Random offers three distinct regional species with this game's stage 1 classification, including single-stage Pokémon; battle-only/Totem/Mega/Gigantamax forms are excluded. Random choices are freshly drawn for each new run. Closing the selector preserves the current run; selecting a region starts fresh with the selected controls.
+
+Classic remains Story-based with a 150-round ending (151 in Kanto). Endless follows exactly the same story boss route, then continues with normal banked rewards, trades and tower growth. A cached random regional boss arrives every ten rounds after the story cap: 160, 170, etc. outside Kanto; 161, 171, etc. in Kanto. Boss-only transformations are excluded from the random pool. Each additional endless boss gains 15% tier power over its predecessor. In addition to ordinary wave growth, every enemy's HP, both defenses, movement speed and impact are multiplied by 1.05^(wave−151) starting on round 152. This compounds aggressively. Classic and Endless best records are separate; active runs still do not survive a reload.
+
+### Upgrades and waves
+
+From rewards earned on **round 101**, Mega Rally and Gigantamax Rally can appear only while matching transformed partners exist in the party. They grant **35% damage** to all matching partners and compound with type, stage, universal, personal-form and repeat-resonance buffs. Master versions follow existing master rules and grant 80%. They can be exchanged in premium trades; invalid banked/premium form offers refresh after the last matching partner leaves. Party dossiers display these buffs and their factors.
+
+Early levels now use last-enemy-gated batches too. Early groups contain roughly three Pokémon until five groups are appropriate; later groups remain balanced 20% batches. The next group arrives when the prior group has one survivor, with singleton groups requiring defeat. Opening HP/defense easing starts at 80% rather than 65%, with lighter movement/impact nerfs as well; the full early curve reaches normal stats at round 6. Starter rosters and opening enemy base-stat caps still apply.
+
+Non-finale bosses now have **double HP, physical/special defense, movement speed and impact**, on top of their previous boss multipliers. Story finales keep their previous boss multipliers; Kanto's Mewtwo/Mew end sequence is exempt. Endless scaling still applies after round 151.
+
+### Sinnoh and Alola
+
+Sinnoh combines Platinum and the complete Hisui species lists: **264 unique dex species / 285 Pokémon-form records**. Hisuian forms and their evolution routes are included alongside Sinnoh originals, including Wyrdeer, Kleavor, Ursaluna, Basculegion, Sneasler and Overqwil. Sinnoh retains its existing boss route and Arceus finale.
+
+Alola uses the updated Ultra Sun / Ultra Moon dex: **403 species / 482 Pokémon-form records**, including 48 regional Mega forms and 12 boss-only Totem forms. Its classic starters are Rowlet, Litten and Popplio. Mega Evolution is available under the same one-time-per-partner rules as Hoenn/Kalos. The battlefield is **Ultra Wormhole**, with purple cosmic rings, light trails and star scenery.
+
+| Round | Alola boss |
+| --- | --- |
+| 15 | Totem Gumshoos |
+| 30 | Totem Araquanid |
+| 45 | Totem Marowak |
+| 60 | Totem Lurantis |
+| 75 | Totem Togedemaru |
+| 90 | Totem Mimikyu |
+| 105 | Totem Kommo-o |
+| 120 | Totem Ribombee |
+| 125 | Nihilego |
+| 130 | Buzzwole / Pheromosa |
+| 135 | Xurkitree / Kartana |
+| 140 | Celesteela / Guzzlord |
+| 145 | Naganadel / Stakataka / Blacephalon |
+| 150 | Ultra Necrozma (10157) |
+
+### Full screen simulation
+
+Use the ⛶ button beside the speed control. The simulation fills the viewport; party panels, dossiers, tower stats and normal page chrome are hidden. Starters, rewards and the manual start control appear in a tray at the bottom when needed. Auto keeps running, and reward choices continue to bank. Pause, Auto, speed and Exit remain available. Escape or Exit restores the normal view. Browser fullscreen is requested when supported; a viewport-filling fallback works when unavailable. The same run and contribution totals remain active in both views.
+
+### Validation
+
+**152 automated checks passed**, including all regional endings, Hisui/Alola roster and sprite integrity, random starter uniqueness, new buff stacking/removal/relevance, doubled non-finale bosses, early batch gates, endless story transitions for Kanto/Alola, cached endless bosses and compounded scaling. Production build passed. Browser review covered the 3×3 selector, random/endless Alola start, Ultra Wormhole, full-screen rewards during uninterrupted Auto, and restoring the standard view. The cumulative patch was rebuilt and checked over V20 and V21. These checks do not substitute for full long-run balance playthroughs.
