@@ -377,3 +377,10 @@ This is an incremental patch over Version 22. Merge the included files into the 
 ## Neutral type damage patch
 
 All attack-versus-defender type interactions are disabled in every mode. Basic projectiles, signatures, chain/splash attacks, ricochets and Victory Nova can damage every type. Weaknesses, resistances, immunities and Stellar's extra damage against Terastallized targets are removed. Enemy physical/special defenses, upgrade bonuses, move power and area falloff still affect damage. Type labels, animations, transformations and collected type-specific upgrades remain active.
+
+
+## Version 24 — type-independent targeting
+
+Normal and split attacks select living enemies by tower range and distance alone. Ricochets select living, unvisited enemies within bounce range. Victory Nova hits every living enemy within its radius. None of these eligibility checks consult Pokémon types, move types or a damage calculation. The damage formula itself no longer reads defender types or calls an effectiveness helper. Focus targeting and signature area geometry retain the same range/liveness rules. Collected type upgrades still work as party upgrades; opponent typing never changes eligibility or damage.
+
+Version 24 also refreshes the source entry/import URLs and production fingerprints. Confirm VERSION 24 in the header after deploying. This patch includes the previous neutral-damage and real-Mega-move-name fixes.

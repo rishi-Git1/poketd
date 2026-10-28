@@ -59,7 +59,7 @@ export function resolveHit(enemy,power,run,source=null){
 }
 
 export function tacticSummary(run,kind){const n=tacticStacks(run,kind);return ({split:`Up to ${1+n} targets; divides damage among actual targets`,haste:`${(100*(1-.85**n)).toFixed(1)}% shorter cooldown`,reach:`${Math.round(run.range)} total range`,chill:`${(100*(1-.85**n)).toFixed(1)}% movement slow for 2s; bosses resist half`,pierce:`${(100*(1-.8**n)).toFixed(1)}% defense ignored`,finish:`${(1.3**n).toFixed(2)}× damage below 35% HP`,siphon:`Restore ${n} HP per defeat`,ricochet:`Up to ${n} bounces at 60% retained damage`,focus:`+${20*n}% per second; up to +${200*n}% on the locked target`,execute:`${(.6*n).toFixed(1)}s stun below 35% HP; 2s recovery`,cadence:`Every fourth volley: ×${(1.5**n).toFixed(2)}`,wounds:`+${5*n}% per mark; up to +${40*n}% for 3s`,nova:`${60*n}% killing-hit splash within 80 range`,shield:`${Math.ceil(run.shield||0)} shield remaining; ${10*n}% max HP each round`,surge:`${(100*(1-.8**n)).toFixed(1)}% shorter cooldown below 40% tower HP`})[kind]}
-export function damage(ally,enemy,buffs,attackType=ally.pokemon.types[0]){const p=ally.pokemon;const special=p.stats['special-attack']>p.stats.attack;const atk=Math.max(p.stats.attack,p.stats['special-attack']);const defense=special?enemy.specialDefense??enemy.pokemon.stats['special-defense']*(1+.025*buffs.wave)*openingEase(buffs.wave):enemy.defense;const mult=damageMultiplier(p,buffs);return Math.max(0,(8+atk*.23)*mult*100/(100+defense*.8**tacticStacks(buffs,'pierce'))*effectiveness(attackType,enemy.pokemon.types))}
+export function damage(ally,enemy,buffs){const p=ally.pokemon;const special=p.stats['special-attack']>p.stats.attack;const atk=Math.max(p.stats.attack,p.stats['special-attack']);const defense=special?enemy.specialDefense??enemy.pokemon.stats['special-defense']*(1+.025*buffs.wave)*openingEase(buffs.wave):enemy.defense;const mult=damageMultiplier(p,buffs);return Math.max(0,(8+atk*.23)*mult*100/(100+defense*.8**tacticStacks(buffs,'pierce')))}
 export function newRun(region="kanto",options={}){const cfg=getRegion(region);return {region,mode:region==='origin'?'true-endless':options.mode==='endless'?'endless':'classic',originSetupLeft:0,starterMode:options.starters==='random'?'random':'classic',forms:{},endlessBosses:{},rounds:cfg.rounds,wave:0,rewardQueue:[],tradeQueue:[],range:335,growthWaves:[],swapWaves:[],starter:1,hp:250,maxHp:250,shield:0,armor:0,offense:0,types:{},stages:{},tactics:{},team:[],kills:0,upgrades:[],upgradeHistory:[],phase:'starter'}}
 export function applyUpgrade(run,card){
  if(card.kind==='evolve'&&!run.team.some(a=>a.pokemon.id===card.from&&canEvolve(a)))return false;
@@ -133,7 +133,7 @@ export const focusFactor=(ally,run)=>1+.2*tacticStacks(run,'focus')*(ally.focusT
 export function volleyFactor(ally,run){ally.volleys=(ally.volleys||0)+1;return ally.volleys%4===0?1.5**tacticStacks(run,'cadence'):1}
 export function advanceStatus(enemy,dt){enemy.slowTime=Math.max(0,(enemy.slowTime||0)-dt);enemy.stunTime=Math.max(0,(enemy.stunTime||0)-dt);enemy.stunRecovery=Math.max(0,(enemy.stunRecovery||0)-dt);enemy.markTime=Math.max(0,(enemy.markTime||0)-dt);if(!enemy.markTime)enemy.marks=0;}
 export function absorbTowerHit(run,impact){const blocked=Math.min(run.shield||0,impact);run.shield=Math.max(0,(run.shield||0)-blocked);const hpDamage=impact-blocked;run.hp=Math.max(0,run.hp-hpDamage);return hpDamage}
-export function nextBounce(origin,enemies,visited,source,run,type){return enemies.filter(e=>e.hp>0&&!visited.includes(e)&&Math.hypot(e.x-origin.x,e.y-origin.y)<=160&&damage(source,e,run,type)>0).sort((a,b)=>Math.hypot(a.x-origin.x,a.y-origin.y)-Math.hypot(b.x-origin.x,b.y-origin.y))[0]}
+export function nextBounce(origin,enemies,visited){return enemies.filter(e=>e.hp>0&&!visited.includes(e)&&Math.hypot(e.x-origin.x,e.y-origin.y)<=160).sort((a,b)=>Math.hypot(a.x-origin.x,a.y-origin.y)-Math.hypot(b.x-origin.x,b.y-origin.y))[0]}
 
 export function repeatCount(run,card){return (run.upgradeHistory||[]).filter(c=>cardKey(c)===cardKey(card)&&!c.transformation).length}
 const repeatCache=new WeakMap();
@@ -153,4 +153,10 @@ export function starterChoices(roster,region,mode='classic',rng=Math.random){
  const cfg=getRegion(region);if(mode!=='random')return cfg.starters.map(id=>roster.find(p=>p.id===id));
  const seen=new Set(),pool=roster.filter(p=>{const species=p.speciesId||p.id;if(p.stage!==1||p.bossOnly||p.transformOnly||seen.has(species))return false;seen.add(species);return true});
  const result=[];while(result.length<3&&pool.length)result.push(pool.splice(Math.floor(rng()*pool.length),1)[0]);if(result.length!==3)throw Error('Not enough first-stage starters');return result;
+}
+
+// Target eligibility is independent of Pokémon, move types and damage calculations.
+export function targetsInRange(enemies,range,origin={x:500,y:345}){
+ const distance=e=>Math.hypot(e.x-origin.x,e.y-origin.y);
+ return enemies.filter(e=>e.hp>0&&distance(e)<range).sort((a,b)=>distance(a)-distance(b));
 }
