@@ -19,8 +19,8 @@ test('True Endless bosses occur only every 10 rounds and are always Legendary, M
  }assert.equal(nextBoss(0,'origin','true-endless').wave,10);assert.equal(nextBoss(151,'origin','true-endless').wave,160);assert.ok(roster.some(p=>p.ultraBeast&&!p.legendary&&!p.mythical));assert.ok(roster.some(p=>p.mythical&&!p.legendary));
 });
 
-test('True Endless adds exactly 5% compounded from round 1 to all enemy stats',()=>{
- const p=roster[0];for(const wave of [1,2,10,50,151,152]){const classic=enemyStats(p,wave),trueStats=enemyStats(p,wave,null,'true-endless'),factor=1.05**wave;for(const key of ['maxHp','defense','specialDefense','speed'])near(trueStats[key],classic[key]*factor);assert.ok(Math.abs(trueStats.impact-classic.impact*factor)<=factor)}
+test('True Endless compounds non-speed stats at 5% and increases speed linearly from round 1',()=>{
+ const p=roster[0];for(const wave of [1,2,10,50,151,152]){const classic=enemyStats(p,wave),trueStats=enemyStats(p,wave,null,'true-endless'),factor=1.05**wave;for(const key of ['maxHp','defense','specialDefense'])near(trueStats[key],classic[key]*factor);near(trueStats.speed,enemyStats(p,1).speed*(1+.02*wave));assert.ok(Math.abs(trueStats.impact-classic.impact*factor)<=factor)}
 });
 
 test('True Endless unlocks advanced tactics at25 and elite/master at50 without changing regional gates',()=>{

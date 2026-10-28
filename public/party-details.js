@@ -1,4 +1,4 @@
-import {ALL_TACTICS,damageMultiplier,repeatPower,cardKey,tacticSummary,cooldownFactor,targetCapacity,tacticStacks} from './engine.js?v=24';
+import {ALL_TACTICS,damageMultiplier,repeatPower,cardKey,tacticSummary,cooldownFactor,targetCapacity,tacticStacks} from './engine.js?v=25';
 import {attackFor,attackCooldown} from './attacks.js';
 import {canEvolve,maskDamage,ordinaryStellar} from './transformations.js';
 const tactics=new Set(ALL_TACTICS.map(c=>c.kind)),towerKinds=new Set(['health','armor','shield','reach']);

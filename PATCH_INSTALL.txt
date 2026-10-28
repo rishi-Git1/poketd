@@ -1,23 +1,21 @@
-POKE BASTION — VERSION 24 TARGETING FIX
+POKE BASTION — VERSION 25 ENDLESS SPEED PATCH
+Requires Version 24. This ZIP includes ONLY changed/new files.
 
-Incremental changed-files patch for Version 23, including its Mega move-name and neutral-damage fixes. Works whether or not those two smaller fixes were already installed.
-
-1. Extract into your existing project root, beside package.json.
+1. Extract into the existing project root beside package.json.
 2. Merge folders and replace matching files.
-3. Redeploy Render using npm run build with dist as the published directory.
-4. Refresh the game (Ctrl+F5) and confirm VERSION 24 in the header.
+3. Redeploy Render using npm run build, publishing dist.
+4. Refresh the game and confirm VERSION 25 in the header.
 
-TARGETING
-- Normal and split attacks select living enemies within tower range by distance only.
-- Ricochets select living, unvisited enemies within bounce range only.
-- Victory Nova hits all living enemies inside its explosion radius.
-- Target eligibility never checks Pokemon types, move types or calculated damage.
-- The damage formula no longer reads enemy types or calls an effectiveness helper.
-- No weaknesses, resistances, immunities or Stellar matchup bonus remain.
-- Collected type upgrades, move profiles and animations are retained as before.
+ENDLESS MOVEMENT SPEED
+During the extra scaling phase, speed gains a fixed 2% of the phase-start baseline each round. It does not compound. The baseline remains fixed so ordinary wave growth cannot make the result quadratic.
 
-CACHE REFRESH
-The source entry/import URLs and production fingerprints have been refreshed. Version 24 is visibly labeled so you can confirm the deployed build.
+After 10 scaling rounds: 1.20x baseline speed.
+After 50 scaling rounds: 2.00x baseline speed.
+After 100 scaling rounds: 3.00x baseline speed.
+
+True Endless starts counting at round 1 using ordinary round-1 speed as the baseline. Regional Endless keeps its existing speed curve through round 151, then gains 2% of its round-151 baseline per additional round (1.02x at round 152).
+
+HP, physical/special defenses and impact damage retain their existing 5% compounding and other growth. Boss speed multipliers still apply. Classic mode and regional Endless before the extra scaling phase are unchanged. Type-independent targeting from Version 24 remains included in the existing project.
 
 VALIDATION
-178 automated tests pass, including Salamence, Mega Salamence and Mega Garchomp Z targeting/damaging Fairy enemies, split targeting, a Dragon projectile hitting a Fairy, and eligibility checks that cannot access Pokemon records or stats. Production build passes. Browser QA confirmed live Salamence Dragon Pulse hits and recorded damage against Fairy targets using the actual battle controller. The internal QA fixture is not shipped.
+180 automated tests pass, including constant per-round speed increments for slow/fast Pokemon and bosses, phase boundaries and existing campaigns. 432 before/after stat cases confirm non-speed stats and Classic/pre-phase speeds are unchanged. Production build passes. Source and prebuilt production assets are included.

@@ -35,8 +35,8 @@ test('Endless preserves story encounters then caches random bosses every ten rou
  for(const r of REGIONS){const roster=data(r.id),run=newRun(r.id,{mode:'endless'});for(const b of r.bosses)assert.deepEqual(campaignPlan(b.wave,roster,r.starters[0],r.id,run).map(s=>s.pokemon.id),bossFor(b.wave,r.starters[0],r.id).team);assert.equal(campaignPlan(r.rounds+1,roster,0,r.id,run),null);const first=campaignPlan(r.rounds+10,roster,0,r.id,run,()=>0),again=campaignPlan(r.rounds+10,roster,0,r.id,run,()=>.99);assert.equal(first[0].pokemon.id,again[0].pokemon.id);assert.equal(first[0].boss.tier,'ENDLESS BOSS');assert.equal(campaignPlan(r.rounds+20,roster,0,r.id,run)[0].boss.wave,r.rounds+20);assert.equal(nextBoss(r.rounds,r.id,'endless').wave,r.rounds+10);assert.equal(nextBoss(r.rounds,r.id),null)}
 });
 
-test('additional endless scaling compounds at 5% each round after 151 on all enemy stats',()=>{
- const p=data('kanto')[0];for(const wave of [151,152,170,220]){const classic=enemyStats(p,wave),endless=enemyStats(p,wave,null,'endless'),factor=1.05**Math.max(0,wave-151);for(const k of ['maxHp','defense','specialDefense','speed'])near(endless[k]/classic[k],factor);assert.ok(Math.abs(endless.impact-classic.impact*factor)<=factor)}
+test('additional endless scaling compounds combat stats at 5% and increases speed linearly after 151',()=>{
+ const p=data('kanto')[0];for(const wave of [151,152,170,220]){const classic=enemyStats(p,wave),endless=enemyStats(p,wave,null,'endless'),factor=1.05**Math.max(0,wave-151);for(const k of ['maxHp','defense','specialDefense'])near(endless[k]/classic[k],factor);near(endless.speed,enemyStats(p,Math.min(wave,151)).speed*(1+.02*Math.max(0,wave-151)));assert.ok(Math.abs(endless.impact-classic.impact*factor)<=factor)}
 });
 
 for(const region of ['kanto','alola'])test(`${region}: Endless auto continues past its story finale without an end screen`,async()=>{
