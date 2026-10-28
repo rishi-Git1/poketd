@@ -1,11 +1,15 @@
-POKE BASTION — MEGA MOVE NAME FIX FOR VERSION 23
+POKE BASTION — NEUTRAL TYPE DAMAGE PATCH
 
-Merge these files into your existing Version 23 project root, replace matching files, then redeploy Render with the existing npm run build command.
+Requires Version 23. Works whether or not the Mega move-name fix is already installed; the real Mega move names are included and preserved.
 
-This ZIP contains changed files only. The header remains VERSION 23.
+1. Extract into the existing project root, beside package.json.
+2. Merge folders and replace matching files.
+3. Redeploy Render using the existing npm run build command.
 
-82 invented Mega move names were replaced with real Pokemon moves associated with their Pokemon. Examples: Mega Charizard X — Flare Blitz; Mega Blastoise — Hydro Pump; Mega Lucario — Aura Sphere; Mega Rayquaza — Dragon Ascent. Mega Zygarde retains Nihil Light, which is already a real move.
+Only changed files are included, with source and prebuilt dist assets. The header remains VERSION 23.
 
-All 34 G-Max move entries are identical. All animations, damage, move types, shapes, cooldowns and gameplay are unchanged. Includes updated source plus fingerprinted production files so cached browsers load the corrected names.
+Every attack-versus-defender type matchup is now neutral in Classic, regional Endless and True Endless. Removed all type weaknesses, resistances, immunities and Stellar's extra damage against Terastallized enemies. This applies to basic projectiles, signatures, splash/chain attacks, ricochets and Victory Nova. Normal physical/special defenses, move power, collected upgrade bonuses and area falloff still apply. Type-specific upgrade cards, forms, move names and animations remain active.
 
-Validation: 169 automated tests pass; production build passes; exact comparison confirms only Mega name fields changed in the signature data and the animation renderer is identical.
+The field guide, upgrade descriptions and party tooltip now reflect neutral type damage. The type chart has been removed.
+
+Validation: 171 automated tests pass, including every single/dual type pairing, formerly immune projectile targets, signature and Nova hits on Ghosts, ricochet targeting, and Stellar neutrality. Production build passes.

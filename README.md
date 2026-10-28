@@ -82,7 +82,7 @@ Damage cards compound with repeated copies and every matching category. Global c
 
 All regional final forms have signature attacks based on type or species overrides, including beams, flame/water cones, chaining lightning, explosions, shockwaves, slashes, volleys and vortices. Generic profiles cover the 18 ordinary types plus Stellar. Regional finales have named profiles: Sacred Fire, Dragon Ascent, Judgment, Glaciate, Nihil Light, Eternabeam and Tera Starstorm. These are tower-defense adaptations, not canonical battle animations or learnset rules.
 
-Final-form move power is typically 2.16–3.42× base attack damage, with larger overrides for some regional finales. Final forms have 20% shorter attack cooldowns. Visual effects retain real-time duration for readability at 5× speed; combat calculations follow game speed. Move type determines effectiveness against both enemy types, including immunities. The attacker uses its larger attacking stat and the corresponding enemy defense.
+Final-form move power is typically 2.16–3.42× base attack damage, with larger overrides for some regional finales. Final forms have 20% shorter attack cooldowns. Visual effects retain real-time duration for readability at 5× speed; combat calculations follow game speed. All attacks deal neutral damage to every enemy type, including dual types and Terastallized targets. There are no type weaknesses, resistances or immunities; collected type upgrades still buff matching partners. The attacker uses its larger attacking stat and the corresponding enemy defense.
 
 Core formulas are in public/engine.js and public/attacks.js. Enemy HP scales as `(base HP * 0.53 + 9) * 1.115^(wave - 1)`, with the opening ease and boss factors applied. Normal tower armor reduces impact by division through `1 + armor`.
 
@@ -156,7 +156,7 @@ On tower defeat, combat stops and region selection opens immediately with You Wh
 
 Apply after Version 10. SHOW TOTAL DAMAGE by the party changes all six party rows from buff multipliers to live cumulative damage; SHOW MULTIPLIERS switches back. Damage is tracked in both views, over the entire current expedition, and updates without rebuilding the party on every hit. Large values use compact notation; hover a value for the full rounded total.
 
-Totals count actual enemy HP removed after defenses, immunities, finishing bonuses, split damage and area/chain falloff; overkill is excluded. Basic projectiles and every signature hit credit the attacker. Evolution retains a partner's total. A swapped-in partner begins at zero; projectiles already in flight remain credited to the original partner. New expeditions reset all totals. No damage or balance formulas are changed.
+Totals count actual enemy HP removed after defenses, finishing bonuses, split damage and area/chain falloff; overkill is excluded. Basic projectiles and every signature hit credit the attacker. Evolution retains a partner's total. A swapped-in partner begins at zero; projectiles already in flight remain credited to the original partner. New expeditions reset all totals. No damage or balance formulas are changed.
 
 ## Version 0.12.0 — Round-80 builds and dual premium trades
 
@@ -169,7 +169,7 @@ Apply this patch after Version 11. Round-80 rewards unlock seven elite tactics. 
 | Master Execute | Damaging hits stun surviving enemies below 35% HP for 0.6 seconds. Includes bosses; stops movement and tower attacks. After the stun ends there are 2 seconds of recovery before the next stun. Works with Finishing Instinct. |
 | Critical Cadence | Every fourth attack volley gains a 1.50x damage multiplier. Repeated copies multiply. The volley includes split and ricochet attacks. |
 | Marked Wounds | Hits add marks lasting 3 seconds, refreshed on hit. The party deals +5% damage per mark, up to 8 marks. Copies increase damage per mark. |
-| Victory Nova | Defeats splash 60% of the killing hit's damage within 80 range. Copies increase the fraction. Splash is credited to the attacker and ignores immune targets; secondary explosions cannot chain. |
+| Victory Nova | Defeats splash 60% of the killing hit's damage within 80 range. Copies increase the fraction. Splash is credited to the attacker and can hit every enemy type; secondary explosions cannot chain. |
 | Guardian Shell | Gain a shield equal to 10% of max HP immediately and at every round start. Copies add shield capacity. Absorbs impacts before HP and appears beside tower HP. |
 | Last Stand Relay | Below 40% tower HP, multiply cooldown by 0.80. Copies compound with Quick Claw Relay. |
 
@@ -300,7 +300,7 @@ The left column now places a Partner Dossier beneath the battlefield, filling th
 
 The dossier shows all six PokéAPI base stats and their total, current types/stage/form and evolution path, current move/type/shape/physical-or-special attack class, signature power, neutral single-target hit before enemy defense/conditional effects, actual attack interval in game seconds, target capacity, ricochets and tower range. Damage factors separately show universal, matching types, matching evolution stage, personal forms/masks and repeat resonance. Base HP and defense are clearly labeled as species stats; partners do not take damage.
 
-Live contributions show actual damage, share of run damage (including former partners), defeats, boss defeats, damaging hits, attack volleys, strongest actual hit and actual tower HP restored by Victory Bloom. Overkill, zero/immune/dead-target hits and overhealing do not inflate these counters. Splash and ricochets credit their originating partner; old projectiles remain attributed to their former owner after a swap. Counters stay with an evolving/transformed ally; a replacement starts fresh. The run damage denominator includes all credited partners, including former ones.
+Live contributions show actual damage, share of run damage (including former partners), defeats, boss defeats, damaging hits, attack volleys, strongest actual hit and actual tower HP restored by Victory Bloom. Overkill, zero-damage/dead-target hits and overhealing do not inflate these counters. Splash and ricochets credit their originating partner; old projectiles remain attributed to their former owner after a swap. Counters stay with an evolving/transformed ally; a replacement starts fresh. The run damage denominator includes all credited partners, including former ones.
 
 Relevant owned cards are grouped with copy counts and master tactic stack counts. Matching type/stage cards, party tactics and that individual's personal transformations appear with their effects. Unmatched type/stage cards appear only when their repeated copies still grant shared repeat resonance. Shared tower health, armor and shields are listed separately. Inactive ordinary Stellar bonuses are excluded after changing Tera, while power retained from earlier non-Stellar Tera applications is explained. Removed/traded upgrades disappear immediately. Live counters update text without rebuilding or resetting a scrolled upgrade list.
 
@@ -372,3 +372,8 @@ This is an incremental patch over Version 22. Merge the included files into the 
 - True Endless records are independent of regional Classic and regional Endless records. Restarting asks for a fresh searchable starter; loss returns to region selection.
 
 `python3 scripts/build-origin-data.py` reproducibly rebuilds the National Dex from the bundled regional data and PokéAPI CSV snapshots, then downloads any missing sprites. `build-regional-data.py` invokes it after rebuilding regional data. True Endless uses the bundled full snapshot immediately instead of issuing over a thousand API refresh requests on entering the mode.
+
+
+## Neutral type damage patch
+
+All attack-versus-defender type interactions are disabled in every mode. Basic projectiles, signatures, chain/splash attacks, ricochets and Victory Nova can damage every type. Weaknesses, resistances, immunities and Stellar's extra damage against Terastallized targets are removed. Enemy physical/special defenses, upgrade bonuses, move power and area falloff still affect damage. Type labels, animations, transformations and collected type-specific upgrades remain active.
