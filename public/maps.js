@@ -1,5 +1,6 @@
 // Original pixel scenery and palettes for each Story-based battlefield.
 export const MAPS={
+ origin:{name:'Hall of Origin',ground:'#c2aecb',clearing:'#e1e3ef',path:'#c0cce7',line:'#6e74a0',detail:'#faf0bc',stone:'#b5a376',stoneLight:'#fff8d6',foliage:['#d9c3a2','#e9d8b7','#e9e4d4','#fff2cf'],tower:['#928370','#d6c696','#fff1c4'],flag:'#bacdff',motif:'origin'},
  alola:{name:'Ultra Wormhole',ground:'#211940',clearing:'#4e367b',path:'#a178bd',line:'#9a7aba',detail:'#fff1b5',stone:'#57407d',stoneLight:'#d4bff2',foliage:['#312349','#5c3d85','#a878bd','#ecd5ff'],tower:['#62517a','#c1a985','#f5e2a0'],flag:'#f7bc54',motif:'wormhole'},
  kanto:{name:'Indigo Plateau',ground:'#727ca5',clearing:'#8f99bf',path:'#e0d4aa',line:'#505d89',detail:'#b8c4de',stone:'#596786',stoneLight:'#a9b5d1',foliage:['#253f60','#365b79','#568a92','#8bb9b7'],tower:['#777a9b','#c2c1d5','#e4e0e9'],flag:'#e7ba52',motif:'plateau'},
  johto:{name:'Mt. Silver',ground:'#a5b7c7',clearing:'#d5e1e5',path:'#8c9eae',line:'#667c93',detail:'#f5fbfb',stone:'#607488',stoneLight:'#c8d7df',foliage:['#344c5b','#4d6873','#7f9ca4','#e0edf0'],tower:['#60788e','#a6bccb','#dfedf2'],flag:'#7199d1',motif:'snow'},
@@ -63,7 +64,7 @@ function crystal(ctx,x,y,s,t,variant){
 }
 function lamp(ctx,x,y,s,t){ctx.save();ctx.translate(x,y);ctx.scale(s,s);oval(ctx,0,16,18,6,t.line+'80');ctx.fillStyle=t.line;ctx.fillRect(-3,-58,6,73);ctx.fillRect(-12,12,24,5);ctx.fillRect(-11,-65,22,26);ctx.fillStyle='#ffe4a0';ctx.fillRect(-7,-61,14,18);ctx.fillStyle=t.line;ctx.fillRect(-3,-69,6,31);ctx.fillRect(-14,-68,28,5);ctx.restore()}
 export function drawMap(ctx,region,range=335){
- const t=mapFor(region);if(t.motif==='wormhole'){drawWormhole(ctx,range,t);return}ctx.save();ctx.fillStyle=t.ground;ctx.fillRect(0,0,1000,690);oval(ctx,500,350,372,244,t.clearing);
+ const t=mapFor(region);if(t.motif==='origin'){drawOrigin(ctx,range,t);return}if(t.motif==='wormhole'){drawWormhole(ctx,range,t);return}ctx.save();ctx.fillStyle=t.ground;ctx.fillRect(0,0,1000,690);oval(ctx,500,350,372,244,t.clearing);
  if(['sky','ruins','city'].includes(t.motif)){ctx.strokeStyle=t.line+'45';ctx.lineWidth=1;for(let x=0;x<1000;x+=48){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,690);ctx.stroke()}for(let y=0;y<690;y+=32){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(1000,y);ctx.stroke()}}
  ctx.strokeStyle=t.path;ctx.lineWidth=t.motif==='city'?53:35;ctx.beginPath();ctx.moveTo(0,390);ctx.bezierCurveTo(180,405,350,328,500,345);ctx.bezierCurveTo(680,350,810,500,1000,500);ctx.stroke();ctx.lineWidth=t.motif==='city'?44:26;ctx.beginPath();ctx.moveTo(515,0);ctx.bezierCurveTo(550,160,470,240,500,345);ctx.bezierCurveTo(520,470,430,580,385,690);ctx.stroke();
  if(t.motif==='spiral'){ctx.strokeStyle=t.stone;ctx.lineWidth=9;ctx.beginPath();for(let i=0;i<=160;i++){const a=i*.08,r=110+i*.8;const x=500+Math.cos(a)*r,y=345+Math.sin(a)*r*.68;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke()}
@@ -80,7 +81,7 @@ export function drawMap(ctx,region,range=335){
  ctx.strokeStyle=t.line+'70';ctx.lineWidth=1;ctx.setLineDash([5,8]);for(const r of [140,Math.min(range,480)]){ctx.beginPath();ctx.ellipse(500,345,r,r*.76,0,0,Math.PI*2);ctx.stroke()}ctx.setLineDash([]);ctx.restore();
 }
 export function drawBastion(ctx,region){
- const t=mapFor(region),[dark,mid,light]=t.tower;ctx.save();oval(ctx,500,363,82,36,t.line+'40');oval(ctx,500,348,81,34,mid);oval(ctx,500,343,73,30,light);ctx.fillStyle=dark;ctx.fillRect(472,286,56,62);ctx.fillStyle=mid;ctx.fillRect(478,286,43,59);ctx.fillStyle=dark;ctx.fillRect(500,286,21,59);ctx.fillStyle=light;ctx.fillRect(467,278,66,13);ctx.fillStyle=dark;ctx.fillRect(470,289,60,7);ctx.fillStyle=mid;for(let i=0;i<4;i++)ctx.fillRect(467+i*17,266,12,15);ctx.fillStyle=t.line;ctx.fillRect(493,304,13,19);ctx.fillStyle=light;ctx.fillRect(497,304,3,19);ctx.strokeStyle=dark;ctx.lineWidth=1;for(let y=315;y<346;y+=12){ctx.beginPath();ctx.moveTo(478,y);ctx.lineTo(521,y);ctx.stroke()}ctx.fillStyle=dark;ctx.fillRect(500,235,3,32);ctx.fillStyle=t.flag;ctx.beginPath();ctx.moveTo(503,235);ctx.lineTo(526,242);ctx.lineTo(503,250);ctx.fill();oval(ctx,500,351,18,7,dark);oval(ctx,500,348,18,7,light);ctx.restore();
+ const t=mapFor(region),[dark,mid,light]=t.tower;ctx.save();if(region==='origin'){ctx.strokeStyle='#fff1b5';ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(500,264,41,16,0,0,Math.PI*2);ctx.stroke();ctx.strokeStyle='#969dd1';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(500,264,49,21,0,0,Math.PI*2);ctx.stroke()}oval(ctx,500,363,82,36,t.line+'40');oval(ctx,500,348,81,34,mid);oval(ctx,500,343,73,30,light);ctx.fillStyle=dark;ctx.fillRect(472,286,56,62);ctx.fillStyle=mid;ctx.fillRect(478,286,43,59);ctx.fillStyle=dark;ctx.fillRect(500,286,21,59);ctx.fillStyle=light;ctx.fillRect(467,278,66,13);ctx.fillStyle=dark;ctx.fillRect(470,289,60,7);ctx.fillStyle=mid;for(let i=0;i<4;i++)ctx.fillRect(467+i*17,266,12,15);ctx.fillStyle=t.line;ctx.fillRect(493,304,13,19);ctx.fillStyle=light;ctx.fillRect(497,304,3,19);ctx.strokeStyle=dark;ctx.lineWidth=1;for(let y=315;y<346;y+=12){ctx.beginPath();ctx.moveTo(478,y);ctx.lineTo(521,y);ctx.stroke()}ctx.fillStyle=dark;ctx.fillRect(500,235,3,32);ctx.fillStyle=t.flag;ctx.beginPath();ctx.moveTo(503,235);ctx.lineTo(526,242);ctx.lineTo(503,250);ctx.fill();oval(ctx,500,351,18,7,dark);oval(ctx,500,348,18,7,light);ctx.restore();
 }
 
 function drawWormhole(ctx,range,t){
@@ -90,4 +91,22 @@ function drawWormhole(ctx,range,t){
  for(const [i,q] of tufts.entries()){if(Math.hypot(q.x-500,(q.y-345)*1.4)<120)continue;ctx.fillStyle=i%3?'#ead9ff':'#ffe5a1';ctx.fillRect(q.x,q.y,i%5?2:4,2);if(i%5===0)ctx.fillRect(q.x+1,q.y-3,2,8)}
  oval(ctx,500,345,154,106,'#33214e');ctx.strokeStyle='#d2a6e3';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(500,345,160,110,0,0,Math.PI*2);ctx.stroke();
  ctx.strokeStyle=t.line+'80';ctx.setLineDash([5,8]);ctx.lineWidth=1;for(const r of [140,Math.min(range,480)]){ctx.beginPath();ctx.ellipse(500,345,r,r*.76,0,0,Math.PI*2);ctx.stroke()}ctx.setLineDash([]);ctx.restore();
+}
+
+// Legends: Arceus-inspired celestial platform, with the three-circle creation motif.
+function drawOrigin(ctx,range,t){
+ ctx.save();ctx.fillStyle='#b6a1c6';ctx.fillRect(0,0,1000,690);
+ for(let i=0;i<10;i++){ctx.fillStyle=['#c8b1cb','#d9c2bf','#e5d0b8','#efdfbe','#f4e9cd'][Math.min(4,Math.floor(i/2))];ctx.fillRect(0,i*70,1000,71)}
+ for(let side=0;side<2;side++)for(let i=0;i<12;i++){const x=side?1000-i*68:i*68,y=90+(i*93)%540;oval(ctx,x,y,85,26,'#fff1ca55');oval(ctx,x+35,y-11,70,22,'#fff7df55')}
+ // Light curtains rise from the edge of the suspended circular floor.
+ for(let i=0;i<28;i++){const a=i*Math.PI*2/28,x=500+Math.cos(a)*450,y=365+Math.sin(a)*280;ctx.strokeStyle=i%2?'#e9d8ff90':'#fff1cf90';ctx.lineWidth=i%3?3:7;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+(x-500)*.16,y-165-i%4*25);ctx.stroke()}
+ oval(ctx,500,394,476,276,'#aaa2bf');oval(ctx,500,384,476,276,'#eee9ee');oval(ctx,500,378,460,263,'#d9deec');oval(ctx,500,378,441,249,'#e7e7f0');
+ for(const [r,color,width] of [[465,'#fff3c9',5],[445,'#9caed1',4],[414,'#f9f7f2',3],[388,'#b5c7df',2]]){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.ellipse(500,378,r,r*.57,0,0,Math.PI*2);ctx.stroke()}
+ const nodes=[[500,179],[264,460],[736,460]];
+ ctx.strokeStyle='#acbfdd';ctx.lineWidth=3;ctx.beginPath();nodes.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.stroke();
+ for(const [x,y]of nodes){for(const r of [76,65,43]){ctx.strokeStyle=r===43?'#d4e0ef':'#9fb8da';ctx.lineWidth=r===43?8:3;ctx.beginPath();ctx.ellipse(x,y,r,r*.68,0,0,Math.PI*2);ctx.stroke()}ctx.strokeStyle='#f6f6fa';ctx.lineWidth=2;for(let i=0;i<8;i++){const a=i*Math.PI/4;ctx.beginPath();ctx.moveTo(x+Math.cos(a)*49,y+Math.sin(a)*33);ctx.lineTo(x+Math.cos(a)*61,y+Math.sin(a)*41);ctx.stroke()}}
+ for(let i=0;i<18;i++){const a=i*Math.PI/9;ctx.strokeStyle='#a8bddd';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(500+Math.cos(a)*400,378+Math.sin(a)*228);ctx.lineTo(500+Math.cos(a)*416,378+Math.sin(a)*237);ctx.stroke()}
+ ctx.strokeStyle='#a0b7d440';ctx.lineWidth=1;for(let i=-7;i<=7;i++){ctx.beginPath();ctx.moveTo(500+i*51,170+Math.abs(i)*8);ctx.lineTo(500+i*51,580-Math.abs(i)*8);ctx.stroke()}
+ oval(ctx,500,345,112,75,'#ebeaf3');ctx.strokeStyle='#a1b7da';ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(500,345,119,80,0,0,Math.PI*2);ctx.stroke();ctx.strokeStyle='#fff7cc';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(500,345,131,88,0,0,Math.PI*2);ctx.stroke();
+ ctx.strokeStyle='#8995b865';ctx.lineWidth=1;ctx.setLineDash([5,8]);ctx.beginPath();ctx.ellipse(500,345,Math.min(range,480),Math.min(range,480)*.76,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.restore();
 }

@@ -26,7 +26,7 @@ export function relevantUpgrades(ally,run){
  for(const c of ally.formHistory||[]){
   if(c.kind==='tera'&&c.type==='stellar'&&p.teraType!=='stellar'&&(p.speciesId||p.id)!==1024)continue;
   const activeTera=c.kind==='tera'&&c.type===p.teraType;
-  active.push({kind:c.kind,title:c.title,count:1,stacks:1,scope:'Personal transformation',effect:c.kind==='mega'?'One-time Mega form; ×1.25 personal damage':c.kind==='gmax'?'Gigantamax form; ×1.25 personal damage; evolution locked':activeTera?(ordinaryStellar(p)?'Stellar active: temporary ×1.20 damage; native types retained':`${c.type} Tera active; power level ${p.teraPowerCount||0}`):`Earlier ${c.type} Tera: permanent power retained; previous added type removed`});
+  active.push({kind:c.kind,title:c.title,count:1,stacks:1,scope:'Personal transformation',effect:c.kind==='mega'?'One-time Mega form; ×2 personal damage':c.kind==='gmax'?'Gigantamax form; ×2 personal damage; evolution locked':activeTera?(ordinaryStellar(p)?'Stellar active: temporary ×1.20 damage; native types retained':`${c.type} Tera active; power level ${p.teraPowerCount||0}`):`Earlier ${c.type} Tera: permanent power retained; previous added type removed`});
  }
  return {active,support};
 }

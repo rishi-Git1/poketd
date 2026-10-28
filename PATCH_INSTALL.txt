@@ -1,19 +1,20 @@
-POKE BASTION VERSION 22 — REGIONAL EXPANSION PATCH
-Cumulative changed/new files only. Installs over Version 20 OR Version 21. Includes the party dossier and all eight requested expansion features. The full game ZIP is not regenerated.
+POKE BASTION — VERSION 23 PATCH
+Requires Version 22. This ZIP includes ONLY changed/new files, not the whole game.
 
-1. Extract into the existing project root containing package.json.
-2. Merge public, dist, scripts and tests; replace matching files. Keep all other assets/files.
-3. Redeploy on Render: Build Command npm run build; Publish Directory dist.
-4. Reload and confirm VERSION 22. Choose starter/campaign options before selecting a region.
+1. Extract this ZIP into your existing project root (beside package.json).
+2. Merge the public/, scripts/, tests/ and dist/ folders; replace matching files.
+3. Redeploy Render with its existing npm run build command. Confirm VERSION 23 in the header.
 
-Features:
-- Post-round-100 Mega/Gigantamax matching +35% damage rallies; master rules and stacking preserved.
-- Sinnoh includes the Hisui dex and forms/evolution routes.
-- Early waves arrive in batches and have a lighter opening nerf.
-- Non-finale bosses double HP, both defenses, movement speed and impact. Kanto Mewtwo/Mew and other finales retain previous multipliers.
-- Full screen simulation via the button beside speed: no party/stats panels; choices appear at the bottom. Exit restores the same run.
-- Classic or three random first-stage regional starters.
-- Classic or Endless: same story route, then random bosses every 10 rounds after the cap (160/170...; Kanto161/171...). Extra 5% compounded enemy stats each round after151, on top of normal scaling.
-- Alola: 3x3 selector, Ultra Wormhole scenery, Mega Evolution, Totem/Ultra Beast boss route, Ultra Necrozma finale150.
+Prebuilt dist/ files are included. Building regenerates all fingerprinted assets and removes obsolete build files. No dependency installation changes are needed.
 
-Validation: 152 automated checks passed; production build passed; browser checks covered region options and live full-screen Auto rewards. Patch rebuilt and tested over V20 and V21. See README for exact rules and balance/playtesting limits.
+CHANGES
+- At most two Tera cards per three-card reward roll.
+- Cancel/Escape in Mega Stone, Max Mushrooms or Tera targeting preserves that complete reward set; the cancel button remains visible while scrolling.
+- Mega/Gigantamax transformations now give +100% personal damage (2x). Existing post-100 team rally cards remain +35% (+80% master).
+- All 83 bundled Megas and 34 Gigantamax forms have a named signature and unique animation composition. Mega moves are custom tower-defense adaptations.
+- TRUE ENDLESS button below the nine regional cards: full 1,025-species National Dex, searchable starter choice, three initial upgrade selections, and Hall of Origin scenery.
+- True Endless has no story or cap. Every 10th round is a random Legendary, Mythical or Ultra Beast boss. An additional 5% enemy-stat multiplier compounds every round from round 1.
+- Advanced tactics unlock at25; elite/master upgrades at50. Mega Stones, Max Mushrooms and Tera powers work across the full dex. Regional modes retain their schedules and gates.
+
+VALIDATION
+169 automated tests pass; production build passes. Browser checked: all nine region cards and True Endless entry, special-form search, three initial choices, live Auto at5x, fullscreen rewards, signature animation and Hall of Origin. No long-run balance playthrough is claimed.

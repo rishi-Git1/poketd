@@ -61,7 +61,7 @@ for id,p in records.items():
  p['next']=next(iter(p['nextOptions']),None)
 # Preserve the original Kanto snapshot for compatibility; app will load per-region files.
 (assets/'regions.json').write_text(json.dumps(regions,separators=(',',':')))
-(root/'public/regions.js').write_text('export const REGIONS = '+json.dumps(regions,separators=(',',':'))+';\nexport function getRegion(id="kanto"){const r=REGIONS.find(r=>r.id===id);if(!r)throw Error("Unknown region: "+id);return r}\n')
+(root/'public/regions.js').write_text('export const REGIONS = '+json.dumps(regions,separators=(',',':'))+';\n'+'export const TRUE_ENDLESS={id:\'origin\',name:\'Hall of Origin\',edition:\'National Pokédex\',dexCount:1025,starters:[1,4,7],rounds:Infinity,finale:493,finaleName:\'Arceus\',color:\'#c0a050\',bosses:[]};\nexport function getRegion(id="kanto"){const r=id===\'origin\'?TRUE_ENDLESS:REGIONS.find(r=>r.id===id);if(!r)throw Error("Unknown region: "+id);return r}\n')
 (assets/'all-pokemon.json').write_text(json.dumps(list(records.values()),separators=(',',':')))
 (assets/'regions').mkdir(exist_ok=True)
 for r in regions:
@@ -96,3 +96,5 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=10) as ex:
  for i,result in enumerate(ex.map(sprite,sorted(records)),1):
   if i%100==0:print(f'Sprites checked: {i}/{len(records)}',flush=True)
 print('All regional sprites ready.',flush=True)
+
+subprocess.run(['python3',str(root/'scripts/build-origin-data.py')],check=True)

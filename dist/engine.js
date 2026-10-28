@@ -16,7 +16,7 @@ export function wavePlan(wave,roster,rng=Math.random){
  return Array.from({length:waveCount(wave)},(_,i)=>({at:batchSpawnTime(i,waveCount(wave),wave),pokemon:pool[Math.floor(rng()*pool.length)],angle:rng()*Math.PI*2}));
 }
 export function enemyStats(p,wave,boss=null,mode='classic'){
- const ease=openingEase(wave),endless=mode==='endless'?1.05**Math.max(0,wave-151):1;
+ const ease=openingEase(wave),endless=mode==='true-endless'?1.05**wave:mode==='endless'?1.05**Math.max(0,wave-151):1;
  const difficulty=boss&&!boss.final&&boss.tier!=='FINAL ENCOUNTER'&&boss.tier!=='LEGENDARY'?2:1,boost=(boss?.boost||1)*(boss?1.2:1)*difficulty;
  return {specialDefense:p.stats['special-defense']*(1+.025*wave)*ease*boost*endless,maxHp:(p.stats.hp*.53+9)*Math.pow(1.115,wave-1)*ease*boost*endless,defense:p.stats.defense*(1+.025*wave)*ease*boost*endless,speed:(10+p.stats.speed*.115+wave*.35)*Math.min(1,.86+Math.max(0,wave-1)*.028)*(boss?1.2:1)*difficulty*endless,impact:Math.ceil(Math.max(p.stats.attack,p.stats['special-attack'])*.12*(1+.07*wave)*Math.min(1,.7+Math.max(0,wave-1)*.06)*boost*endless)}
 }
@@ -43,7 +43,9 @@ export const EXECUTE={kind:'execute',title:'Master Execute',amount:1,master:true
 export const LEGACY_REACH={kind:'reach',title:'Long Reach',description:'Legacy range upgrade'};
 export const ALL_TACTICS=[...TACTICS,...ELITE_TACTICS,EXECUTE];
 export const tacticStacks=(run,kind)=>run.tactics?.[kind]||0;
-export const lateUpgrades=run=>run.wave>50?[...TACTICS,...(run.wave>=80?ELITE_TACTICS:[])].map(c=>({...c})):[];
+export const advancedUnlocked=run=>run.mode==='true-endless'?run.wave>=25:run.wave>50;
+export const eliteUnlocked=run=>run.wave>=(run.mode==='true-endless'?50:80);
+export const lateUpgrades=run=>advancedUnlocked(run)?[...TACTICS,...(eliteUnlocked(run)?ELITE_TACTICS:[])].map(c=>({...c,badge:run.mode==='true-endless'?(ELITE_TACTICS.some(t=>t.kind===c.kind)?'ROUND 50+':'ROUND 25+'):c.badge})):[];
 export const targetCapacity=run=>1+tacticStacks(run,'split');
 export const cooldownFactor=run=>.85**tacticStacks(run,'haste')*(run.hp<run.maxHp*.4?.8**tacticStacks(run,'surge'):1);
 export function movementFactor(enemy,run){const slow=1-.85**tacticStacks(run,'chill');return enemy.slowTime>0?1-slow*(enemy.boss ? .5 : 1):1}
@@ -59,7 +61,7 @@ export function resolveHit(enemy,power,run,source=null){
 
 export function tacticSummary(run,kind){const n=tacticStacks(run,kind);return ({split:`Up to ${1+n} targets; divides damage among actual targets`,haste:`${(100*(1-.85**n)).toFixed(1)}% shorter cooldown`,reach:`${Math.round(run.range)} total range`,chill:`${(100*(1-.85**n)).toFixed(1)}% movement slow for 2s; bosses resist half`,pierce:`${(100*(1-.8**n)).toFixed(1)}% defense ignored`,finish:`${(1.3**n).toFixed(2)}× damage below 35% HP`,siphon:`Restore ${n} HP per defeat`,ricochet:`Up to ${n} bounces at 60% retained damage`,focus:`+${20*n}% per second; up to +${200*n}% on the locked target`,execute:`${(.6*n).toFixed(1)}s stun below 35% HP; 2s recovery`,cadence:`Every fourth volley: ×${(1.5**n).toFixed(2)}`,wounds:`+${5*n}% per mark; up to +${40*n}% for 3s`,nova:`${60*n}% killing-hit splash within 80 range`,shield:`${Math.ceil(run.shield||0)} shield remaining; ${10*n}% max HP each round`,surge:`${(100*(1-.8**n)).toFixed(1)}% shorter cooldown below 40% tower HP`})[kind]}
 export function damage(ally,enemy,buffs,attackType=ally.pokemon.types[0]){const p=ally.pokemon;const special=p.stats['special-attack']>p.stats.attack;const atk=Math.max(p.stats.attack,p.stats['special-attack']);const defense=special?enemy.specialDefense??enemy.pokemon.stats['special-defense']*(1+.025*buffs.wave)*openingEase(buffs.wave):enemy.defense;const mult=damageMultiplier(p,buffs);return Math.max(0,(8+atk*.23)*mult*100/(100+defense*.8**tacticStacks(buffs,'pierce'))*(attackType==='stellar'?(enemy.pokemon.teraType?2:1):effectiveness(attackType,enemy.pokemon.types)))}
-export function newRun(region="kanto",options={}){const cfg=getRegion(region);return {region,mode:options.mode==='endless'?'endless':'classic',starterMode:options.starters==='random'?'random':'classic',forms:{},endlessBosses:{},rounds:cfg.rounds,wave:0,rewardQueue:[],tradeQueue:[],range:335,growthWaves:[],swapWaves:[],starter:1,hp:250,maxHp:250,shield:0,armor:0,offense:0,types:{},stages:{},tactics:{},team:[],kills:0,upgrades:[],upgradeHistory:[],phase:'starter'}}
+export function newRun(region="kanto",options={}){const cfg=getRegion(region);return {region,mode:region==='origin'?'true-endless':options.mode==='endless'?'endless':'classic',originSetupLeft:0,starterMode:options.starters==='random'?'random':'classic',forms:{},endlessBosses:{},rounds:cfg.rounds,wave:0,rewardQueue:[],tradeQueue:[],range:335,growthWaves:[],swapWaves:[],starter:1,hp:250,maxHp:250,shield:0,armor:0,offense:0,types:{},stages:{},tactics:{},team:[],kills:0,upgrades:[],upgradeHistory:[],phase:'starter'}}
 export function applyUpgrade(run,card){
  if(card.kind==='evolve'&&!run.team.some(a=>a.pokemon.id===card.from&&canEvolve(a)))return false;
  if(card.kind==='reach'||ALL_TACTICS.some(c=>c.kind===card.kind)){const amount=card.amount??1;run.tactics[card.kind]=(run.tactics[card.kind]||0)+amount;if(card.kind==='reach')run.range*=1.12**amount;if(card.kind==='shield')run.shield=(run.shield||0)+run.maxHp*.1*amount;}
@@ -78,7 +80,7 @@ export function formatDamageTotal(value){const total=Math.max(0,value||0);return
 
 // Normal and master versions share one identity; Pokémon use their destination ID.
 export const cardKey=c=>c.pokemon?`pokemon:${c.pokemon.id}`:[c.kind,c.type||c.form||'',c.stage||''].join(':');
-export const upgradeWeight=(card,run)=>run.wave>80&&card.kind==='offense'?4:1;
+export const upgradeWeight=(card,run)=>(run.mode==='true-endless'?run.wave>50:run.wave>80)&&card.kind==='offense'?4:1;
 export function drawDistinct(pool,count,run,rng=Math.random,excluded=[]){
  const seen=new Set(excluded.map(cardKey)),available=[];
  for(const card of pool){if(!card||seen.has(cardKey(card)))continue;seen.add(cardKey(card));available.push(card)}
@@ -86,17 +88,17 @@ export function drawDistinct(pool,count,run,rng=Math.random,excluded=[]){
  while(result.length<count&&available.length){
   const total=available.reduce((n,c)=>n+upgradeWeight(c,run),0);let roll=rng()*total,index=available.length-1;
   for(let i=0;i<available.length;i++){roll-=upgradeWeight(available[i],run);if(roll<0){index=i;break}}
-  result.push(...available.splice(index,1));
+  const card=available.splice(index,1)[0];if(card.kind==='tera'&&[...excluded,...result].filter(c=>c.kind==='tera').length>=2)continue;result.push(card);
  }return result;
 }
 export function distinctRoll(cards,fallback,run,rng=Math.random){
  const seen=new Set(),result=[];
- for(const card of cards){if(card&&!seen.has(cardKey(card))){seen.add(cardKey(card));result.push(card)}}
+ for(const card of cards){if(card&&!seen.has(cardKey(card))&&!(card.kind==='tera'&&result.filter(c=>c.kind==='tera').length>=2)){seen.add(cardKey(card));result.push(card)}}
  return [...result,...drawDistinct(fallback,3-result.length,run,rng,result)].slice(0,3);
 }
 export function selectRewardCards(run,pool,partners,evolutions,rng=Math.random){
  const special=drawDistinct(partners.length?partners:evolutions,1,run,rng)[0];
- const tactic=run.wave>50?drawDistinct(lateUpgrades(run),1,run,rng)[0]:null;
+ const tactic=advancedUnlocked(run)?drawDistinct(lateUpgrades(run),1,run,rng)[0]:null;
  const fixed=[special,tactic].filter(Boolean);
  let first=drawDistinct(pool,1,run,rng,fixed)[0];
  if(evolutions.length&&rng()<.6)first=drawDistinct(evolutions,1,run,rng,fixed)[0]||first;
@@ -110,12 +112,12 @@ export function masterUpgrades(run){
  for(const type of new Set(run.team.flatMap(a=>a.pokemon.types)))cards.push({kind:'type',type,title:`Master ${type}`,amount:.8,description:`×1.80 damage for ${type} partners`});
  for(const stage of new Set(run.team.map(a=>a.pokemon.stage)))cards.push({kind:'stage',stage,title:`Master Stage ${stage}`,amount:.8,description:`×1.80 damage for stage ${stage} partners`});
  for(const c of lateUpgrades(run))cards.push({...c,title:`Master ${c.title}`,amount:2,description:`Two stacks: ${c.description}`});
- if(run.wave>=80)cards.push({...EXECUTE});
+ if(eliteUnlocked(run))cards.push({...EXECUTE});
  cards.push(...formUpgrades(run).map(c=>({...c,amount:.8,description:'+80% damage for matching transformed partners'})));
  return cards.map(c=>({...c,master:true,label:'MASTER UPGRADE',badge:'MASTER',symbol:'★',accent:'#d3a42b'}));
 }
 export function rollMasterCards(cards,run,rng=Math.random){
- if(run.wave<80)return cards;
+ if(!eliteUnlocked(run))return cards;
  const result=[...cards];for(let i=0;i<result.length;i++){
   const c=result[i];if(['recruit','evolve'].includes(c.kind)||isTransformation(c)||rng()>=.1)continue;
   const candidates=masterUpgrades(run).filter(m=>!result.some((other,j)=>j!==i&&cardKey(m)===cardKey(other))&&(i!==1||!ALL_TACTICS.some(t=>t.kind===c.kind)||ALL_TACTICS.some(t=>t.kind===m.kind)));

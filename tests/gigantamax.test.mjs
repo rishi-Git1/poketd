@@ -32,7 +32,7 @@ test('every G-Max transforms once, preserves damage/types/stage/buffs and unlock
   const f=fixture([form.gmaxFrom]),ally=f.run.team[0],base=ally.pokemon;ally.totalDamage=98765;
   applyUpgrade(f.run,{kind:'type',type:base.types[0],title:'Type'});applyUpgrade(f.run,{kind:'stage',stage:base.stage,title:'Stage'});
   const initial=damageMultiplier(base,f.run);apply(f,`0:${form.id}`);
-  assert.equal(ally.pokemon.id,form.id);assert.equal(ally.pokemon.stage,base.stage);assert.deepEqual(ally.pokemon.types,base.types);assert.equal(ally.totalDamage,98765);assert.equal(ally.gmaxCount,1);assert.ok(ally.evolutionLocked);assert.equal(canEvolve(ally),false);assert.ok(Math.abs(damageMultiplier(ally.pokemon,f.run)-initial*1.25)<1e-9);assert.equal(repeatPower(f.run),1);
+  assert.equal(ally.pokemon.id,form.id);assert.equal(ally.pokemon.stage,base.stage);assert.deepEqual(ally.pokemon.types,base.types);assert.equal(ally.totalDamage,98765);assert.equal(ally.gmaxCount,1);assert.ok(ally.evolutionLocked);assert.equal(canEvolve(ally),false);assert.ok(Math.abs(damageMultiplier(ally.pokemon,f.run)-initial*2)<1e-9);assert.equal(repeatPower(f.run),1);
   const move=attackFor(ally.pokemon);assert.match(move.name,/^G-Max /);assert.equal(move.signature,true);assert.ok(move.power>=attackFor(base).power);assert.ok(attackCooldown(ally.pokemon)<=attackCooldown(base));
   const before=JSON.stringify(f.run);assert.throws(()=>apply(f,`0:${form.id}`));assert.equal(JSON.stringify(f.run),before);assert.deepEqual(regionalCards(f.run,f.data),[]);
  }
