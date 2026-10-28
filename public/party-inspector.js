@@ -1,5 +1,5 @@
-import {partyProfile} from './party-details.js?v=25';
-import {formatDamageTotal,damageMultiplier,cooldownFactor} from './engine.js?v=25';
+import {partyProfile} from './party-details.js?v=26';
+import {formatDamageTotal,damageMultiplier,cooldownFactor} from './engine.js?v=26';
 import {attackCooldown} from './attacks.js';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const title=s=>s.replace(/(^|-)([a-z])/g,(_,dash,c)=>(dash?' ': '')+c.toUpperCase());

@@ -1,21 +1,16 @@
-POKE BASTION — VERSION 25 ENDLESS SPEED PATCH
-Requires Version 24. This ZIP includes ONLY changed/new files.
+POKE BASTION — VERSION 26 FULL SCREEN TOWER STATS
+Requires Version 25. This ZIP includes ONLY changed/new files.
 
 1. Extract into the existing project root beside package.json.
 2. Merge folders and replace matching files.
 3. Redeploy Render using npm run build, publishing dist.
-4. Refresh the game and confirm VERSION 25 in the header.
+4. Refresh and confirm VERSION 26 in the header.
 
-ENDLESS MOVEMENT SPEED
-During the extra scaling phase, speed gains a fixed 2% of the phase-start baseline each round. It does not compound. The baseline remains fixed so ordinary wave growth cannot make the result quadratic.
+FULL SCREEN
+The live tower bar now appears at the top beneath wave/controls. It shows current/max HP, shield while active, defense, global damage bonus, range and growth. HP and its health meter are the same live elements used in the normal view. Values update during combat and when picking rewards. Reward choices remain at the bottom. The bar wraps on narrow screens; the party and detailed stats stay hidden.
 
-After 10 scaling rounds: 1.20x baseline speed.
-After 50 scaling rounds: 2.00x baseline speed.
-After 100 scaling rounds: 3.00x baseline speed.
-
-True Endless starts counting at round 1 using ordinary round-1 speed as the baseline. Regional Endless keeps its existing speed curve through round 151, then gains 2% of its round-151 baseline per additional round (1.02x at round 152).
-
-HP, physical/special defenses and impact damage retain their existing 5% compounding and other growth. Boss speed multipliers still apply. Classic mode and regional Endless before the extra scaling phase are unchanged. Type-independent targeting from Version 24 remains included in the existing project.
+RESISTANCE AUDIT
+No type-based damage reductions or target exclusions were found. With defenses held constant, every one of the 1,219 bundled Pokemon/forms and every ordinary/Stellar single/dual-type combination takes the same neutral damage. Physical/special defenses and splash/ricochet damage falloff remain independent of typing. Combat formulas were not changed. Version 25's linear Endless speed remains in place. The build/import URLs are refreshed to ensure the current code loads.
 
 VALIDATION
-180 automated tests pass, including constant per-round speed increments for slow/fast Pokemon and bosses, phase boundaries and existing campaigns. 432 before/after stat cases confirm non-speed stats and Classic/pre-phase speeds are unchanged. Production build passes. Source and prebuilt production assets are included.
+183 automated tests pass. Production build passes. Browser verified: live top stats during Auto/5x full screen combat, HP increasing from315 to380 when picking a reward mid-wave, party hidden, and 390px mobile layout with HP/shield and all four compact stats visible. Temporary responsive QA fixtures are not shipped.

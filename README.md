@@ -391,3 +391,10 @@ Version 24 also refreshes the source entry/import URLs and production fingerprin
 During either Endless mode's extra scaling phase, speed gains a fixed 2% of its phase-start baseline each round. After 10 scaling rounds speed is 1.20x the baseline, after 50 it is 2.00x, and after 100 it is 3.00x. The speed baseline is held fixed during that phase, avoiding both exponential and quadratic acceleration. Boss speed multipliers still apply.
 
 True Endless starts counting at round 1 and uses ordinary round-1 speed as the baseline. Regional Endless keeps its normal speed curve through round 151, then uses round-151 speed as the baseline with 1.02x at round 152. Classic mode and regional Endless before round 152 are unchanged. HP, defenses and impact retain their previous 5% compounding and all other existing growth. The in-game help and starter description explain the speed exception.
+
+
+## Version 26 — full screen tower stats and resistance audit
+
+Full screen now retains the live tower bar beneath the wave/controls row. It displays current/max HP, remaining shield (when present), defense reduction, global damage bonus, range and tower growth. HP and the health meter use the same live elements as the normal view; extra range/growth values update with the rest of the battle UI. The bar wraps on small screens. Reward choices remain at the bottom, and party/details remain hidden.
+
+The resistance audit confirms no type multipliers or type-dependent target exclusions remain. Tests cover every bundled defender record, every ordinary/Stellar attacking type, single/dual defender combinations, primary attacks, area hits and ricochets. With defenses held constant, defender typing cannot change damage. Physical/special defenses and ordinary splash/bounce falloff remain; these are not type resistances. No combat balance formulas changed in this version. Version 25's linear Endless movement speed is preserved.

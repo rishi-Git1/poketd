@@ -1,7 +1,7 @@
 import {evolveAlly,maskDamage,canEvolve,isTransformation} from './transformations.js';
 import {getRegion} from './regions.js';
 export const TYPES={grass:'#78a857',poison:'#a970b3',fire:'#e9824e',water:'#61a6d4',bug:'#9baa4e',normal:'#afa58c',flying:'#9aafe0',electric:'#d4ad34',ground:'#ba9363',psychic:'#dc81a5',rock:'#a59569',ghost:'#8876ac',dragon:'#8379d3',ice:'#69c4d2',fighting:'#b76045',fairy:'#db91bb',steel:'#8c9fa7',dark:'#6c6084',stellar:'#86cfdf'};
-// Attack and defender types never change damage. Collected type upgrades still apply.
+// Type neutrality is unconditional in every mode and attack path. Collected type upgrades still apply.
 export function effectiveness(){return 1}
 export function waveCount(wave){return wave<=5?3+wave*2:13+(wave-5)*3}
 export function openingEase(wave){return Math.min(1,.8+Math.max(0,wave-1)*.04)}
