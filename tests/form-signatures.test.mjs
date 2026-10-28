@@ -6,7 +6,7 @@ const frame=(move,life=.24)=>({move,origin:{x:100,y:90},target:{x:350,y:160},poi
 
 test('every bundled Mega and all34 Gigantamax forms have named signatures and unique visual keys',()=>{
  assert.equal(forms.filter(p=>p.gigantamax).length,34);assert.equal(Object.keys(FORM_SIGNATURES).length,forms.length);
- const keys=new Set();for(const p of forms){const move=formAttackFor(p);assert.ok(move,p.name);assert.ok(move.name.length>5);assert.ok(shapes.has(move.shape),p.name);assert.ok(move.signature);assert.match(move.color,/^#[a-f0-9]{6}$/i);assert.ok(move.power>=3.6&&move.power<=4.32);assert.ok(move.visualDescription.length>20);assert.ok(!keys.has(move.visualKey));keys.add(move.visualKey);if(p.gigantamax)assert.match(move.name,/^G-Max /)}
+ const keys=new Set();for(const p of forms){const move=formAttackFor(p);assert.ok(move,p.name);assert.ok(move.name.length>0);assert.ok(shapes.has(move.shape),p.name);assert.ok(move.signature);assert.match(move.color,/^#[a-f0-9]{6}$/i);assert.ok(move.power>=3.6&&move.power<=4.32);assert.ok(move.visualDescription.length>20);assert.ok(!keys.has(move.visualKey));keys.add(move.visualKey);if(p.gigantamax)assert.match(move.name,/^G-Max /)}
  assert.equal(formAttackFor({id:10033}),null);assert.equal(formAttackFor({id:6}),null);assert.equal(formAttackFor({id:999999,mega:true}),null);assert.equal(formAttackFor(null),null);
 });
 

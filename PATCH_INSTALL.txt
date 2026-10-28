@@ -1,20 +1,11 @@
-POKE BASTION — VERSION 23 PATCH
-Requires Version 22. This ZIP includes ONLY changed/new files, not the whole game.
+POKE BASTION — MEGA MOVE NAME FIX FOR VERSION 23
 
-1. Extract this ZIP into your existing project root (beside package.json).
-2. Merge the public/, scripts/, tests/ and dist/ folders; replace matching files.
-3. Redeploy Render with its existing npm run build command. Confirm VERSION 23 in the header.
+Merge these files into your existing Version 23 project root, replace matching files, then redeploy Render with the existing npm run build command.
 
-Prebuilt dist/ files are included. Building regenerates all fingerprinted assets and removes obsolete build files. No dependency installation changes are needed.
+This ZIP contains changed files only. The header remains VERSION 23.
 
-CHANGES
-- At most two Tera cards per three-card reward roll.
-- Cancel/Escape in Mega Stone, Max Mushrooms or Tera targeting preserves that complete reward set; the cancel button remains visible while scrolling.
-- Mega/Gigantamax transformations now give +100% personal damage (2x). Existing post-100 team rally cards remain +35% (+80% master).
-- All 83 bundled Megas and 34 Gigantamax forms have a named signature and unique animation composition. Mega moves are custom tower-defense adaptations.
-- TRUE ENDLESS button below the nine regional cards: full 1,025-species National Dex, searchable starter choice, three initial upgrade selections, and Hall of Origin scenery.
-- True Endless has no story or cap. Every 10th round is a random Legendary, Mythical or Ultra Beast boss. An additional 5% enemy-stat multiplier compounds every round from round 1.
-- Advanced tactics unlock at25; elite/master upgrades at50. Mega Stones, Max Mushrooms and Tera powers work across the full dex. Regional modes retain their schedules and gates.
+82 invented Mega move names were replaced with real Pokemon moves associated with their Pokemon. Examples: Mega Charizard X — Flare Blitz; Mega Blastoise — Hydro Pump; Mega Lucario — Aura Sphere; Mega Rayquaza — Dragon Ascent. Mega Zygarde retains Nihil Light, which is already a real move.
 
-VALIDATION
-169 automated tests pass; production build passes. Browser checked: all nine region cards and True Endless entry, special-form search, three initial choices, live Auto at5x, fullscreen rewards, signature animation and Hall of Origin. No long-run balance playthrough is claimed.
+All 34 G-Max move entries are identical. All animations, damage, move types, shapes, cooldowns and gameplay are unchanged. Includes updated source plus fingerprinted production files so cached browsers load the corrected names.
+
+Validation: 169 automated tests pass; production build passes; exact comparison confirms only Mega name fields changed in the signature data and the animation renderer is identical.
