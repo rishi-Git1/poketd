@@ -1,4 +1,4 @@
-import {batchSpawnTime,ALL_TACTICS,masterUpgrades,cardKey,drawDistinct} from './engine.js?v=27';
+import {batchSpawnTime,ALL_TACTICS,masterUpgrades,cardKey,drawDistinct} from './engine.js?v=28';
 import {getRegion} from './regions.js';
 export const BOSSES=getRegion('kanto').bosses;
 export function bossFor(wave,starter=1,region='kanto'){const b=getRegion(region).bosses.find(b=>b.wave===wave);if(!b)return null;let team=[...b.team];if(region==='kanto'&&b.name==='Blue')team=starter===4?[18,65,112,59,103,9]:starter===7?[18,65,112,130,59,3]:team;if(region==='galar'&&b.name==='Hop')team=[832,143,823,871,starter===813?812:starter===816?815:818];if(region==='galar'&&b.name==='Leon')team=[681,887,612,...(starter===813?[866,818]:starter===816?[464,812]:[537,815]),6];return {...b,team,story:true,boost:b.boost||1.25,final:wave===getRegion(region).rounds||b.tier==='LEGENDARY'}}

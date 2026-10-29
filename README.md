@@ -1,4 +1,4 @@
-# Poké Bastion — Version 27
+# Poké Bastion — Version 28
 
 A browser tower-defense roguelike with nine regional campaigns and **Classic / Endless / True Endless** modes. Choose a region when the game opens, choose Classic or Random starters, then select one of three partners. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
 
@@ -18,7 +18,7 @@ A browser tower-defense roguelike with nine regional campaigns and **Classic / E
 
 Alola features Totem and Ultra Beast encounters in the Ultra Wormhole. Regional Pokédexes contain overlapping species, including Pokémon originally introduced in other regions. These are actual regional dex lists from PokéAPI, not national-generation ID slices. Required finale exceptions are added: Arceus for Sinnoh; base and Stellar Terapagos for Paldea; Eternamax Eternatus for Galar. Relevant Galarian and Paldean forms are included alongside base species. The displayed dex count refers to the official regional species list, excluding additional forms/finale exceptions.
 
-The complete pack contains **1219 distinct Pokémon/form records with local sprites**, including per-region evolution paths and legendary/mythical flags. Kanto retains its original three Eevee branches; later regions gain additional branches when those evolutions belong to their dex. Regional forms have their own evolution connections, such as Galarian Meowth → Perrserker and Paldean Wooper → Clodsire.
+The complete pack contains **1267 distinct Pokémon/form records with local sprites**, plus 39 plate, memory, drive and Sunshine form variants, including per-region evolution paths and legendary/mythical flags. Kanto retains its original three Eevee branches; later regions gain additional branches when those evolutions belong to their dex. Regional forms have their own evolution connections, such as Galarian Meowth → Perrserker and Paldean Wooper → Clodsire.
 
 The REGIONS button opens the selector again. Cancel returns to the current story; choosing another region starts a fresh run. New story at an ending restarts the same region; Choose a region returns to the selector. Best rounds are saved separately for each region and Classic/Endless mode on this device. Active runs are not saved across reloads. Legacy Kanto best scores are still recognized.
 
@@ -423,3 +423,75 @@ Hazards retain their ordinary stack size, never become master cards, and cannot 
 Each card has original miniature art. Picking an installation immediately places six matching rocks, steel spikes or violet poison spikes around the battlefield; additional stacks add six more instances without moving existing art. They persist across waves and in fullscreen, and reset on a new run or region.
 
 Validation: **192 automated tests pass**, including every scripted boss across nine regions, the story ramp and Endless transition, generation/round gates, capped and banked offers, each HP reduction tier and their combination, type-neutral poison, kill/heal attribution, inventory/dossier support, distinct card art and stable per-stack ground placements. Production build and browser checks pass. Browser review used an isolated round-100 fixture to verify selecting each stack, live banked-card counts, capped-card removal, inventory effects and fullscreen ground art; full campaign balance was not playtested end to end. Temporary QA fixtures are not shipped.
+
+
+## Version 28 — Final encounters, expedition review, form items and Everstone
+
+Install this changed-files patch over **Version 27**, merge its folders, replace matching files and keep all other assets. Redeploy on Render with `npm run build`, publishing `dist`. Confirm VERSION 28. This is not a replacement full-project ZIP.
+
+### Final bosses
+
+Every scripted final encounter has **3× its Version-27 maximum HP and 2× its Version-27 movement speed**. This includes each regional finale and Kanto's Mewtwo/Mew sequence. The previous story-boss health boost and post-100 story ramp still apply. Other boss stats, ordinary gym/League/Totem/Ultra Beast encounters, random Endless bosses and True Endless scaling are unchanged by these additional finale multipliers. Regional Endless uses the same boosted story finales before continuing.
+
+### Review after a loss
+
+Losing opens **You Whited Out!** with the reached round, defeats, upgrades, final HP and party. **Review expedition** closes the summary and returns to the normal party/dossier view, including when the loss happened in fullscreen. Select partners, toggle damage totals or inspect the collected-upgrades inventory. Combat and reward spending stay stopped. **Review expedition summary** reopens the result. New expedition restarts the selected region/mode; Choose a region opens the selector. The current expedition is retained in memory until starting another or reloading, not archived across reloads.
+
+### Keyboard controls
+
+| Key | Action |
+| --- | --- |
+| N | Start the next round when ready |
+| Enter | Also starts the next round when the page body has focus |
+| A | Toggle Auto |
+| S | Cycle game speed 1× → 2× → 5× |
+| Space | Pause/resume |
+| 1 / 2 / 3 | Choose a reward card |
+
+Shortcuts ignore text/search inputs, selects, editable content, composition, repeated keydowns and Ctrl/Alt/Meta combinations. Open dialogs keep gameplay shortcuts inactive. N/Enter respect the existing ready/reward guards and never discard a lost expedition by starting a new run.
+
+### Alternate forms and real form-changing items
+
+From round 1, eligible partners unlock **35 item/ability families**, with PokéAPI form stats and local sprites. Cards use the existing two-step target picker; cancel/Escape preserves the same unspent roll. A chosen form preserves its individual stage, damage/contribution totals, party buffs and transformation history, and gains a **×1.25 personal damage bonus**. Each individual may visit each destination once, so repeating an already used destination cannot waste a reward or create a switching loop. Distinct unused branches remain available. Forms do not add an evolution stage. Existing personal form power is retained through later Tera and eligible Mega/Gigantamax changes.
+
+| Item or ability | Eligible transformation |
+| --- | --- |
+| Reveal Glass | Tornadus, Thundurus, Landorus and Enamorus → Therian Forme |
+| Meteorite | Deoxys → Attack, Defense or Speed Forme |
+| Gracidea | Shaymin → Sky Forme |
+| Griseous Orb | Giratina → Origin Forme |
+| Adamant Crystal / Lustrous Globe | Dialga / Palkia → Origin Forme |
+| Rotom Catalog | Rotom → Heat, Wash, Frost, Fan or Mow |
+| DNA Splicers | Kyurem → Black or White Kyurem |
+| Prison Bottle | Hoopa → Unbound |
+| Blue Orb / Red Orb | Kyogre / Groudon → Primal form |
+| N-Solarizer / N-Lunarizer | Necrozma → Dusk Mane / Dawn Wings |
+| Ultranecrozium Z | Dusk Mane or Dawn Wings Necrozma → Ultra Necrozma |
+| Reins of Unity | Calyrex → Ice Rider or Shadow Rider |
+| Rusted Sword / Rusted Shield | Zacian / Zamazenta → Crowned form |
+| Nectar | Oricorio → another unused dance style |
+| Zygarde Cube | 10% → 50%, then 50% → Complete Forme |
+| Zen Mode | Standard or Galarian Darmanitan → its matching Zen Mode |
+| Stance Change | Aegislash → Blade Forme |
+| Battle Bond | Greninja → Ash-Greninja |
+| Forecast | Castform → Sunny, Rainy or Snowy Form |
+| Schooling / Shields Down | Wishiwashi → School Form; Minior → Core |
+| Ice Face / Hunger Switch / Zero to Hero | Eiscue → Noice Face; Morpeko → Hangry Mode; Palafin → Hero Form |
+| Relic Song / Secret Sword / Flower Gift | Meloetta → Pirouette; Keldeo → Resolute; Cherrim → Sunshine |
+| Gulp Missile | Cramorant → Gulping, then Gorging Form |
+| Arceus Plate / Silvally Memory | Choose one of 17 non-Normal type forms |
+| Genesect Drive | Choose Douse, Shock, Burn or Chill; Techno Blast changes type, Genesect stays Bug/Steel |
+
+The transformation item supplies fusion power without consuming another party member; persistent ability/weather/battle forms are roguelike adaptations rather than temporary battle triggers. Cosmetic costumes, sex differences, sizes, regional breeding variants and non-playable Eternamax are not extra form-upgrade cards. Regional snapshots gain forms only for species already in that regional pool. Galarian Standard Darmanitan remains an ordinary regional evolution target. Alternate upgrade forms are excluded from ordinary waves/recruitment/premium recruit offers; True Endless's any-partner starter search continues to allow special forms.
+
+Necrozma cannot skip directly from its base form to Ultra. Its branch and Ultra Burst remain separate rewards. New forms use real moves, including Moongeist Beam, Sunsteel Strike, Psychic, Freeze Shock, Ice Burn, Origin Pulse, Precipice Blades and Techno Blast, with the established type animations. Type matchups remain completely neutral. New typing changes which collected party type buffs match. Arceus/Silvally/Genesect form variants keep their real species ID and use distinct sprite/cache keys.
+
+### Everstone
+
+Everstone appears from **round 1**, only when a current partner has an evolution or an available/future regional form change. Select one holder; cancel retains the roll. It permanently blocks evolution, alternate-form items/abilities, Mega Evolution, Gigantamax and Terastallization for **that individual only**, retaining its current stats, form, damage, power and existing Tera state. It cannot be applied repeatedly to the same partner. Blocked choices are removed from already banked rolls and future pools; a shared item can still appear for another eligible partner. Ordinary stat/type/stage upgrades remain available. A replacement/recruited partner is a new individual and does not inherit the Everstone. Party cards, dossier and inventory show the lock. Everstone/form items are not master cards or exchangeable passive buffs.
+
+### Data and verification
+
+`scripts/build-alternate-forms.py` rebuilds the form additions from the bundled PokéAPI CSVs and `public/assets/form-catalog.json`, then checks/downloads official PokéAPI sprites. The origin-data builder invokes it after rebuilding the National Dex. Ordinary Render builds use the already bundled assets and make no form-data download requests. Source references: https://pokeapi.co/docs/v2 and https://github.com/PokeAPI/pokeapi/tree/master/data/v2/csv ; sprites: https://github.com/PokeAPI/sprites .
+
+Validation: **206 automated tests pass**. New checks cover all regional finale multipliers, every catalog route, typed form moves/sprites, branch prerequisites, personal power preservation, Everstone restrictions and stale offers, two-step cancellation/application during Auto, loss review and keyboard guards. Browser checks verified N/A/S in the production build, Dawn Wings → Ultra, stage-2 Zen Mode, Everstone removing a banked Reveal Glass, cancellation retaining the roll, and loss review restoring party/dossier/inventory from fullscreen. UI checks use a temporary seeded fixture for specific item rolls; fixtures are excluded from the patch. Full campaign balance was not playtested end to end.

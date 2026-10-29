@@ -43,3 +43,5 @@ def sprite(p):
  if not path.read_bytes().startswith(b'\x89PNG'):raise ValueError('Invalid sprite')
 with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:list(ex.map(sprite,out))
 print(f"True Endless: {len({p['speciesId'] for p in out})} species, {len(out)} records, {sum(p['legendary'] or p['mythical'] or p['ultraBeast'] for p in out)} boss candidates (before form filtering).")
+
+subprocess.run(['python3',str(root/'scripts/build-alternate-forms.py')],check=True)

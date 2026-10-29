@@ -1,8 +1,9 @@
+import {alternateCards,alternateOptions,EVERSTONE,formIdentity,FORM_DAMAGE_BONUS} from './form-changes.js';
 // Regional forms keep their evolution stage. Data comes from bundled PokéAPI records.
 export const MEGA_REGIONS=['hoenn','kalos','alola'];
 export const TERA_TYPES=['normal','fire','water','grass','electric','ice','fighting','poison','ground','flying','psychic','bug','rock','ghost','dragon','dark','steel','fairy','stellar'];
-export const isTransformation=card=>['mega','tera','gmax'].includes(card?.kind);
-export const canEvolve=ally=>!ally.evolutionLocked&&!ally.gmaxCount&&!ally.pokemon.gigantamax&&!ally.megaCount&&!ally.pokemon.mega&&!ally.pokemon.evolutionLocked;
+export const isTransformation=card=>['mega','tera','gmax','form-change','everstone'].includes(card?.kind);
+export const canEvolve=ally=>!ally.everstone&&!ally.pokemon.everstone&&!ally.evolutionLocked&&!ally.gmaxCount&&!ally.pokemon.gigantamax&&!ally.megaCount&&!ally.pokemon.mega&&!ally.pokemon.evolutionLocked;
 const species=p=>p.speciesId||p.megaFrom||p.id;
 const maskForms={grass:1017,water:10273,fire:10274,rock:10275};
 const combine=(base,type)=>[...new Set([...base,type])].slice(0,3);
@@ -12,9 +13,16 @@ function teraPokemon(ally,form){
  return {...form,types:stellar?[...base.types]:combine(base.types,ally.teraType),baseTypes:[...base.types],stage:base.stage,teraType:ally.teraType,teraCount:ally.teraCount,teraPowerCount:power,stellarBoost:stellar?1.2:1,personalPower:(base.personalPower||1)*1.2**power*(stellar?1.2:1)};
 }
 export function transformationOptions(card,run,roster){
+ if(card.kind==='form-change')return alternateOptions(card,run,roster);
+ if(card.kind==='everstone'){
+  const future=[...alternateCards({...run,wave:Math.max(1,run.wave)},roster),...regionalCards({...run,wave:Math.max(25,run.wave)},roster,true)];
+  const changeable=new Set(future.flatMap(c=>transformationOptions(c,run,roster).map(o=>o.slot)));
+  return run.team.flatMap((ally,slot)=>!ally.everstone&&!ally.pokemon.everstone&&((canEvolve(ally)&&(ally.pokemon.nextOptions?.length||ally.pokemon.next))||changeable.has(slot))?[{key:`${slot}:everstone`,slot,ally,form:ally.pokemon,title:'Everstone',description:`Keep ${ally.pokemon.name} in its current evolution and form. Permanently hide its evolution, alternate-form, Mega, Gigantamax and Tera options. This does not affect other partners.`}]:[]);
+ }
  const result=[];
  for(let slot=0;slot<run.team.length;slot++){
   const ally=run.team[slot],base=ally.nativePokemon||ally.pokemon;
+  if(ally.everstone||ally.pokemon.everstone)continue;
   if(card.kind==='mega'&&(MEGA_REGIONS.includes(run.region)||run.mode==='true-endless')&&!ally.megaCount&&!ally.pokemon.mega&&!ally.gmaxCount&&!ally.pokemon.gigantamax){
    for(const form of roster.filter(p=>p.mega&&p.megaFrom===(base.speciesId||base.id)))result.push({key:`${slot}:${form.id}`,slot,ally,form,title:form.name,description:`Stage ${ally.pokemon.stage} stays unchanged. One-time Mega Evolution with +100% personal damage.`});
   }
@@ -31,9 +39,10 @@ export function transformationOptions(card,run,roster){
   }
  }return result;
 }
-export function regionalCards(run,roster){
- if(run.wave<25||!run.team.length)return [];
- const candidates=[];
+export function regionalCards(run,roster,skipHeldItems=false){
+ if(!run.team.length)return [];
+ const candidates=skipHeldItems?[]:[...alternateCards(run,roster),...(run.wave>=1?[{...EVERSTONE}]:[])];
+ if(run.wave<25)return candidates.filter(c=>transformationOptions(c,run,roster).length);
  if((MEGA_REGIONS.includes(run.region)||run.mode==='true-endless'))candidates.push({kind:'mega',title:'Mega Evolution',label:'REGIONAL POWER',badge:'REGIONAL MEGA POWER',symbol:'◈',accent:'#ba6fc4',description:'Choose an eligible partner and Mega form once. Preserve its stage and damage total; gain ×2 personal damage. Already Mega-Evolved partners cannot be selected again.'});
  if((run.region==='galar'||run.mode==='true-endless'))candidates.push({kind:'gmax',title:'Max Mushrooms',label:'GIGANTAMAX',badge:'GALAR POWER',symbol:'♣',accent:'#c95181',description:'Choose a partner with a Gigantamax form. Permanently Gigantamax it once: ×2 personal damage and a signature G-Max move. Keeps its stage and damage total. That partner can never evolve afterward. Eternatus is ineligible.'});
  if((run.region==='paldea'||run.mode==='true-endless'))for(const type of TERA_TYPES)candidates.push({kind:'tera',type,title:`${type[0].toUpperCase()+type.slice(1)} Tera Crystal`,label:'TERASTALLIZATION',badge:`${type.toUpperCase()} TERA`,symbol:'◆',accent:'#67bdd0',description:type==='stellar'?'Keep native types and gain +20% damage only while Stellar. The bonus ends on another Tera type. Terapagos instead becomes its special Stellar Form. Cannot target an already Stellar partner.':`Choose a partner to add ${type} typing alongside its original types. Grants another ×1.20 personal damage. Replaces its previous Tera type. Partners already Tera ${type} cannot be selected.`});
@@ -42,12 +51,18 @@ export function regionalCards(run,roster){
 export function applyTransformation(run,card,key,roster,record){
  const choice=transformationOptions(card,run,roster).find(c=>c.key===key);if(!choice)throw Error('Choose an eligible current partner');
  const {ally,form}=choice;ally.nativePokemon??=ally.pokemon;
- if(card.kind==='mega'){
+ if(card.kind==='everstone'){
+  ally.everstone=true;ally.pokemon={...ally.pokemon,everstone:true};
+ }else if(card.kind==='form-change'){
+  const base=ally.nativePokemon;ally.formVisits??=[formIdentity(base)];ally.formVisits.push(formIdentity(form));
+  ally.nativePokemon={...form,stage:base.stage,personalPower:(base.personalPower||1)*FORM_DAMAGE_BONUS};
+  ally.pokemon=ally.teraType?teraPokemon(ally,ally.nativePokemon):ally.nativePokemon;
+ }else if(card.kind==='mega'){
   ally.megaCount=1;
-  ally.pokemon={...form,stage:ally.nativePokemon.stage,personalPower:2,megaCount:1};
+  ally.pokemon={...form,stage:ally.nativePokemon.stage,personalPower:(ally.nativePokemon.personalPower||1)*2,megaCount:1};
  }else if(card.kind==='gmax'){
   ally.gmaxCount=1;ally.evolutionLocked=true;
-  ally.pokemon={...form,stage:ally.nativePokemon.stage,next:null,nextOptions:[],personalPower:2,gmaxCount:1,evolutionLocked:true};
+  ally.pokemon={...form,stage:ally.nativePokemon.stage,next:null,nextOptions:[],personalPower:(ally.nativePokemon.personalPower||1)*2,gmaxCount:1,evolutionLocked:true};
  }else{
   ally.teraCount=(ally.teraCount||0)+1;ally.teraType=card.type;
   if(card.type!=='stellar'||species(ally.nativePokemon)===1024)ally.teraPowerCount=(ally.teraPowerCount||0)+1;
@@ -56,7 +71,7 @@ export function applyTransformation(run,card,key,roster,record){
  }
  if(card.kind==='mega'||card.kind==='gmax'){ally.nativePokemon=ally.pokemon;if(ally.teraType)ally.pokemon=teraPokemon(ally,ally.nativePokemon)}
  ally.focusTarget=null;ally.focusTime=0;
- const entry={...card,targetName:ally.pokemon.name,targetId:ally.nativePokemon.id,transformation:true};
+ const entry={...card,formDestination:card.kind==='form-change'?formIdentity(form):undefined,targetName:ally.pokemon.name,targetId:ally.nativePokemon.id,transformation:true};
  (ally.formHistory??=[]).push(entry);record(run,entry);return ally;
 }
 export function evolveAlly(ally,pokemon){

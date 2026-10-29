@@ -10,10 +10,10 @@ import {harness} from './flow-harness.mjs';
 const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-9*Math.max(1,Math.abs(b)),`${a} != ${b}`),dex=region=>JSON.parse(readFileSync(`public/assets/regions/${region}.json`));
 const install=(run,kind)=>applyUpgrade(run,{...HAZARDS.find(c=>c.kind===kind)});
 
-test('every scripted boss in every region has exactly double HP in both regional modes, with its other boss stats retained',()=>{
+test('every scripted boss in every region retains the doubled story health, with additional finale boosts in both regional modes',()=>{
  for(const r of REGIONS)for(const original of r.bosses)for(const mode of ['classic','endless']){
   const b=bossFor(original.wave,r.starters[0],r.id);assert.equal(b.story,true);
-  for(const id of b.team){const p=dex(r.id).find(p=>p.id===id),stats=enemyStats(p,b.wave,b,mode,r.id),withoutExtraHealth=enemyStats(p,b.wave,{...b,story:false},mode,r.id);near(stats.maxHp,withoutExtraHealth.maxHp*2);for(const key of ['defense','specialDefense','speed','impact'])assert.equal(stats[key],withoutExtraHealth[key]);}
+  for(const id of b.team){const p=dex(r.id).find(p=>p.id===id),stats=enemyStats(p,b.wave,b,mode,r.id),withoutExtraHealth=enemyStats(p,b.wave,{...b,story:false},mode,r.id);near(stats.maxHp,withoutExtraHealth.maxHp*(b.final?6:2));near(stats.speed,withoutExtraHealth.speed*(b.final?2:1));for(const key of ['defense','specialDefense','impact'])assert.equal(stats[key],withoutExtraHealth[key]);}
  }
 });
 test('story scaling starts strictly after 100, increases both defenses/HP/impact by 2% and speed by a linear 0.5%, then stops at the finale',()=>{

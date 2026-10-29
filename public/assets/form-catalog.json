@@ -1,0 +1,612 @@
+[
+  {
+    "key": "reveal-glass",
+    "title": "Reveal Glass",
+    "routes": [
+      {
+        "source": [
+          641
+        ],
+        "targets": [
+          10019
+        ]
+      },
+      {
+        "source": [
+          642
+        ],
+        "targets": [
+          10020
+        ]
+      },
+      {
+        "source": [
+          645
+        ],
+        "targets": [
+          10021
+        ]
+      },
+      {
+        "source": [
+          905
+        ],
+        "targets": [
+          10249
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "reveal-glass"
+  },
+  {
+    "key": "meteorite",
+    "title": "Meteorite",
+    "routes": [
+      {
+        "source": [
+          386,
+          10001,
+          10002,
+          10003
+        ],
+        "targets": [
+          10001,
+          10002,
+          10003
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "meteorite"
+  },
+  {
+    "key": "gracidea",
+    "title": "Gracidea",
+    "routes": [
+      {
+        "source": [
+          492
+        ],
+        "targets": [
+          10006
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "gracidea"
+  },
+  {
+    "key": "griseous-orb",
+    "title": "Griseous Orb",
+    "routes": [
+      {
+        "source": [
+          487
+        ],
+        "targets": [
+          10007
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "griseous-orb"
+  },
+  {
+    "key": "adamant-crystal",
+    "title": "Adamant Crystal",
+    "routes": [
+      {
+        "source": [
+          483
+        ],
+        "targets": [
+          10245
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "adamant-crystal"
+  },
+  {
+    "key": "lustrous-globe",
+    "title": "Lustrous Globe",
+    "routes": [
+      {
+        "source": [
+          484
+        ],
+        "targets": [
+          10246
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "lustrous-globe"
+  },
+  {
+    "key": "rotom-catalog",
+    "title": "Rotom Catalog",
+    "routes": [
+      {
+        "source": [
+          479,
+          10008,
+          10009,
+          10010,
+          10011,
+          10012
+        ],
+        "targets": [
+          10008,
+          10009,
+          10010,
+          10011,
+          10012
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "rotom-catalog"
+  },
+  {
+    "key": "dna-splicers",
+    "title": "DNA Splicers",
+    "routes": [
+      {
+        "source": [
+          646
+        ],
+        "targets": [
+          10022,
+          10023
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "dna-splicers"
+  },
+  {
+    "key": "prison-bottle",
+    "title": "Prison Bottle",
+    "routes": [
+      {
+        "source": [
+          720
+        ],
+        "targets": [
+          10086
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "prison-bottle"
+  },
+  {
+    "key": "blue-orb",
+    "title": "Blue Orb",
+    "routes": [
+      {
+        "source": [
+          382
+        ],
+        "targets": [
+          10077
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "blue-orb"
+  },
+  {
+    "key": "red-orb",
+    "title": "Red Orb",
+    "routes": [
+      {
+        "source": [
+          383
+        ],
+        "targets": [
+          10078
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "red-orb"
+  },
+  {
+    "key": "n-solarizer",
+    "title": "N-Solarizer",
+    "routes": [
+      {
+        "source": [
+          800
+        ],
+        "targets": [
+          10155
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "n-solarizer"
+  },
+  {
+    "key": "n-lunarizer",
+    "title": "N-Lunarizer",
+    "routes": [
+      {
+        "source": [
+          800
+        ],
+        "targets": [
+          10156
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "n-lunarizer"
+  },
+  {
+    "key": "ultranecrozium-z",
+    "title": "Ultranecrozium Z",
+    "routes": [
+      {
+        "source": [
+          10155,
+          10156
+        ],
+        "targets": [
+          10157
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "ultranecrozium-z--held"
+  },
+  {
+    "key": "reins-of-unity",
+    "title": "Reins of Unity",
+    "routes": [
+      {
+        "source": [
+          898
+        ],
+        "targets": [
+          10193,
+          10194
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "reins-of-unity"
+  },
+  {
+    "key": "rusted-sword",
+    "title": "Rusted Sword",
+    "routes": [
+      {
+        "source": [
+          888
+        ],
+        "targets": [
+          10188
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "rusted-sword"
+  },
+  {
+    "key": "rusted-shield",
+    "title": "Rusted Shield",
+    "routes": [
+      {
+        "source": [
+          889
+        ],
+        "targets": [
+          10189
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "rusted-shield"
+  },
+  {
+    "key": "nectar",
+    "title": "Nectar",
+    "routes": [
+      {
+        "source": [
+          741,
+          10123,
+          10124,
+          10125
+        ],
+        "targets": [
+          741,
+          10123,
+          10124,
+          10125
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "yellow-nectar"
+  },
+  {
+    "key": "zen-mode",
+    "title": "Zen Mode",
+    "routes": [
+      {
+        "source": [
+          555
+        ],
+        "targets": [
+          10017
+        ]
+      },
+      {
+        "source": [
+          10177
+        ],
+        "targets": [
+          10178
+        ]
+      }
+    ],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "stance-change",
+    "title": "Stance Change",
+    "routes": [
+      {
+        "source": [
+          681
+        ],
+        "targets": [
+          10026
+        ]
+      }
+    ],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "battle-bond",
+    "title": "Battle Bond",
+    "routes": [
+      {
+        "source": [
+          658
+        ],
+        "targets": [
+          10117
+        ]
+      },
+      {
+        "source": [
+          10116
+        ],
+        "targets": [
+          10117
+        ]
+      }
+    ],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "forecast",
+    "title": "Forecast",
+    "routes": [
+      {
+        "source": [
+          351,
+          10013,
+          10014,
+          10015
+        ],
+        "targets": [
+          10013,
+          10014,
+          10015
+        ]
+      }
+    ],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "schooling",
+    "title": "Schooling",
+    "routes": [
+      {
+        "source": [
+          746
+        ],
+        "targets": [
+          10127
+        ]
+      }
+    ],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "zygarde-cube",
+    "title": "Zygarde Cube",
+    "routes": [
+      {
+        "source": [
+          10181
+        ],
+        "targets": [
+          718
+        ]
+      },
+      {
+        "source": [
+          718,
+          10118,
+          10119
+        ],
+        "targets": [
+          10120
+        ]
+      }
+    ],
+    "ability": false,
+    "icon": "zygarde-cube"
+  },
+  {
+    "key": "shields-down",
+    "title": "Shields Down",
+    "routes": [
+      {
+        "source": [
+          774
+        ],
+        "targets": [
+          10136
+        ]
+      }
+    ],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "ice-face",
+    "title": "Ice Face",
+    "routes": [
+      {
+        "source": [
+          875
+        ],
+        "targets": [
+          10185
+        ]
+      }
+    ],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "hunger-switch",
+    "title": "Hunger Switch",
+    "routes": [
+      {
+        "source": [
+          877
+        ],
+        "targets": [
+          10187
+        ]
+      }
+    ],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "zero-to-hero",
+    "title": "Zero to Hero",
+    "routes": [
+      {
+        "source": [
+          964
+        ],
+        "targets": [
+          10256
+        ]
+      }
+    ],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "relic-song",
+    "title": "Relic Song",
+    "routes": [
+      {
+        "source": [
+          648
+        ],
+        "targets": [
+          10018
+        ]
+      }
+    ],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "secret-sword",
+    "title": "Secret Sword",
+    "routes": [
+      {
+        "source": [
+          647
+        ],
+        "targets": [
+          10024
+        ]
+      }
+    ],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "flower-gift",
+    "title": "Flower Gift",
+    "routes": [],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "gulp-missile",
+    "title": "Gulp Missile",
+    "routes": [
+      {
+        "source": [
+          845
+        ],
+        "targets": [
+          10182
+        ]
+      },
+      {
+        "source": [
+          10182
+        ],
+        "targets": [
+          10183
+        ]
+      }
+    ],
+    "ability": true,
+    "icon": null
+  },
+  {
+    "key": "plates",
+    "title": "Arceus Plate",
+    "routes": [],
+    "ability": false,
+    "icon": "flame-plate"
+  },
+  {
+    "key": "memories",
+    "title": "Silvally Memory",
+    "routes": [],
+    "ability": false,
+    "icon": "fire-memory"
+  },
+  {
+    "key": "drives",
+    "title": "Genesect Drive",
+    "routes": [],
+    "ability": false,
+    "icon": "douse-drive"
+  }
+]

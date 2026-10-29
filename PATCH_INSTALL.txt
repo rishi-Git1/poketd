@@ -1,29 +1,37 @@
-POKE BASTION — VERSION 27 STORY BOSSES & FIELD HAZARDS
-Requires Version 26. Only changed/new files are included.
+POKE BASTION — VERSION 28 FORMS, EVERSTONE & EXPEDITION REVIEW
+Requires Version 27. ONLY changed/new files are included.
 
 INSTALL
-1. Extract into the existing project root, beside package.json.
-2. Merge folders and replace matching files. Keep all other files/assets.
-3. Redeploy Render: npm run build, publish dist.
-4. Refresh and confirm VERSION 27 in the page header.
+1. Extract into your existing project root beside package.json.
+2. Merge folders and replace matching files. Keep all other assets.
+3. Redeploy Render: npm run build; publish dist.
+4. Refresh and confirm VERSION 28.
 
-STORY BOSSES AND DIFFICULTY
-All scripted boss teams across all nine regions have another x2 maximum HP: gyms/Totems, League/Champion Cup/Ultra Beast teams, champions, Mewtwo and every regional finale. Previous boss boosts remain. Random Endless and True Endless bosses do not get this extra boss-health multiplier.
+FINAL BOSSES
+All scripted final encounters have 3x their Version-27 HP and 2x their Version-27 movement speed. Includes every regional finale and Kanto's Mewtwo/Mew sequence. Existing story-boss health and post-100 scaling remain. Other boss stats, normal gym/League encounters and random Endless bosses keep their previous multipliers. Regional Endless retains its boosted story finales.
 
-From round 101, story enemies gain another x1.02 HP, physical/special defense and tower impact per round, plus a linear 0.5% movement increase per round. At round 150 this adds x2.692 to HP/defenses/impact and x1.25 speed. Kanto continues through 151. Regional Endless retains the story changes and freezes this extra ramp at the finale; its later 5% combat-stat and linear 2% speed scaling continues. True Endless scaling is unchanged.
+LOSS REVIEW
+Losing opens You Whited Out! with the reached round, defeats, upgrades, final HP and party. Review expedition returns to the normal party/dossier view, exiting fullscreen when necessary. Party damage totals, contributions, form history and inventory remain available; combat and reward spending stay stopped. Review expedition summary reopens the record. Start another expedition or choose a region when ready. The current record stays in memory until a new run or reload; it is not an archive across reloads.
 
-ROUND-100 FIELD HAZARDS
-Stealth Rock: Sinnoh onward; max 1 pick; regular enemies have 12.5% less HP.
-Spikes: Johto onward; max 3 picks; regular enemies have 6.25%, 12.5%, then 25% less HP in total at each tier.
-Toxic Spikes: Sinnoh onward; max 2 picks; regular enemies lose 0.25%, then 0.50% of their maximum HP per game second.
-True Endless allows all three, from round 100.
+HOTKEYS
+N: start next round when ready.
+Enter: also starts the next round while the page body has focus.
+A: toggle Auto.
+S: cycle 1x / 2x / 5x game speed.
+Space: pause/resume; 1/2/3: choose a reward.
+Text/search fields, selects, editable content, open dialogs, modifiers, composition and repeated keydowns do not trigger gameplay shortcuts. N/Enter do not discard a lost expedition.
 
-Stealth Rock and Spikes multiply together, leaving 65.625% regular enemy HP at full stacks. Taking one midwave proportionally updates current/max HP of regular enemies already present. Toxic Spikes uses maximum HP after those cuts, ignores all types/defenses, and follows simulation speed. Every scripted and random boss is exempt from all hazards.
+FORM ITEMS AND ABILITIES
+Eligible partners unlock 35 form-item/ability families from round 1. Includes Reveal Glass for all four genies, Rotom Catalog, Deoxys Meteorite, Gracidea, Origin-form items, DNA Splicers, Prison Bottle, Primal Orbs, crowned weapons, Calyrex Reins of Unity, both Darmanitan Zen Modes, Schooling, Battle Bond, Stance Change, Forecast, Palafin Hero, and more. Arceus Plates, Silvally Memories, Genesect Drives and Cherrim Sunshine add 39 typed/appearance form variants.
 
-Once capped, hazards cannot appear in new or already banked rolls. Owned counts refresh as stacks are selected. Hazard cards never become master versions. These permanent installations remain for the run and cannot be exchanged. Repeated Spikes/Toxic Spikes still give the existing repeat-resonance bonus. Inventory and party support show stack totals and effects. Hazard damage is kept separate from individual Pokemon totals; poison kills count toward the run and global defeat healing.
+Necrozma uses N-Solarizer for Dusk Mane or N-Lunarizer for Dawn Wings. Only those fused forms unlock Ultranecrozium Z for Ultra Burst. Each step spends a separate reward. Fusion items provide the form without consuming another party member. Ability/weather/battle forms persist for the run as roguelike adaptations.
 
-ART
-Each hazard has miniature card art. Every installation adds six ground instances, with additional stacks adding more art while existing instances stay in place. Ground art persists across waves and fullscreen and resets with a new run/region.
+Select the item, choose a partner/form, or cancel/Escape to retain the same unspent roll. Each new form retains its stage, party buffs and individual damage/contributions, uses its form stats and a real associated move, and adds x1.25 personal damage. Each individual may visit each destination once; used destinations cannot waste another pick. Personal power survives later eligible Mega/Gigantamax/Tera changes. Alternate upgrade forms are not ordinary enemies or recruits. Regional forms are added only for species already in that region. Galarian Standard Darmanitan remains its ordinary evolution target. Type interactions remain entirely neutral.
 
-VALIDATION
-192 automated tests pass, and the production build passes. Browser checks at round 100 verified each stack, refreshed banked labels, capped-card replacement, inventory totals and fullscreen art. Full campaign balance was not playtested end to end. Temporary browser QA fixtures are excluded.
+EVERSTONE
+Appears from round 1 only when a partner has an evolution or available/future regional form change. Choose one holder to permanently block its evolution, alternate forms, Mega, Gigantamax and Tera choices. It keeps its present form, stats, damage and power. Other partners remain eligible. Blocked cards refresh out of banked choices and future rolls. A shared item may still appear for another eligible partner. Everstone cannot be repeated on the same holder or exchanged as a passive buff; a new/replacement partner does not inherit it. Party, dossier and inventory show the lock.
+
+DATA & VALIDATION
+1267 unique Pokemon/form records, plus 39 typed/appearance variants. New stats and sprites use bundled PokéAPI data. Ordinary Render builds use local files; no form downloads are required. Regeneration helper and full family list are in the README.
+
+206 automated tests pass; production build passes. Browser verified: production N/A/S controls, cancellation preserving choices, Dawn Wings to Ultra, stage-2 Zen Mode, Everstone removing a banked Reveal Glass, and loss review restoring party/dossier/inventory from fullscreen. Specific item rolls were tested using a temporary seeded fixture; no QA fixture is shipped. Full-campaign balance was not playtested end to end.

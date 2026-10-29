@@ -20,10 +20,10 @@ test('all 34 genuine G-Max forms are Galar-only, have sprites and exact regional
 });
 
 test('Max Mushrooms unlock at 25 only for exact eligible forms, excluding Eternatus and unevolved preforms',()=>{
- const f=fixture([25,133,52,10161,890,10190]);f.run.wave=24;assert.deepEqual(regionalCards(f.run,f.data),[]);f.run.wave=25;assert.deepEqual(regionalCards(f.run,f.data).map(c=>c.kind),['gmax']);
+ const f=fixture([25,133,52,10161,890,10190]);f.run.wave=24;assert.deepEqual(regionalCards(f.run,f.data).filter(c=>c.kind==='gmax'),[]);f.run.wave=25;assert.deepEqual(regionalCards(f.run,f.data).filter(c=>c.kind==='gmax').map(c=>c.kind),['gmax']);
  assert.deepEqual(transformationOptions(card,f.run,f.data).map(c=>[c.slot,c.form.id]),[[0,10199],[1,10205],[2,10200]]);
  const before=JSON.stringify(f.run);for(const key of ['3:10200','4:10190','5:10190'])assert.throws(()=>apply(f,key));assert.equal(JSON.stringify(f.run),before);
- const no=fixture([4,831,10161,890,10190]);assert.deepEqual(regionalCards(no.run,no.data),[]);
+ const no=fixture([4,831,10161,890,10190]);assert.deepEqual(regionalCards(no.run,no.data).filter(c=>c.kind==='gmax'),[]);
  for(const region of ['kanto','johto','hoenn','sinnoh','unova','kalos','paldea']){f.run.region=region;assert.deepEqual(transformationOptions(card,f.run,f.data),[])}
 });
 
@@ -34,7 +34,7 @@ test('every G-Max transforms once, preserves damage/types/stage/buffs and unlock
   const initial=damageMultiplier(base,f.run);apply(f,`0:${form.id}`);
   assert.equal(ally.pokemon.id,form.id);assert.equal(ally.pokemon.stage,base.stage);assert.deepEqual(ally.pokemon.types,base.types);assert.equal(ally.totalDamage,98765);assert.equal(ally.gmaxCount,1);assert.ok(ally.evolutionLocked);assert.equal(canEvolve(ally),false);assert.ok(Math.abs(damageMultiplier(ally.pokemon,f.run)-initial*2)<1e-9);assert.equal(repeatPower(f.run),1);
   const move=attackFor(ally.pokemon);assert.match(move.name,/^G-Max /);assert.equal(move.signature,true);assert.ok(move.power>=attackFor(base).power);assert.ok(attackCooldown(ally.pokemon)<=attackCooldown(base));
-  const before=JSON.stringify(f.run);assert.throws(()=>apply(f,`0:${form.id}`));assert.equal(JSON.stringify(f.run),before);assert.deepEqual(regionalCards(f.run,f.data),[]);
+  const before=JSON.stringify(f.run);assert.throws(()=>apply(f,`0:${form.id}`));assert.equal(JSON.stringify(f.run),before);assert.deepEqual(regionalCards(f.run,f.data).filter(c=>c.kind==='gmax'),[]);
  }
 });
 
@@ -67,6 +67,6 @@ test('Max Mushrooms picker cancels freely and applies during combat without paus
 });
 
 test('used partners disappear from later Mushroom pickers while other eligible partners remain',()=>{
- const f=fixture([25,133]);apply(f,'0:10199');assert.deepEqual(transformationOptions(card,f.run,f.data).map(c=>c.slot),[1]);assert.equal(regionalCards(f.run,f.data).length,1);apply(f,'1:10205');assert.deepEqual(regionalCards(f.run,f.data),[]);
+ const f=fixture([25,133]);apply(f,'0:10199');assert.deepEqual(transformationOptions(card,f.run,f.data).map(c=>c.slot),[1]);assert.equal(regionalCards(f.run,f.data).filter(c=>c.kind==='gmax').length,1);apply(f,'1:10205');assert.deepEqual(regionalCards(f.run,f.data).filter(c=>c.kind==='gmax'),[]);
  commitSwap(f.run,'pokemon',0,{kind:'recruit',pokemon:f.data.find(p=>p.id===52),title:'Meowth'},applyUpgrade);assert.equal(f.run.team[0].gmaxCount,undefined);assert.equal(canEvolve(f.run.team[0]),true);assert.deepEqual(transformationOptions(card,f.run,f.data).map(c=>c.form.id),[10200]);
 });

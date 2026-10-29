@@ -27,8 +27,8 @@ test('early battles send batches and wait for the last enemy, with a smaller ope
  near(openingEase(1),.8);near(openingEase(6),1);const h=await harness();h.choose(1);h.startWave();h.run.team[0].cooldown=1e6;h.tick(.025);assert.equal(h.spawned,3);for(const e of h.enemies)e.speed=0;h.tick(20);assert.equal(h.spawned,3);h.enemies[0].hp=0;h.enemies[1].hp=0;h.tick(.025);assert.equal(h.spawned,5);h.el('party-stat-toggle').click();assert.match(h.el('field-hint').textContent,/2 \/ 2/);assert.equal(batchSpawnTime(0,5,1),0);assert.equal(batchSpawnTime(3,5,1),3);
 });
 
-test('every non-finale boss doubles HP, defenses, speed and impact while finales stay at baseline',()=>{
- for(const r of REGIONS)for(const original of r.bosses){const b=bossFor(original.wave,r.starters[0],r.id),p=data(r.id).find(p=>p.id===b.team[0]),stats=enemyStats(p,b.wave,b),baseline=enemyStats(p,b.wave,{...b,final:true}),factor=b.final?1:2;for(const k of ['maxHp','defense','specialDefense','speed'])near(stats[k],baseline[k]*factor);assert.ok(Math.abs(stats.impact-baseline.impact*factor)<=1)}
+test('bosses retain non-finale difficulty and receive the additional finale health/speed boosts',()=>{
+ for(const r of REGIONS)for(const original of r.bosses){const b=bossFor(original.wave,r.starters[0],r.id),p=data(r.id).find(p=>p.id===b.team[0]),stats=enemyStats(p,b.wave,b),baseline=enemyStats(p,b.wave,{...b,final:true,story:false}),factor=b.final?1:2;near(stats.maxHp,baseline.maxHp*(b.final?6:4));near(stats.speed,baseline.speed*2);for(const k of ['defense','specialDefense'])near(stats[k],baseline[k]*factor);assert.ok(Math.abs(stats.impact-baseline.impact*factor)<=1)}
 });
 
 test('Endless preserves story encounters then caches random bosses every ten rounds beyond the cap',()=>{
