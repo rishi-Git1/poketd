@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync,existsSync} from 'node:fs';
-import {newRun,enemyStats,lateUpgrades,masterUpgrades,rollMasterCards,selectRewardCards,drawDistinct,distinctRoll,cardKey,applyUpgrade,damageMultiplier} from '../public/engine.js';
+import {newRun,enemyStats,openingEase,lateUpgrades,masterUpgrades,rollMasterCards,selectRewardCards,drawDistinct,distinctRoll,cardKey,applyUpgrade,damageMultiplier} from '../public/engine.js';
 import {nextBoss,campaignPlan,canAutoAdvance} from '../public/campaign.js';import {getRegion,REGIONS} from '../public/regions.js';import {MAPS,drawMap,drawBastion} from '../public/maps.js';
 import {regionalCards,transformationOptions,applyTransformation,canEvolve} from '../public/transformations.js';import {harness} from './flow-harness.mjs';
 const roster=JSON.parse(readFileSync('public/assets/regions/origin.json')),data=id=>JSON.parse(readFileSync(`public/assets/regions/${id}.json`));const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-8*Math.max(1,Math.abs(b)),`${a} != ${b}`);
@@ -20,7 +20,7 @@ test('True Endless bosses occur only every 10 rounds and are always Legendary, M
 });
 
 test('True Endless compounds non-speed stats at 5% and increases speed linearly from round 1',()=>{
- const p=roster[0];for(const wave of [1,2,10,50,151,152]){const classic=enemyStats(p,wave),trueStats=enemyStats(p,wave,null,'true-endless'),factor=1.05**wave;for(const key of ['maxHp','defense','specialDefense'])near(trueStats[key],classic[key]*factor);near(trueStats.speed,enemyStats(p,1).speed*(1+.02*wave));assert.ok(Math.abs(trueStats.impact-classic.impact*factor)<=factor)}
+ const p=roster[0];for(const wave of [1,2,10,50,151,152]){const s=enemyStats(p,wave,null,'true-endless'),factor=1.05**wave,ease=openingEase(wave);near(s.maxHp,(p.stats.hp*.53+9)*1.115**(wave-1)*ease*factor);near(s.defense,p.stats.defense*(1+.025*wave)*ease*factor);near(s.specialDefense,p.stats['special-defense']*(1+.025*wave)*ease*factor);near(s.speed,enemyStats(p,1).speed*(1+.02*wave));assert.equal(s.impact,Math.ceil(Math.max(p.stats.attack,p.stats['special-attack'])*.12*(1+.07*wave)*Math.min(1,.7+Math.max(0,wave-1)*.06)*factor))}
 });
 
 test('True Endless unlocks advanced tactics at25 and elite/master at50 without changing regional gates',()=>{

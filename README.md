@@ -1,6 +1,6 @@
-# Poké Bastion — Version 22
+# Poké Bastion — Version 27
 
-A browser tower-defense roguelike with nine regional campaigns and **Classic / Endless** modes. Choose a region when the game opens, choose Classic or Random starters, then select one of three partners. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
+A browser tower-defense roguelike with nine regional campaigns and **Classic / Endless / True Endless** modes. Choose a region when the game opens, choose Classic or Random starters, then select one of three partners. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
 
 ## Regional stories
 
@@ -18,7 +18,7 @@ A browser tower-defense roguelike with nine regional campaigns and **Classic / E
 
 Alola features Totem and Ultra Beast encounters in the Ultra Wormhole. Regional Pokédexes contain overlapping species, including Pokémon originally introduced in other regions. These are actual regional dex lists from PokéAPI, not national-generation ID slices. Required finale exceptions are added: Arceus for Sinnoh; base and Stellar Terapagos for Paldea; Eternamax Eternatus for Galar. Relevant Galarian and Paldean forms are included alongside base species. The displayed dex count refers to the official regional species list, excluding additional forms/finale exceptions.
 
-The complete pack contains **1198 distinct Pokémon/form records with local sprites**, including per-region evolution paths and legendary/mythical flags. Kanto retains its original three Eevee branches; later regions gain additional branches when those evolutions belong to their dex. Regional forms have their own evolution connections, such as Galarian Meowth → Perrserker and Paldean Wooper → Clodsire.
+The complete pack contains **1219 distinct Pokémon/form records with local sprites**, including per-region evolution paths and legendary/mythical flags. Kanto retains its original three Eevee branches; later regions gain additional branches when those evolutions belong to their dex. Regional forms have their own evolution connections, such as Galarian Meowth → Perrserker and Paldean Wooper → Clodsire.
 
 The REGIONS button opens the selector again. Cancel returns to the current story; choosing another region starts a fresh run. New story at an ending restarts the same region; Choose a region returns to the selector. Best rounds are saved separately for each region and Classic/Endless mode on this device. Active runs are not saved across reloads. Legacy Kanto best scores are still recognized.
 
@@ -398,3 +398,28 @@ True Endless starts counting at round 1 and uses ordinary round-1 speed as the b
 Full screen now retains the live tower bar beneath the wave/controls row. It displays current/max HP, remaining shield (when present), defense reduction, global damage bonus, range and tower growth. HP and the health meter use the same live elements as the normal view; extra range/growth values update with the rest of the battle UI. The bar wraps on small screens. Reward choices remain at the bottom, and party/details remain hidden.
 
 The resistance audit confirms no type multipliers or type-dependent target exclusions remain. Tests cover every bundled defender record, every ordinary/Stellar attacking type, single/dual defender combinations, primary attacks, area hits and ricochets. With defenses held constant, defender typing cannot change damage. Physical/special defenses and ordinary splash/bounce falloff remain; these are not type resistances. No combat balance formulas changed in this version. Version 25's linear Endless movement speed is preserved.
+
+
+## Version 27 — Story escalation and field hazards
+
+Apply this changed-files patch over Version 26, merge folders, replace matching files, retain all other assets, and redeploy on Render (`npm run build`, publish `dist`). Confirm VERSION 27. The full project ZIP is not regenerated.
+
+Every scripted boss encounter in all nine regions now has **another ×2 maximum HP**, including gyms/Totems, League/Champion Cup/Ultra Beast teams, champions and the final legendary/mythical encounters. Existing boss defense, speed and impact boosts remain. This HP multiplier also applies to the story portion of regional Endless; random Endless and True Endless bosses do not receive it.
+
+Starting at round 101, story enemies receive an additional **×1.02 per round to HP, both defenses and tower impact**, and **+0.5% of their ordinary movement speed per round**, on top of the previous formulas. At round 150 that is ×2.692 for the three combat stats and ×1.25 speed; Kanto continues one more round. Regional Endless retains the same story progression; this new ramp freezes at the regional finale rather than dropping afterward, while its existing 5% combat-stat and linear 2% movement scaling continues. True Endless is unchanged.
+
+Round-100 rewards can now include permanent field installations:
+
+| Hazard | Available regions | Maximum picks | Regular enemy effect |
+| --- | --- | --- | --- |
+| Stealth Rock | Sinnoh onward; True Endless | 1 | 12.5% less HP |
+| Spikes | Johto onward; True Endless | 3 | 6.25%, 12.5%, then 25% less HP |
+| Toxic Spikes | Sinnoh onward; True Endless | 2 | 0.25%, then 0.50% of max HP drained per game second |
+
+Spikes percentages are total strength at each tier, not additive tier bonuses. Stealth Rock and Spikes multiply: both fully installed leave regular enemies with 65.625% HP. Entry cuts reduce current and maximum HP in proportion, including on-field regular enemies when picked midwave. Reapplying the same installation does not repeatedly remove HP. Toxic Spikes uses the enemy's remaining maximum HP after entry cuts, scales with simulation speed, bypasses type and defense checks, and never inherits attack-only criticals, executes, marks or splash effects. All scripted and random bosses are completely exempt from all hazards, regardless of the species involved. Regular legendary enemies are affected if they are not part of a boss encounter.
+
+Hazards retain their ordinary stack size, never become master cards, and cannot be exchanged in premium trades. They remain installed until the run resets. After reaching 1/3/2 picks, respectively, that hazard is removed from future and already banked rolls. Repeated Spikes/Toxic Spikes still grant the existing repeat-resonance damage bonus. Inventory and the party dossier list their current stack counts and shared effects. Hazard HP cuts and poison damage have their own run counter and do not inflate individual Pokémon damage totals; poison kills count toward the run and global defeat healing.
+
+Each card has original miniature art. Picking an installation immediately places six matching rocks, steel spikes or violet poison spikes around the battlefield; additional stacks add six more instances without moving existing art. They persist across waves and in fullscreen, and reset on a new run or region.
+
+Validation: **192 automated tests pass**, including every scripted boss across nine regions, the story ramp and Endless transition, generation/round gates, capped and banked offers, each HP reduction tier and their combination, type-neutral poison, kill/heal attribution, inventory/dossier support, distinct card art and stable per-stack ground placements. Production build and browser checks pass. Browser review used an isolated round-100 fixture to verify selecting each stack, live banked-card counts, capped-card removal, inventory effects and fullscreen ground art; full campaign balance was not playtested end to end. Temporary QA fixtures are not shipped.

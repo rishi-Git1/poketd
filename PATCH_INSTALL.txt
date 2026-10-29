@@ -1,16 +1,29 @@
-POKE BASTION — VERSION 26 FULL SCREEN TOWER STATS
-Requires Version 25. This ZIP includes ONLY changed/new files.
+POKE BASTION — VERSION 27 STORY BOSSES & FIELD HAZARDS
+Requires Version 26. Only changed/new files are included.
 
-1. Extract into the existing project root beside package.json.
-2. Merge folders and replace matching files.
-3. Redeploy Render using npm run build, publishing dist.
-4. Refresh and confirm VERSION 26 in the header.
+INSTALL
+1. Extract into the existing project root, beside package.json.
+2. Merge folders and replace matching files. Keep all other files/assets.
+3. Redeploy Render: npm run build, publish dist.
+4. Refresh and confirm VERSION 27 in the page header.
 
-FULL SCREEN
-The live tower bar now appears at the top beneath wave/controls. It shows current/max HP, shield while active, defense, global damage bonus, range and growth. HP and its health meter are the same live elements used in the normal view. Values update during combat and when picking rewards. Reward choices remain at the bottom. The bar wraps on narrow screens; the party and detailed stats stay hidden.
+STORY BOSSES AND DIFFICULTY
+All scripted boss teams across all nine regions have another x2 maximum HP: gyms/Totems, League/Champion Cup/Ultra Beast teams, champions, Mewtwo and every regional finale. Previous boss boosts remain. Random Endless and True Endless bosses do not get this extra boss-health multiplier.
 
-RESISTANCE AUDIT
-No type-based damage reductions or target exclusions were found. With defenses held constant, every one of the 1,219 bundled Pokemon/forms and every ordinary/Stellar single/dual-type combination takes the same neutral damage. Physical/special defenses and splash/ricochet damage falloff remain independent of typing. Combat formulas were not changed. Version 25's linear Endless speed remains in place. The build/import URLs are refreshed to ensure the current code loads.
+From round 101, story enemies gain another x1.02 HP, physical/special defense and tower impact per round, plus a linear 0.5% movement increase per round. At round 150 this adds x2.692 to HP/defenses/impact and x1.25 speed. Kanto continues through 151. Regional Endless retains the story changes and freezes this extra ramp at the finale; its later 5% combat-stat and linear 2% speed scaling continues. True Endless scaling is unchanged.
+
+ROUND-100 FIELD HAZARDS
+Stealth Rock: Sinnoh onward; max 1 pick; regular enemies have 12.5% less HP.
+Spikes: Johto onward; max 3 picks; regular enemies have 6.25%, 12.5%, then 25% less HP in total at each tier.
+Toxic Spikes: Sinnoh onward; max 2 picks; regular enemies lose 0.25%, then 0.50% of their maximum HP per game second.
+True Endless allows all three, from round 100.
+
+Stealth Rock and Spikes multiply together, leaving 65.625% regular enemy HP at full stacks. Taking one midwave proportionally updates current/max HP of regular enemies already present. Toxic Spikes uses maximum HP after those cuts, ignores all types/defenses, and follows simulation speed. Every scripted and random boss is exempt from all hazards.
+
+Once capped, hazards cannot appear in new or already banked rolls. Owned counts refresh as stacks are selected. Hazard cards never become master versions. These permanent installations remain for the run and cannot be exchanged. Repeated Spikes/Toxic Spikes still give the existing repeat-resonance bonus. Inventory and party support show stack totals and effects. Hazard damage is kept separate from individual Pokemon totals; poison kills count toward the run and global defeat healing.
+
+ART
+Each hazard has miniature card art. Every installation adds six ground instances, with additional stacks adding more art while existing instances stay in place. Ground art persists across waves and fullscreen and resets with a new run/region.
 
 VALIDATION
-183 automated tests pass. Production build passes. Browser verified: live top stats during Auto/5x full screen combat, HP increasing from315 to380 when picking a reward mid-wave, party hidden, and 390px mobile layout with HP/shield and all four compact stats visible. Temporary responsive QA fixtures are not shipped.
+192 automated tests pass, and the production build passes. Browser checks at round 100 verified each stack, refreshed banked labels, capped-card replacement, inventory totals and fullscreen art. Full campaign balance was not playtested end to end. Temporary browser QA fixtures are excluded.

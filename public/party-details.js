@@ -1,4 +1,5 @@
-import {ALL_TACTICS,damageMultiplier,repeatPower,cardKey,tacticSummary,cooldownFactor,targetCapacity,tacticStacks} from './engine.js?v=26';
+import {isHazard,hazardSummary} from './hazards.js';
+import {ALL_TACTICS,damageMultiplier,repeatPower,cardKey,tacticSummary,cooldownFactor,targetCapacity,tacticStacks} from './engine.js?v=27';
 import {attackFor,attackCooldown} from './attacks.js';
 import {canEvolve,maskDamage,ordinaryStellar} from './transformations.js';
 const tactics=new Set(ALL_TACTICS.map(c=>c.kind)),towerKinds=new Set(['health','armor','shield','reach']);
@@ -8,7 +9,7 @@ const factor=n=>`×${n.toFixed(3)}`;
 export function relevantUpgrades(ally,run){
  const p=ally.pokemon,groups=new Map(),active=[],support=[];
  for(const card of run.upgradeHistory||[]){
-  if(!['offense','type','stage','form',...towerKinds].includes(card.kind)&&!tactics.has(card.kind))continue;
+  if(!isHazard(card)&&!['offense','type','stage','form',...towerKinds].includes(card.kind)&&!tactics.has(card.kind))continue;
   if(card.transformation)continue;const key=cardKey(card);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(card);
  }
  for(const cards of groups.values()){
@@ -21,7 +22,7 @@ export function relevantUpgrades(ally,run){
   else if(c.kind==='type'){row.scope='Matching type';row.effect=`${factor(1+(run.types[c.type]||0))} ${c.type} damage`}
   else if(c.kind==='stage'){row.scope='Matching stage';row.effect=`${factor(1+(run.stages[c.stage]||0))} stage ${c.stage} damage`}
   if(c.kind==='form'&&matching){row.scope='Matching form';row.effect=`${factor(1+(run.forms?.[c.form]||0))} damage for ${c.form==='mega'?'Mega-Evolved':'Gigantamax'} partners`}
-  if(towerKinds.has(c.kind)){row.scope='Shared tower support';if(c.kind==='health')row.effect=`${Math.ceil(run.maxHp)} total tower max HP`;if(c.kind==='armor')row.effect=`${Math.round(run.armor/(1+run.armor)*100)}% total tower damage reduction`;if(c.kind==='shield')row.effect=`Shield worth ${10*tacticStacks(run,'shield')}% max HP at each round start`;support.push(row)}else active.push(row);
+  if(isHazard(c)){row.scope='Shared battlefield support';row.effect=hazardSummary(run,c.kind)+' · bosses unaffected';support.push(row)}else if(towerKinds.has(c.kind)){row.scope='Shared tower support';if(c.kind==='health')row.effect=`${Math.ceil(run.maxHp)} total tower max HP`;if(c.kind==='armor')row.effect=`${Math.round(run.armor/(1+run.armor)*100)}% total tower damage reduction`;if(c.kind==='shield')row.effect=`Shield worth ${10*tacticStacks(run,'shield')}% max HP at each round start`;support.push(row)}else active.push(row);
  }
  for(const c of ally.formHistory||[]){
   if(c.kind==='tera'&&c.type==='stellar'&&p.teraType!=='stellar'&&(p.speciesId||p.id)!==1024)continue;

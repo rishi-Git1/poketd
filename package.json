@@ -1,1 +1,1 @@
-{"name":"poke-bastion","version":"0.26.0","private":true,"type":"module","scripts":{"build":"node scripts/build.mjs","test":"node --test tests/*.test.mjs"}}
+{"name":"poke-bastion","version":"0.27.0","private":true,"type":"module","scripts":{"build":"node scripts/build.mjs","test":"node --test tests/*.test.mjs"}}
