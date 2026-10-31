@@ -1,3 +1,4 @@
+import {zBoost,zCrystalWeight} from './z-crystals.js';
 import {evolveAlly,maskDamage,canEvolve,isTransformation} from './transformations.js';
 import {getRegion} from './regions.js';
 import {isHazard,hazardAvailable,hazardUpgrades,addHazard} from './hazards.js';
@@ -29,7 +30,7 @@ export function enemyStats(p,wave,boss=null,mode='classic',region='kanto'){
  const storyBossHealth=boss?.story?(boss.final?6:2):1,finalSpeed=boss?.story&&boss.final?2:1;
  return {specialDefense:p.stats['special-defense']*(1+.025*wave)*ease*boost*endless*story.power,maxHp:(p.stats.hp*.53+9)*Math.pow(1.115,wave-1)*ease*boost*endless*story.power*storyBossHealth,defense:p.stats.defense*(1+.025*wave)*ease*boost*endless*story.power,speed:baseSpeed*(boss?1.2:1)*difficulty*(1+.02*scalingRounds)*story.speed*finalSpeed,impact:Math.ceil(Math.max(p.stats.attack,p.stats['special-attack'])*.12*(1+.07*wave)*Math.min(1,.7+Math.max(0,wave-1)*.06)*boost*endless*story.power)}
 }
-export function damageMultiplier(p,buffs){return (p.mega?1+(buffs.forms?.mega||0):1)*(p.gigantamax?1+(buffs.forms?.gmax||0):1)*repeatPower(buffs)*(p.personalPower||1)*maskDamage(p)*(1+buffs.offense)*p.types.reduce((n,t)=>n*(1+(buffs.types[t]||0)),1)*(1+(buffs.stages[p.stage]||0))}
+export function damageMultiplier(p,buffs){return zBoost(p)*(p.mega?1+(buffs.forms?.mega||0):1)*(p.gigantamax?1+(buffs.forms?.gmax||0):1)*repeatPower(buffs)*(p.personalPower||1)*maskDamage(p)*(1+buffs.offense)*p.types.reduce((n,t)=>n*(1+(buffs.types[t]||0)),1)*(1+(buffs.stages[p.stage]||0))}
 export function recruitmentPool(roster,run){return roster.filter(p=>!p.bossOnly&&p.stage===1&&!run.team.some(a=>a.pokemon.id===p.id)&&Object.values(p.stats).reduce((a,b)=>a+b,0)<=Math.min(680,350+run.wave*30))}
 export const TACTICS=[
  {kind:'split',title:'Split Volley',description:'Target one additional enemy per attack; divide damage only among targets actually available. A lone enemy takes full damage.'},
@@ -89,8 +90,8 @@ export function applyUpgrade(run,card){
 export function formatDamageTotal(value){const total=Math.max(0,value||0);return total>=1e6?new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:1}).format(total):Math.round(total).toLocaleString('en-US')}
 
 // Normal and master versions share one identity; Pokémon use their destination ID.
-export const cardKey=c=>c.pokemon?`pokemon:${c.pokemon.id}`:[c.kind,c.type||c.form||c.formItem||'',c.stage||''].join(':');
-export const upgradeWeight=(card,run)=>(run.mode==='true-endless'?run.wave>50:run.wave>80)&&card.kind==='offense'?4:1;
+export const cardKey=c=>c.pokemon?`pokemon:${c.pokemon.id}`:[c.kind,c.zCrystal||c.type||c.form||c.formItem||'',c.stage||''].join(':');
+export const upgradeWeight=(card,run)=>card.kind==='z-crystal'?zCrystalWeight(run):(run.mode==='true-endless'?run.wave>50:run.wave>80)&&card.kind==='offense'?4:1;
 export function drawDistinct(pool,count,run,rng=Math.random,excluded=[]){
  const seen=new Set(excluded.map(cardKey)),available=[];
  for(const card of pool){if(!card||!hazardAvailable(run,card)||seen.has(cardKey(card)))continue;seen.add(cardKey(card));available.push(card)}
@@ -98,12 +99,12 @@ export function drawDistinct(pool,count,run,rng=Math.random,excluded=[]){
  while(result.length<count&&available.length){
   const total=available.reduce((n,c)=>n+upgradeWeight(c,run),0);let roll=rng()*total,index=available.length-1;
   for(let i=0;i<available.length;i++){roll-=upgradeWeight(available[i],run);if(roll<0){index=i;break}}
-  const card=available.splice(index,1)[0];if(card.kind==='tera'&&[...excluded,...result].filter(c=>c.kind==='tera').length>=2)continue;result.push(card);
+  const card=available.splice(index,1)[0];if(card.kind==='z-crystal'&&[...excluded,...result].some(c=>c.kind==='z-crystal'))continue;if(card.kind==='tera'&&[...excluded,...result].filter(c=>c.kind==='tera').length>=2)continue;result.push(card);
  }return result;
 }
 export function distinctRoll(cards,fallback,run,rng=Math.random){
  const seen=new Set(),result=[];
- for(const card of cards){if(card&&hazardAvailable(run,card)&&!seen.has(cardKey(card))&&!(card.kind==='tera'&&result.filter(c=>c.kind==='tera').length>=2)){seen.add(cardKey(card));result.push(card)}}
+ for(const card of cards){if(card&&hazardAvailable(run,card)&&!seen.has(cardKey(card))&&!(card.kind==='z-crystal'&&result.some(c=>c.kind==='z-crystal'))&&!(card.kind==='tera'&&result.filter(c=>c.kind==='tera').length>=2)){seen.add(cardKey(card));result.push(card)}}
  return [...result,...drawDistinct(fallback,3-result.length,run,rng,result)].slice(0,3);
 }
 export function selectRewardCards(run,pool,partners,evolutions,rng=Math.random){

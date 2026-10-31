@@ -1,4 +1,4 @@
-# Poké Bastion — Version 28
+# Poké Bastion — Version 29
 
 A browser tower-defense roguelike with nine regional campaigns and **Classic / Endless / True Endless** modes. Choose a region when the game opens, choose Classic or Random starters, then select one of three partners. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
 
@@ -495,3 +495,48 @@ Everstone appears from **round 1**, only when a current partner has an evolution
 `scripts/build-alternate-forms.py` rebuilds the form additions from the bundled PokéAPI CSVs and `public/assets/form-catalog.json`, then checks/downloads official PokéAPI sprites. The origin-data builder invokes it after rebuilding the National Dex. Ordinary Render builds use the already bundled assets and make no form-data download requests. Source references: https://pokeapi.co/docs/v2 and https://github.com/PokeAPI/pokeapi/tree/master/data/v2/csv ; sprites: https://github.com/PokeAPI/sprites .
 
 Validation: **206 automated tests pass**. New checks cover all regional finale multipliers, every catalog route, typed form moves/sprites, branch prerequisites, personal power preservation, Everstone restrictions and stale offers, two-step cancellation/application during Auto, loss review and keyboard guards. Browser checks verified N/A/S in the production build, Dawn Wings → Ultra, stage-2 Zen Mode, Everstone removing a banked Reveal Glass, cancellation retaining the roll, and loss review restoring party/dossier/inventory from fullscreen. UI checks use a temporary seeded fixture for specific item rolls; fixtures are excluded from the patch. Full campaign balance was not playtested end to end.
+
+
+## Version 29 — Alola Z-Crystals
+
+Install this changed-files patch over **Version 28**, merge folders, replace matching files, keep other assets, and redeploy on Render with `npm run build` / `dist`. Confirm **VERSION 29** in the header.
+
+Z-Crystals are available **only in Alola**, in both Classic and regional Endless. They unlock at **round 25**, alongside Mega Stones. True Endless and every other region do not offer them. The combined weight of all eligible crystal cards equals one Mega/G-Max card in the reward pool, so adding more eligible crystal types does not make Z-Power more common. At most one crystal appears in a three-card roll. Crystals never turn into Master upgrades or enter passive trades.
+
+Choose a crystal, then a compatible party member. Cancelling preserves the exact roll. Each partner holds one crystal; another replaces the old crystal and its effects. The same crystal cannot be selected again for its current holder. Held crystals appear in the party, dossier and collected-upgrade window. Reward queues repair stale Mega, crystal and Ultra Burst cards immediately after party changes. Auto/combat keep running during the picker.
+
+The **18 type crystals** accept any partner sharing that type, at any evolution stage. They replace every attack volley with the official damaging Z-Move: Breakneck Blitz, All-Out Pummeling, Supersonic Skystrike, Acid Downpour, Tectonic Rage, Continental Crush, Savage Spin-Out, Never-Ending Nightmare, Corkscrew Crash, Inferno Overdrive, Hydro Vortex, Bloom Doom, Gigavolt Havoc, Shattered Psyche, Subzero Slammer, Devastating Drake, Black Hole Eclipse and Twinkle Tackle.
+
+Damaging crystals **do not increase base stats, personal form power or collected buff multipliers**. Their move has at least **2.4× the holder's native move power**, with a minimum power of 7.2 (8.8 for exclusives), and a broader area: 145-radius impacts, six-enemy lightning chains, five-shot volleys or wider beams/cones as applicable. Attacks repeat on the normal combat cadence rather than being once-per-battle consumables. All hits, splash and ricochets use the existing neutral targeting/damage/accounting paths. There are still no type resistances, weaknesses or immunities.
+
+| Signature crystal | Eligible holder | Official Z-Move |
+| --- | --- | --- |
+| Pikanium Z | Pikachu | Catastropika |
+| Pikashunium Z | Pikachu in a cap | 10,000,000 Volt Thunderbolt |
+| Aloraichium Z | Alolan Raichu | Stoked Sparksurfer |
+| Eevium Z | Eevee | Extreme Evoboost |
+| Snorlium Z | Snorlax | Pulverizing Pancake |
+| Mewnium Z | Mew | Genesis Supernova |
+| Decidium Z | Alolan Decidueye | Sinister Arrow Raid |
+| Incinium Z | Incineroar | Malicious Moonsault |
+| Primarium Z | Primarina | Oceanic Operetta |
+| Lycanium Z | Any Lycanroc form | Splintered Stormshards |
+| Mimikium Z | Mimikyu | Let’s Snuggle Forever |
+| Kommonium Z | Kommo-o | Clangorous Soulblaze |
+| Tapunium Z | Tapu Koko / Lele / Bulu / Fini | Guardian of Alola |
+| Solganium Z | Solgaleo / Dusk Mane Necrozma | Searing Sunraze Smash |
+| Lunalium Z | Lunala / Dawn Wings Necrozma | Menacing Moonraze Maelstrom |
+| Ultranecrozium Z | Necrozma's fused / Ultra forms | Light That Burns the Sky (Ultra only) |
+| Marshadium Z | Marshadow | Soul-Stealing 7-Star Strike |
+
+As requested, **Extreme Evoboost and Clangorous Soulblaze** give their individual holder **×300 personal damage** while the correct crystal is held and the holder remains compatible. Extreme Evoboost empowers Eevee's ordinary attack; Clangorous Soulblaze also deals its enhanced area attack. These are the explicit boosting exceptions, not a passive stat bonus from other crystals. The boost applies once, never stacks with itself, and ends if replaced or if the holder evolves into an incompatible Pokémon.
+
+Mega-Evolved Pokémon cannot receive crystals. Crystal holders cannot Mega Evolve, including through banked or stale rewards. Everstone still blocks evolution/form changes; it permits attack-only crystals. Evolution/form changes retain the held item, but an incompatible crystal becomes dormant (shown in the dossier), with no move/boost effect. It can be replaced with a compatible crystal. Partner trades do not transfer held items to the new partner.
+
+Necrozma's route is now **Necrozma → Dawn Wings / Dusk Mane → hold Ultranecrozium Z → separate Ultra Burst form reward → Ultra Necrozma**. No crystal-free Ultra Burst exists, and Ultra Burst is Alola-only. Equipping Ultranecrozium Z before Ultra form unlocks the transformation, without granting a stat bonus or prematurely enabling its exclusive attack. Ultra Necrozma's ordinary move is now Photon Geyser; the held crystal unlocks Light That Burns the Sky and its new prismatic sky-column animation. Each form upgrade retains the prior ×1.25 form power, separately from crystal effects.
+
+All **35 Z-Moves have authored animations**: flowers for Bloom Doom, a waterspout for Hydro Vortex, acid rain, spectral hands, a stone monolith, ice prison, silk cocoon, dragon charge, clanging scales, a wrestling ring, musical water orb and more. Help → Attack animation guide offers all 35 previews in Alola. Previewing does not equip an item or change the run.
+
+Alola gains Mew and Partner Cap Pikachu (PokéAPI Pokémon ID 10148) as signature-holder exceptions, so every crystal has an obtainable holder. The displayed 403-species count still describes the official regional dex. The full National Dex also gains the cap form; it does not gain Z-Crystal rewards. Canonical move/item names, types, base stats and item/Pokémon sprites use [PokéAPI's data](https://github.com/PokeAPI/pokeapi/tree/master/data/v2/csv) and [sprite repository](https://github.com/PokeAPI/sprites). Rebuild the catalog/assets with `python3 scripts/build-z-data.py`; ordinary Render builds use local assets and require no downloads.
+
+Validation: **223 automated tests pass**. Coverage includes all 35 names/holders/sprites/animation compositions, Alola-only unlocks, Mega exclusion in both directions, unchanged base stats and ordinary buff multipliers, exact non-stacking ×300 boosts, replacement/dormancy, neutral Z targeting/damage and contribution accounting, family-level rarity, distinct rolls, cancellation during Auto, stale reward repair, Necrozma prerequisites and guide previews. Browser checks verified the production animation guide, Ghostium Z cancellation/application, Eevee’s ×300 boost, held Ultranecrozium Z before Ultra Burst, live Auto, the resulting exclusive move and dossier. Temporary seeded fixtures are excluded from the patch. Full campaign balance was not playtested end to end.

@@ -19,3 +19,6 @@
 #swap-reroll{border:3px solid #283c57;background:#ffdf70;color:#23334c;padding:7px 12px;font:inherit;font-size:21px;margin:6px 0}#swap-status{font-size:19px;min-height:2.4em}.swap-buttons button:disabled,#swap-reroll:disabled{opacity:.5;cursor:default}
 
 #transform-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.transform-option{border:3px solid #314456;background:#eef0d3;color:#23334c;text-align:left;padding:10px;font:inherit;cursor:pointer}.transform-option:hover{background:#ffdf70}.transform-option img{width:80px;height:80px;image-rendering:pixelated;float:left}.transform-option b,.transform-option span{display:block}.transform-option b{font-size:22px}.transform-option span{font-size:18px;line-height:1.15;clear:both}.repeat-bonus{color:#9b5a24!important;font-weight:bold}.form-label{color:#8c4896;font-size:12px}.party-slot.filled:has(.form-label){height:auto;min-height:76px}@media(max-width:600px){#transform-options{grid-template-columns:1fr}.form-label{font-size:10px}}
+
+/* Alola held crystals */
+.z-label{color:#92631e}.inspector-crystal{color:#92631e;display:block;margin-top:6px;line-height:1.5}

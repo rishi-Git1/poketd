@@ -45,3 +45,6 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:list(ex.map(spri
 print(f"True Endless: {len({p['speciesId'] for p in out})} species, {len(out)} records, {sum(p['legendary'] or p['mythical'] or p['ultraBeast'] for p in out)} boss candidates (before form filtering).")
 
 subprocess.run(['python3',str(root/'scripts/build-alternate-forms.py')],check=True)
+
+# Z-Crystals and their Alola signature-holder exceptions.
+subprocess.run(['python3',str(root/'scripts/build-z-data.py')],check=True)

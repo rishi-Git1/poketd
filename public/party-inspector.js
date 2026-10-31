@@ -1,5 +1,5 @@
-import {partyProfile} from './party-details.js?v=28';
-import {formatDamageTotal,damageMultiplier,cooldownFactor} from './engine.js?v=28';
+import {partyProfile} from './party-details.js?v=29';
+import {formatDamageTotal,damageMultiplier,cooldownFactor} from './engine.js?v=29';
 import {attackCooldown} from './attacks.js';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const title=s=>s.replace(/(^|-)([a-z])/g,(_,dash,c)=>(dash?' ': '')+c.toUpperCase());
@@ -10,11 +10,11 @@ export function createPartyInspector(get){
  return function render(ally,run,roster){
   const root=get('party-inspector');
   if(!ally){if(previous!==null||key!=='empty'){root.innerHTML='<div class="inspector-empty"><span class="inspector-emblem">◒</span><div><span class="eyebrow">PARTNER DOSSIER</span><h2>Your team, up close.</h2><p>Choose your starter, then select any party member to inspect its stats, battle contributions and upgrades.</p></div></div>';previous=null;key='empty'}return}
-  const p=ally.pokemon,nextKey=JSON.stringify([p.id,p.formKey,ally.everstone,p.stats,p.types,p.stage,p.personalPower,p.teraType,run.upgradeRevision,run.upgradeHistory.length,run.range,run.maxHp,run.armor]);
+  const p=ally.pokemon,nextKey=JSON.stringify([p.id,p.formKey,p.zCrystal,ally.everstone,p.stats,p.types,p.stage,p.personalPower,p.teraType,run.upgradeRevision,run.upgradeHistory.length,run.range,run.maxHp,run.armor]);
   if(previous!==ally||key!==nextKey){
    const profile=partyProfile(ally,run,roster),rows=profile.upgrades.active;previous=ally;key=nextKey;revision++;
    root.innerHTML=`<div class="inspector-heading"><span class="eyebrow">PARTNER DOSSIER</span><span>SELECT A PARTY MEMBER TO INSPECT</span></div>
-    <div class="inspector-overview"><div class="inspector-identity"><img src="${esc(p.sprite)}" alt="${esc(p.name)}"><div><h2 id="inspector-name">${esc(title(p.name))}</h2><p>${esc(p.types.join(' / '))} · STAGE ${p.stage}</p><small>${esc(profile.form)} · ${esc(profile.evolution)}</small></div></div>
+    <div class="inspector-overview"><div class="inspector-identity"><img src="${esc(p.sprite)}" alt="${esc(p.name)}"><div><h2 id="inspector-name">${esc(title(p.name))}</h2><p>${esc(p.types.join(' / '))} · STAGE ${p.stage}</p><small>${esc(profile.form)} · ${esc(profile.evolution)}</small>${profile.crystal?`<small class="inspector-crystal">◆ ${esc(profile.crystal)} · Mega Evolution blocked</small>`:''}</div></div>
     <div><h3>BASE STATS <span>TOTAL ${profile.statTotal}</span></h3><dl class="inspector-stats">${profile.stats.map(s=>`<div><dt>${s.name}</dt><dd>${s.value}<span style="width:${Math.min(100,s.value/255*100)}%"></span></dd></div>`).join('')}</dl></div></div>
     <div class="inspector-move"><b>${esc(profile.move.name)}</b><span>${esc(profile.move.type)} · ${profile.attackClass} · ${esc(profile.move.shape)}</span><span>Move ×${profile.move.power.toFixed(2)}</span><span title="Single-target hit before enemy defense, split damage and conditional tactics">Neutral hit (0 Def): ${profile.neutralHit.toFixed(1)}</span><span id="inspector-cooldown"></span><span>${profile.targets} target${profile.targets===1?'':'s'} · ${profile.bounces} bounces · range ${profile.range}</span></div>
     <div class="inspector-contributions">${[['damage','TOTAL DAMAGE'],['share','RUN DAMAGE SHARE'],['defeats','DEFEATS'],['bosses','BOSS DEFEATS'],['hits','DAMAGING HITS'],['volleys','ATTACK VOLLEYS'],['strongest','STRONGEST HIT'],['healing','TOWER HP RESTORED']].map(([id,label])=>`<div><span>${label}</span><b id="inspector-${id}">0</b></div>`).join('')}</div>

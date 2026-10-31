@@ -11,18 +11,19 @@ export function alternateOptions(card,run,roster){
  const result=[];
  for(let slot=0;slot<run.team.length;slot++){
   const ally=run.team[slot],base=ally.nativePokemon||ally.pokemon;if(!formChangeAllowed(ally))continue;
+  if(family.requiresZCrystal&&(run.region!=='alola'||(ally.zCrystal||ally.pokemon.zCrystal)!==family.requiresZCrystal))continue;
   const visited=new Set([formIdentity(base),...(ally.formVisits||[])]);
   const ids=family.routes.filter(r=>r.source.includes(base.id)).flatMap(r=>r.targets);
   const typed=TYPE_FORMS.filter(p=>p.formItem===family.key&&p.speciesId===(base.speciesId||base.id)).map(p=>({...base,...p,name:typedName(p),types:p.types||base.types,next:null,nextOptions:[],alternateForm:true}));
   const forms=[...roster.filter(p=>ids.includes(p.id)&&!p.formKey).map(p=>({...p,name:FORM_NAMES[p.id]||p.name})),...typed];
   for(const form of forms){if(visited.has(formIdentity(form)))continue;
-   result.push({key:`${slot}:${formIdentity(form)}`,slot,ally,form,title:form.name,description:`Keep stage ${ally.pokemon.stage} and battle contributions. Gain ×1.25 personal damage, this form's base stats and its move. Each destination can be used once per partner.${family.key==='ultranecrozium-z'?' Ultra Burst requires Dawn Wings or Dusk Mane.':''}`});
+   result.push({key:`${slot}:${formIdentity(form)}`,slot,ally,form,title:form.name,description:`Keep stage ${ally.pokemon.stage} and battle contributions. Gain ×1.25 personal damage, this form's base stats and its move. Each destination can be used once per partner.${family.requiresZCrystal?' Ultra Burst requires Dawn Wings or Dusk Mane holding Ultranecrozium Z.':''}`});
   }
  }return result;
 }
 export function alternateCards(run,roster){
  if(run.wave<1)return [];
- return FORM_CATALOG.map(f=>({kind:'form-change',formItem:f.key,title:f.title,label:f.ability?'ABILITY FORM':'FORM-CHANGING ITEM',badge:'PARTNER FORM',symbol:f.ability?'✧':'◈',accent:'#9374aa',itemIcon:f.icon,description:`Choose an eligible partner and its new form. Preserve its stage and contributions; gain ×1.25 personal damage. Each destination is available once per partner. ${f.key==='ultranecrozium-z'?'Requires Dawn Wings or Dusk Mane Necrozma.':f.key==='n-solarizer'?'Necrozma → Dusk Mane.':f.key==='n-lunarizer'?'Necrozma → Dawn Wings.':''}`})).filter(c=>alternateOptions(c,run,roster).length);
+ return FORM_CATALOG.map(f=>({kind:'form-change',formItem:f.key,title:f.title,label:f.ability?'ABILITY FORM':'FORM-CHANGING ITEM',badge:'PARTNER FORM',symbol:f.ability?'✧':'◈',accent:'#9374aa',itemIcon:f.icon,description:`Choose an eligible partner and its new form. Preserve its stage and contributions; gain ×1.25 personal damage. Each destination is available once per partner. ${f.requiresZCrystal?'Requires Dawn Wings or Dusk Mane Necrozma holding Ultranecrozium Z (Alola only).':f.key==='n-solarizer'?'Necrozma → Dusk Mane.':f.key==='n-lunarizer'?'Necrozma → Dawn Wings.':''}`})).filter(c=>alternateOptions(c,run,roster).length);
 }
 export const EVERSTONE={kind:'everstone',title:'Everstone',label:'HELD ITEM',badge:'KEEP THIS FORM',symbol:'◆',accent:'#8d9690',itemIcon:'everstone',description:'Choose one partner to keep its current evolution and form for this run. Blocks future evolution, alternate-form, Mega, Gigantamax and Tera choices for that partner. Other partners remain eligible. Cancel keeps this reward roll.'};
 export function itemArt(card){return card.itemIcon?`<img class="form-item-art" src="assets/items/${card.itemIcon}.png" alt="${card.title}">`:''}
@@ -36,7 +37,7 @@ const MOVES={
  10022:['Freeze Shock','ice','beam'],10023:['Ice Burn','ice','blast'],10024:['Secret Sword','fighting','slash'],10026:['Sacred Sword','fighting','slash'],
  10077:['Origin Pulse','water','beam',3.6],10078:['Precipice Blades','ground','quake',3.6],10086:['Hyperspace Fury','dark','vortex',3.6],10117:['Water Shuriken','water','volley'],10120:['Thousand Arrows','ground','volley',3.6],
  741:['Revelation Dance','fire','vortex'],10123:['Revelation Dance','electric','vortex'],10124:['Revelation Dance','psychic','vortex'],10125:['Revelation Dance','ghost','vortex'],
- 10127:['Hydro Pump','water','cone'],10136:['Power Gem','rock','volley'],10155:['Sunsteel Strike','steel','slash',3.6],10156:['Moongeist Beam','ghost','beam',3.6],10157:['Light That Burns the Sky','psychic','beam',4.68],
+ 10127:['Hydro Pump','water','cone'],10136:['Power Gem','rock','volley'],10155:['Sunsteel Strike','steel','slash',3.6],10156:['Moongeist Beam','ghost','beam',3.6],10157:['Photon Geyser','psychic','beam',4.68],
  10182:['Surf','water','cone'],10183:['Surf','water','cone'],10185:['Ice Spinner','ice','vortex'],10187:['Aura Wheel','dark','vortex'],10188:['Behemoth Blade','steel','slash',3.6],10189:['Behemoth Bash','steel','quake',3.6],
  10193:['Glacial Lance','ice','volley',3.6],10194:['Astral Barrage','ghost','volley',3.6],10245:['Roar of Time','dragon','beam',3.6],10246:['Spacial Rend','dragon','slash',3.6],10256:['Jet Punch','water','slash']
 };

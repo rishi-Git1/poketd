@@ -1,37 +1,30 @@
-POKE BASTION — VERSION 28 FORMS, EVERSTONE & EXPEDITION REVIEW
-Requires Version 27. ONLY changed/new files are included.
+POKÉ BASTION VERSION 29 — ALOLA Z-MOVES
 
-INSTALL
-1. Extract into your existing project root beside package.json.
-2. Merge folders and replace matching files. Keep all other assets.
-3. Redeploy Render: npm run build; publish dist.
-4. Refresh and confirm VERSION 28.
+INSTALL OVER VERSION 28
+Extract this ZIP into your existing project root (where package.json lives), merge folders and replace matching files. Keep other project files and assets. Source and prebuilt dist are included; this is a changed-files patch, not a full game ZIP.
 
-FINAL BOSSES
-All scripted final encounters have 3x their Version-27 HP and 2x their Version-27 movement speed. Includes every regional finale and Kanto's Mewtwo/Mew sequence. Existing story-boss health and post-100 scaling remain. Other boss stats, normal gym/League encounters and random Endless bosses keep their previous multipliers. Regional Endless retains its boosted story finales.
+On Render, keep build command npm run build and publish directory dist. Redeploy and confirm VERSION 29 in the header. A hard refresh may be needed for a previously open page. No dependency installation or runtime asset downloads are required.
 
-LOSS REVIEW
-Losing opens You Whited Out! with the reached round, defeats, upgrades, final HP and party. Review expedition returns to the normal party/dossier view, exiting fullscreen when necessary. Party damage totals, contributions, form history and inventory remain available; combat and reward spending stay stopped. Review expedition summary reopens the record. Start another expedition or choose a region when ready. The current record stays in memory until a new run or reload; it is not an archive across reloads.
+ALOLA ONLY
+Z-Crystals unlock from round 25 in Alola Classic and regional Endless. They do not appear in other regions or True Endless. The whole eligible crystal pool has the same selection weight as one Mega Stone / Max Mushrooms reward. At most one Z-Crystal is offered per roll. Pick a compatible partner; cancel preserves all three choices and the reward queue. Auto continues during selection.
 
-HOTKEYS
-N: start next round when ready.
-Enter: also starts the next round while the page body has focus.
-A: toggle Auto.
-S: cycle 1x / 2x / 5x game speed.
-Space: pause/resume; 1/2/3: choose a reward.
-Text/search fields, selects, editable content, open dialogs, modifiers, composition and repeated keydowns do not trigger gameplay shortcuts. N/Enter do not discard a lost expedition.
+35 OFFICIAL Z-MOVES
+All 18 type crystals plus 17 signature crystals are included. Generic crystals require a shared holder type. Signature crystals require their official species/form, including Alolan Raichu, cap Pikachu, the Tapus and the correct Necrozma fusion. Mew and Partner Cap Pikachu are added as Alola signature-holder exceptions. The displayed regional dex count still represents the official regional list.
 
-FORM ITEMS AND ABILITIES
-Eligible partners unlock 35 form-item/ability families from round 1. Includes Reveal Glass for all four genies, Rotom Catalog, Deoxys Meteorite, Gracidea, Origin-form items, DNA Splicers, Prison Bottle, Primal Orbs, crowned weapons, Calyrex Reins of Unity, both Darmanitan Zen Modes, Schooling, Battle Bond, Stance Change, Forecast, Palafin Hero, and more. Arceus Plates, Silvally Memories, Genesect Drives and Cherrim Sunshine add 39 typed/appearance form variants.
+Damaging crystals replace each attack volley with a stronger, larger Z-Move, using its official name and a new authored animation. They do not increase base stats, personal form power or collected buff multipliers. Enhanced moves have at least 2.4 times native move power (minimum 7.2, or 8.8 for exclusives), and wider area/beam/cone, five-shot volley or six-enemy chain where applicable. Normal combat cadence, conditional tactics, splash/ricochets and actual damage contribution tracking all apply. Type interactions remain completely neutral.
 
-Necrozma uses N-Solarizer for Dusk Mane or N-Lunarizer for Dawn Wings. Only those fused forms unlock Ultranecrozium Z for Ultra Burst. Each step spends a separate reward. Fusion items provide the form without consuming another party member. Ability/weather/battle forms persist for the run as roguelike adaptations.
+BOOSTING EXCEPTIONS
+Extreme Evoboost and Clangorous Soulblaze give their individual holder exactly 300 times personal damage while compatible and held. Extreme Evoboost empowers Eevee's ordinary attack; Clangorous Soulblaze also deals enhanced area damage. The boost is applied once and does not accumulate on re-equipping. Replacing the crystal, or evolving out of its eligible holder, removes that effect.
 
-Select the item, choose a partner/form, or cancel/Escape to retain the same unspent roll. Each new form retains its stage, party buffs and individual damage/contributions, uses its form stats and a real associated move, and adds x1.25 personal damage. Each individual may visit each destination once; used destinations cannot waste another pick. Personal power survives later eligible Mega/Gigantamax/Tera changes. Alternate upgrade forms are not ordinary enemies or recruits. Regional forms are added only for species already in that region. Galarian Standard Darmanitan remains its ordinary evolution target. Type interactions remain entirely neutral.
+HELD ITEMS AND MEGAS
+One crystal per partner. A different crystal replaces the old move/boost; the same crystal cannot be selected again for its current holder. Already Mega-Evolved Pokemon cannot hold crystals. Crystal holders cannot Mega Evolve. Stale banked cards repair immediately. Evolution/form changes retain the crystal; if incompatible it becomes dormant until replaced. Everstone permits attack-only crystals while still locking evolution/forms. Partner trades do not transfer a held item to the replacement.
 
-EVERSTONE
-Appears from round 1 only when a partner has an evolution or available/future regional form change. Choose one holder to permanently block its evolution, alternate forms, Mega, Gigantamax and Tera choices. It keeps its present form, stats, damage and power. Other partners remain eligible. Blocked cards refresh out of banked choices and future rolls. A shared item may still appear for another eligible partner. Everstone cannot be repeated on the same holder or exchanged as a passive buff; a new/replacement partner does not inherit it. Party, dossier and inventory show the lock.
+NECROZMA
+Necrozma -> N-Solarizer or N-Lunarizer -> Dusk Mane or Dawn Wings -> hold Ultranecrozium Z -> choose a separate Ultra Burst form reward -> Ultra Necrozma.
+Ultra Burst requires the actual held crystal and is Alola-only. The crystal itself gives no stat boost. It unlocks Light That Burns the Sky only in Ultra form. Without that active crystal, Ultra Necrozma's ordinary move is Photon Geyser. Existing form upgrades still grant their separate 1.25-times form power and preserve evolution stage/contributions.
 
-DATA & VALIDATION
-1267 unique Pokemon/form records, plus 39 typed/appearance variants. New stats and sprites use bundled PokéAPI data. Ordinary Render builds use local files; no form downloads are required. Regeneration helper and full family list are in the README.
+INTERFACE AND ART
+Held crystals show in the party, detailed dossier and upgrade inventory. Alola's Help -> Attack animation guide previews all 35 Z-Moves without equipping anything. Animations include a giant fire sun, waterspout, blooming flowers, acid rain, silk cocoon, spectral hands, monolith, ice prison, rainbow thunder, clanging scales, wrestling ring and Ultra Necrozma's prismatic sky columns.
 
-206 automated tests pass; production build passes. Browser verified: production N/A/S controls, cancellation preserving choices, Dawn Wings to Ultra, stage-2 Zen Mode, Everstone removing a banked Reveal Glass, and loss review restoring party/dossier/inventory from fullscreen. Specific item rolls were tested using a temporary seeded fixture; no QA fixture is shipped. Full-campaign balance was not playtested end to end.
+VALIDATION
+223 automated tests pass. Production build passes with 23 fingerprinted scripts/styles. Browser checks verified the production guide, cancellation/application during Auto, the 300-times boost, held-crystal Ultra Burst prerequisites, the resulting exclusive move and dossier. A temporary seeded fixture was used for specific rare rolls; no QA fixture is shipped. Full campaign balance was not playtested end to end. Developer regeneration: python3 scripts/build-z-data.py. Names/data and sprites use PokéAPI; normal Render builds use bundled local files.
