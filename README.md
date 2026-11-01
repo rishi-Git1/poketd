@@ -1,4 +1,4 @@
-# Poké Bastion — Version 29
+# Poké Bastion — Version 30
 
 A browser tower-defense roguelike with nine regional campaigns and **Classic / Endless / True Endless** modes. Choose a region when the game opens, choose Classic or Random starters, then select one of three partners. Defend a central bastion, bank three-card rewards, evolve your party, conquer the region's League and defeat its legendary finale.
 
@@ -540,3 +540,45 @@ All **35 Z-Moves have authored animations**: flowers for Bloom Doom, a waterspou
 Alola gains Mew and Partner Cap Pikachu (PokéAPI Pokémon ID 10148) as signature-holder exceptions, so every crystal has an obtainable holder. The displayed 403-species count still describes the official regional dex. The full National Dex also gains the cap form; it does not gain Z-Crystal rewards. Canonical move/item names, types, base stats and item/Pokémon sprites use [PokéAPI's data](https://github.com/PokeAPI/pokeapi/tree/master/data/v2/csv) and [sprite repository](https://github.com/PokeAPI/sprites). Rebuild the catalog/assets with `python3 scripts/build-z-data.py`; ordinary Render builds use local assets and require no downloads.
 
 Validation: **223 automated tests pass**. Coverage includes all 35 names/holders/sprites/animation compositions, Alola-only unlocks, Mega exclusion in both directions, unchanged base stats and ordinary buff multipliers, exact non-stacking ×300 boosts, replacement/dormancy, neutral Z targeting/damage and contribution accounting, family-level rarity, distinct rolls, cancellation during Auto, stale reward repair, Necrozma prerequisites and guide previews. Browser checks verified the production animation guide, Ghostium Z cancellation/application, Eevee’s ×300 boost, held Ultranecrozium Z before Ultra Burst, live Auto, the resulting exclusive move and dossier. Temporary seeded fixtures are excluded from the patch. Full campaign balance was not playtested end to end.
+
+
+## Version 30 — Weather, terrain and zones
+
+Install this changed-files patch over **Version 29**. Merge folders, replace matching files, retain other assets, then redeploy on Render with npm run build and publish dist. Confirm **VERSION 30**. Source and prebuilt output are included; no extra dependencies or remote assets are needed.
+
+**WTZ unlocks at round 25** in Hoenn, Sinnoh, Unova, Kalos, Alola, Galar and Paldea, including those regions' Endless modes. True Endless also allows WTZ from round 25. Kanto and Johto do not offer WTZ. The 18 normal types each have one field: two boosting weather conditions, three terrains and thirteen zones. Sandstorm and Hail are excluded; Fairy uses Fairy Zone rather than Misty Terrain. There is no Stellar field.
+
+| Type | WTZ | Kind | Battlefield appearance |
+| --- | --- | --- | --- |
+| fire | Sunny | weather | Warm sunlight, broad diagonal sunbeams and rising embers. |
+| water | Rain | weather | Cool rain wash, moving rain streaks and cloud bands. |
+| electric | Electric Terrain | terrain | Branching ground sparks and golden electrical traces. |
+| grass | Grassy Terrain | terrain | Scattered sprouts and swaying leaves. |
+| psychic | Psychic Terrain | terrain | Rose-violet diamond paving and floating psychic prisms. |
+| normal | Normal Zone | zone | Soft silver-cream glints and four-point stars. |
+| fighting | Fighting Zone | zone | Warm brush slashes and fighting-spirit streaks. |
+| flying | Flying Zone | zone | Sweeping wind ribbons and drifting feathers. |
+| poison | Poison Zone | zone | Purple-green jagged haze and toxic-looking motes. |
+| ground | Ground Zone | zone | Ochre earth veins and branching ground cracks. |
+| rock | Rock Zone | zone | Faceted stone outcrops and mineral fragments. |
+| bug | Bug Zone | zone | Honeycomb texture and fluttering insect-wing shapes. |
+| ghost | Ghost Zone | zone | Indigo wash and rising spectral wisps. |
+| steel | Steel Zone | zone | Metal plates, square rivets and silver glints. |
+| ice | Ice Zone | zone | Frosted cyan tint and drifting crystalline snowflakes. |
+| dragon | Dragon Zone | zone | Violet draconic scale crests and rising angular sigils. |
+| dark | Dark Zone | zone | Shadow bands and dark angular trails. |
+| fairy | Fairy Zone | zone | Pink starlight and sparkling ribbon bows. |
+
+A normal field permanently boosts **matching-type friendly attacks by ×1.5**. Choosing a WTZ locks the expedition to that field. Other normal and EX fields disappear from future and banked rewards, and only the matching EX may be offered later. Initial normal/EX offers match at least one current party attack, so a first field can help immediately. Once locked, its EX may still appear if the party changes, allowing future matching partners. The WTZ family has the combined reward weight of **one Silvally Memory card**, regardless of how many types are eligible. At most one WTZ appears in a three-card roll.
+
+**EX unlocks at round 100** in both ordinary rewards and premium upgrade exchanges. An EX field boosts matching attacks by **×3 total**, replacing the normal ×1.5 rather than stacking to ×4.5. Before a WTZ has been chosen, a round-100+ player can select any eligible EX directly; this also locks that field. After a normal WTZ is chosen, both pools offer only that specific EX. The combined EX family has the reward weight of one Mega Evolution card, and is never a guaranteed reward. Once EX is installed, all WTZ rewards stop. WTZ is not converted by the existing random Master-upgrade mechanism, and does not add repeat resonance.
+
+WTZ installations are permanent, like field hazards: they are not disposable trade sources. A premium EX exchange consumes one chosen **ordinary passive upgrade** and installs/upgrades the field. It retains the independent Pokémon exchange and reroll rights. Invalid or stale EX rewards are rejected before any source upgrade is removed. Changing the field state repairs stale trade offers and banked normal rewards without charging a reroll or consuming a choice.
+
+WTZ damage follows the actual friendly attack type, including Z-Crystals, Mega/G-Max signatures and Tera overlays. Projectiles and ricochets retain their recorded move type. Other universal/type/stage/form/tactical boosts still multiply normally. WTZ never checks an enemy's type, grants resistance or immunity, changes base stats, changes enemy stats, or damages enemies on its own. Hazards retain their separate existing behavior.
+
+Each field changes the **entire battlefield** with a palette wash and type-specific scenery. EX intensifies the same ambience with denser details and highlights. No WTZ circles, radial areas, collision regions, periodic damage, healing ticks or control effects are created. Scenery is drawn behind the tower, Pokémon and attacks; it freezes with pause and remains visible in simulation-only fullscreen. A live WTZ badge states the field/type/multiplier in both views. The party dossier shows the relevant current field multiplier and the upgrade inventory records normal-to-EX replacement accurately.
+
+Names and field categories follow Pokémon Masters EX. Primary examples: [EX weather](https://pokemonmasters-game.com/en-US/announcements/Other_7010_5W_1), [Fairy Zone and Electric Terrain](https://pokemonmasters-game.com/en-US/announcements/Other_5030_5W_1), [Ice Zone](https://pokemonmasters-game.com/en-US/announcements/Other_5040_5W_1), [Normal Zone](https://pokemonmasters-game.com/en-US/announcements/Other_8010_5W_5), and [EX replacement](https://pokemonmasters-game.com/en-US/announcements/Trouble_7100_0W_1). Permanent duration, one field across all categories, roguelike acquisition and EX availability for all 18 fields are this game's adaptations.
+
+Validation: **240 automated tests pass**. New checks cover all 18 types/categories/visual compositions, region and round gates, exact replacement multipliers, direct EX selection, family-level rarity, duplicate and Master exclusions, neutral enemy targeting/damage, recorded projectile types, Z/Tera interactions, no circular scenery or damage side effects, permanent locks, stale banked/trade offers, trade costs/rights and fullscreen/reset behavior. Browser checks verified Rain, Grassy Terrain, Ghost Zone, an EX Rain reward, a matching premium EX exchange preserving the Pokémon trade, and fullscreen status placement. A temporary seeded scenario was used for rare-roll and visual checks; no QA fixture is shipped. Full campaign balance was not playtested end to end.

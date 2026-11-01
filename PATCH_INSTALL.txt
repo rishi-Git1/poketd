@@ -1,30 +1,32 @@
-POKÉ BASTION VERSION 29 — ALOLA Z-MOVES
+POKÉ BASTION VERSION30 — WEATHER, TERRAIN, ZONES
 
-INSTALL OVER VERSION 28
-Extract this ZIP into your existing project root (where package.json lives), merge folders and replace matching files. Keep other project files and assets. Source and prebuilt dist are included; this is a changed-files patch, not a full game ZIP.
+INSTALL OVER VERSION29
+Extract into your existing project root, merge folders and replace matching files. Keep other files/assets. Source and prebuilt dist are included. This is a changed-files patch, not a full replacement project.
+Redeploy on Render with build command npm run build and publish directory dist. Confirm VERSION30 in the header. No new dependencies or remote assets are required.
 
-On Render, keep build command npm run build and publish directory dist. Redeploy and confirm VERSION 29 in the header. A hard refresh may be needed for a previously open page. No dependency installation or runtime asset downloads are required.
+18 FIELDS, ONE PER TYPE
+Weather: Sunny (Fire), Rain (Water).
+Terrain: Electric Terrain, Grassy Terrain, Psychic Terrain.
+Zones: Normal, Fighting, Flying, Poison, Ground, Rock, Bug, Ghost, Steel, Ice, Dragon, Dark and Fairy Zone.
+No Sandstorm, Hail, Misty Terrain or invented Stellar field.
 
-ALOLA ONLY
-Z-Crystals unlock from round 25 in Alola Classic and regional Endless. They do not appear in other regions or True Endless. The whole eligible crystal pool has the same selection weight as one Mega Stone / Max Mushrooms reward. At most one Z-Crystal is offered per roll. Pick a compatible partner; cancel preserves all three choices and the reward queue. Auto continues during selection.
+ROUND25+ — GENERATION3 AND LATER
+Available in Hoenn, Sinnoh, Unova, Kalos, Alola, Galar and Paldea, including their Endless modes. True Endless also allows WTZ from25. Kanto and Johto do not offer WTZ.
+A normal WTZ permanently gives matching-type friendly attacks 1.5-times damage. Initial offers match a current party attack. Its whole eligible family has the selection weight of one Silvally Memory card, not one weight per type. At most one WTZ appears in a three-card roll.
 
-35 OFFICIAL Z-MOVES
-All 18 type crystals plus 17 signature crystals are included. Generic crystals require a shared holder type. Signature crystals require their official species/form, including Alolan Raichu, cap Pikachu, the Tapus and the correct Necrozma fusion. Mew and Partner Cap Pikachu are added as Alola signature-holder exceptions. The displayed regional dex count still represents the official regional list.
+ONE PERMANENT FIELD
+Choosing a field locks the expedition to that WTZ. Every other normal or EX field disappears from banked and future choices. Only the matching EX can appear afterward. WTZ does not add repeat resonance or turn into random Master upgrades. The field stays installed if party members change; only matching attacks get its boost.
 
-Damaging crystals replace each attack volley with a stronger, larger Z-Move, using its official name and a new authored animation. They do not increase base stats, personal form power or collected buff multipliers. Enhanced moves have at least 2.4 times native move power (minimum 7.2, or 8.8 for exclusives), and wider area/beam/cone, five-shot volley or six-enemy chain where applicable. Normal combat cadence, conditional tactics, splash/ricochets and actual damage contribution tracking all apply. Type interactions remain completely neutral.
+ROUND100+ — EX REWARDS AND PREMIUM EXCHANGES
+EX WTZ can appear in ordinary rewards and premium upgrade trades from100, with the combined selection weight of one Mega Evolution card. It is optional, never guaranteed.
+EX replaces normal's 1.5-times boost with 3-times TOTAL damage, not4.5-times. If no field has been chosen, an eligible EX may be selected directly and locks that field. If a normal field is owned, only its EX can be offered. Once EX is installed, all WTZ rewards stop.
+WTZ installations are permanent and cannot be traded away as source upgrades. A premium EX exchange consumes one selected ordinary passive upgrade, retaining the separate Pokémon exchange and category reroll rights. Stale choices are checked before taking an upgrade or spending an exchange; invalid cached offers refresh without charging a reroll.
 
-BOOSTING EXCEPTIONS
-Extreme Evoboost and Clangorous Soulblaze give their individual holder exactly 300 times personal damage while compatible and held. Extreme Evoboost empowers Eevee's ordinary attack; Clangorous Soulblaze also deals enhanced area damage. The boost is applied once and does not accumulate on re-equipping. Replacing the crystal, or evolving out of its eligible holder, removes that effect.
-
-HELD ITEMS AND MEGAS
-One crystal per partner. A different crystal replaces the old move/boost; the same crystal cannot be selected again for its current holder. Already Mega-Evolved Pokemon cannot hold crystals. Crystal holders cannot Mega Evolve. Stale banked cards repair immediately. Evolution/form changes retain the crystal; if incompatible it becomes dormant until replaced. Everstone permits attack-only crystals while still locking evolution/forms. Partner trades do not transfer a held item to the replacement.
-
-NECROZMA
-Necrozma -> N-Solarizer or N-Lunarizer -> Dusk Mane or Dawn Wings -> hold Ultranecrozium Z -> choose a separate Ultra Burst form reward -> Ultra Necrozma.
-Ultra Burst requires the actual held crystal and is Alola-only. The crystal itself gives no stat boost. It unlocks Light That Burns the Sky only in Ultra form. Without that active crystal, Ultra Necrozma's ordinary move is Photon Geyser. Existing form upgrades still grant their separate 1.25-times form power and preserve evolution stage/contributions.
-
-INTERFACE AND ART
-Held crystals show in the party, detailed dossier and upgrade inventory. Alola's Help -> Attack animation guide previews all 35 Z-Moves without equipping anything. Animations include a giant fire sun, waterspout, blooming flowers, acid rain, silk cocoon, spectral hands, monolith, ice prison, rainbow thunder, clanging scales, wrestling ring and Ultra Necrozma's prismatic sky columns.
+APPEARANCE AND COMBAT
+Every field changes the entire battlefield with its own palette and scenery: sunlight rays, rain/cloud bands, branching electrical traces, sprouts, psychic prisms, silver stars, fighting slashes, wind ribbons, toxic haze, earth cracks, stone facets, honeycomb/insect wings, ghost wisps, metal plates, ice crystals, dragon crests, shadow bands and fairy stars/bows.
+EX intensifies that field's scenery. No WTZ circles, radial areas, damage ticks, healing ticks, enemy-stat changes or damage hitboxes are added. Existing map/attack/hazard behavior stays separate. The live field/type/multiplier badge works in fullscreen. The dossier and collected upgrades show the current multiplier and normal-to-EX replacement.
+WTZ follows the actual friendly attack type, including Z-Moves, Tera and form signatures. Projectiles/bounces keep their recorded move type. Other upgrades compound normally. Enemy typing never changes targeting or damage: no weaknesses, resistances or immunities return.
 
 VALIDATION
-223 automated tests pass. Production build passes with 23 fingerprinted scripts/styles. Browser checks verified the production guide, cancellation/application during Auto, the 300-times boost, held-crystal Ultra Burst prerequisites, the resulting exclusive move and dossier. A temporary seeded fixture was used for specific rare rolls; no QA fixture is shipped. Full campaign balance was not playtested end to end. Developer regeneration: python3 scripts/build-z-data.py. Names/data and sprites use PokéAPI; normal Render builds use bundled local files.
+240 automated tests pass; production build passes with25 fingerprinted scripts/styles. Tests cover all fields, round/region gates, exact multipliers, direct EX selection, permanent locks, rarity, distinct rolls, Master exclusion, recorded move types, neutral targeting and actual damage accounting, no circular scenery/damage side effects, stale reward repair, premium costs/rights and fullscreen/reset behavior.
+Browser checks verified Rain, Grassy Terrain, Ghost Zone, EX Rain through a normal reward and a premium exchange, the remaining Pokémon trade, and fullscreen status placement. Specific rare-roll and visual checks used a temporary seeded scenario. No QA fixtures are shipped. Full campaign balance was not playtested end to end.

@@ -1,3 +1,4 @@
+import {isWtz,wtzAvailable,wtzWeight,wtzMultiplier,installWtz} from './wtz.js';
 import {zBoost,zCrystalWeight} from './z-crystals.js';
 import {evolveAlly,maskDamage,canEvolve,isTransformation} from './transformations.js';
 import {getRegion} from './regions.js';
@@ -30,7 +31,7 @@ export function enemyStats(p,wave,boss=null,mode='classic',region='kanto'){
  const storyBossHealth=boss?.story?(boss.final?6:2):1,finalSpeed=boss?.story&&boss.final?2:1;
  return {specialDefense:p.stats['special-defense']*(1+.025*wave)*ease*boost*endless*story.power,maxHp:(p.stats.hp*.53+9)*Math.pow(1.115,wave-1)*ease*boost*endless*story.power*storyBossHealth,defense:p.stats.defense*(1+.025*wave)*ease*boost*endless*story.power,speed:baseSpeed*(boss?1.2:1)*difficulty*(1+.02*scalingRounds)*story.speed*finalSpeed,impact:Math.ceil(Math.max(p.stats.attack,p.stats['special-attack'])*.12*(1+.07*wave)*Math.min(1,.7+Math.max(0,wave-1)*.06)*boost*endless*story.power)}
 }
-export function damageMultiplier(p,buffs){return zBoost(p)*(p.mega?1+(buffs.forms?.mega||0):1)*(p.gigantamax?1+(buffs.forms?.gmax||0):1)*repeatPower(buffs)*(p.personalPower||1)*maskDamage(p)*(1+buffs.offense)*p.types.reduce((n,t)=>n*(1+(buffs.types[t]||0)),1)*(1+(buffs.stages[p.stage]||0))}
+export function damageMultiplier(p,buffs,moveType){return wtzMultiplier(p,buffs,moveType)*zBoost(p)*(p.mega?1+(buffs.forms?.mega||0):1)*(p.gigantamax?1+(buffs.forms?.gmax||0):1)*repeatPower(buffs)*(p.personalPower||1)*maskDamage(p)*(1+buffs.offense)*p.types.reduce((n,t)=>n*(1+(buffs.types[t]||0)),1)*(1+(buffs.stages[p.stage]||0))}
 export function recruitmentPool(roster,run){return roster.filter(p=>!p.bossOnly&&p.stage===1&&!run.team.some(a=>a.pokemon.id===p.id)&&Object.values(p.stats).reduce((a,b)=>a+b,0)<=Math.min(680,350+run.wave*30))}
 export const TACTICS=[
  {kind:'split',title:'Split Volley',description:'Target one additional enemy per attack; divide damage only among targets actually available. A lone enemy takes full damage.'},
@@ -70,9 +71,10 @@ export function resolveHit(enemy,power,run,source=null){
 }
 
 export function tacticSummary(run,kind){const n=tacticStacks(run,kind);return ({split:`Up to ${1+n} targets; divides damage among actual targets`,haste:`${(100*(1-.85**n)).toFixed(1)}% shorter cooldown`,reach:`${Math.round(run.range)} total range`,chill:`${(100*(1-.85**n)).toFixed(1)}% movement slow for 2s; bosses resist half`,pierce:`${(100*(1-.8**n)).toFixed(1)}% defense ignored`,finish:`${(1.3**n).toFixed(2)}× damage below 35% HP`,siphon:`Restore ${n} HP per defeat`,ricochet:`Up to ${n} bounces at 60% retained damage`,focus:`+${20*n}% per second; up to +${200*n}% on the locked target`,execute:`${(.6*n).toFixed(1)}s stun below 35% HP; 2s recovery`,cadence:`Every fourth volley: ×${(1.5**n).toFixed(2)}`,wounds:`+${5*n}% per mark; up to +${40*n}% for 3s`,nova:`${60*n}% killing-hit splash within 80 range`,shield:`${Math.ceil(run.shield||0)} shield remaining; ${10*n}% max HP each round`,surge:`${(100*(1-.8**n)).toFixed(1)}% shorter cooldown below 40% tower HP`})[kind]}
-export function damage(ally,enemy,buffs){const p=ally.pokemon;const special=p.stats['special-attack']>p.stats.attack;const atk=Math.max(p.stats.attack,p.stats['special-attack']);const defense=special?enemy.specialDefense??enemy.pokemon.stats['special-defense']*(1+.025*buffs.wave)*openingEase(buffs.wave):enemy.defense;const mult=damageMultiplier(p,buffs);return Math.max(0,(8+atk*.23)*mult*100/(100+defense*.8**tacticStacks(buffs,'pierce')))}
-export function newRun(region="kanto",options={}){const cfg=getRegion(region);return {region,mode:region==='origin'?'true-endless':options.mode==='endless'?'endless':'classic',originSetupLeft:0,starterMode:options.starters==='random'?'random':'classic',forms:{},hazards:{},hazardDamage:0,endlessBosses:{},rounds:cfg.rounds,wave:0,rewardQueue:[],tradeQueue:[],range:335,growthWaves:[],swapWaves:[],starter:1,hp:250,maxHp:250,shield:0,armor:0,offense:0,types:{},stages:{},tactics:{},team:[],kills:0,upgrades:[],upgradeHistory:[],phase:'starter'}}
+export function damage(ally,enemy,buffs,moveType){const p=ally.pokemon;const special=p.stats['special-attack']>p.stats.attack;const atk=Math.max(p.stats.attack,p.stats['special-attack']);const defense=special?enemy.specialDefense??enemy.pokemon.stats['special-defense']*(1+.025*buffs.wave)*openingEase(buffs.wave):enemy.defense;const mult=damageMultiplier(p,buffs,moveType);return Math.max(0,(8+atk*.23)*mult*100/(100+defense*.8**tacticStacks(buffs,'pierce')))}
+export function newRun(region="kanto",options={}){const cfg=getRegion(region);return {region,mode:region==='origin'?'true-endless':options.mode==='endless'?'endless':'classic',originSetupLeft:0,starterMode:options.starters==='random'?'random':'classic',forms:{},wtz:null,wtzChoice:null,hazards:{},hazardDamage:0,endlessBosses:{},rounds:cfg.rounds,wave:0,rewardQueue:[],tradeQueue:[],range:335,growthWaves:[],swapWaves:[],starter:1,hp:250,maxHp:250,shield:0,armor:0,offense:0,types:{},stages:{},tactics:{},team:[],kills:0,upgrades:[],upgradeHistory:[],phase:'starter'}}
 export function applyUpgrade(run,card){
+ if(isWtz(card)&&!installWtz(run,card))return false;
  if(isHazard(card)&&!addHazard(run,card))return false;
  if(card.kind==='evolve'&&!run.team.some(a=>a.pokemon.id===card.from&&canEvolve(a)))return false;
  if(card.kind==='reach'||ALL_TACTICS.some(c=>c.kind===card.kind)){const amount=card.amount??1;run.tactics[card.kind]=(run.tactics[card.kind]||0)+amount;if(card.kind==='reach')run.range*=1.12**amount;if(card.kind==='shield')run.shield=(run.shield||0)+run.maxHp*.1*amount;}
@@ -90,21 +92,23 @@ export function applyUpgrade(run,card){
 export function formatDamageTotal(value){const total=Math.max(0,value||0);return total>=1e6?new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:1}).format(total):Math.round(total).toLocaleString('en-US')}
 
 // Normal and master versions share one identity; Pokémon use their destination ID.
-export const cardKey=c=>c.pokemon?`pokemon:${c.pokemon.id}`:[c.kind,c.zCrystal||c.type||c.form||c.formItem||'',c.stage||''].join(':');
-export const upgradeWeight=(card,run)=>card.kind==='z-crystal'?zCrystalWeight(run):(run.mode==='true-endless'?run.wave>50:run.wave>80)&&card.kind==='offense'?4:1;
+export const cardKey=c=>isWtz(c)?`wtz:${c.wtz}`:c.pokemon?`pokemon:${c.pokemon.id}`:[c.kind,c.zCrystal||c.type||c.form||c.formItem||'',c.stage||''].join(':');
+export const upgradeWeight=(card,run)=>isWtz(card)?wtzWeight(card,run):card.kind==='z-crystal'?zCrystalWeight(run):(run.mode==='true-endless'?run.wave>50:run.wave>80)&&card.kind==='offense'?4:1;
 export function drawDistinct(pool,count,run,rng=Math.random,excluded=[]){
- const seen=new Set(excluded.map(cardKey)),available=[];
- for(const card of pool){if(!card||!hazardAvailable(run,card)||seen.has(cardKey(card)))continue;seen.add(cardKey(card));available.push(card)}
+ const excludedKeys=new Set(excluded.map(cardKey)),seen=new Set(),available=[];
+ // Normal/EX are two weighted variants of one field identity. Only one WTZ may
+ // reach a roll, but both tiers must remain drawable before a field is chosen.
+ for(const card of pool){if(!card)continue;const key=cardKey(card),variant=isWtz(card)?`${key}:${!!card.ex}`:key;if(!hazardAvailable(run,card)||!wtzAvailable(run,card)||excludedKeys.has(key)||seen.has(variant))continue;seen.add(variant);available.push(card)}
  const result=[];
  while(result.length<count&&available.length){
   const total=available.reduce((n,c)=>n+upgradeWeight(c,run),0);let roll=rng()*total,index=available.length-1;
   for(let i=0;i<available.length;i++){roll-=upgradeWeight(available[i],run);if(roll<0){index=i;break}}
-  const card=available.splice(index,1)[0];if(card.kind==='z-crystal'&&[...excluded,...result].some(c=>c.kind==='z-crystal'))continue;if(card.kind==='tera'&&[...excluded,...result].filter(c=>c.kind==='tera').length>=2)continue;result.push(card);
+  const card=available.splice(index,1)[0];if(isWtz(card)&&[...excluded,...result].some(isWtz))continue;if(card.kind==='z-crystal'&&[...excluded,...result].some(c=>c.kind==='z-crystal'))continue;if(card.kind==='tera'&&[...excluded,...result].filter(c=>c.kind==='tera').length>=2)continue;result.push(card);
  }return result;
 }
 export function distinctRoll(cards,fallback,run,rng=Math.random){
  const seen=new Set(),result=[];
- for(const card of cards){if(card&&hazardAvailable(run,card)&&!seen.has(cardKey(card))&&!(card.kind==='z-crystal'&&result.some(c=>c.kind==='z-crystal'))&&!(card.kind==='tera'&&result.filter(c=>c.kind==='tera').length>=2)){seen.add(cardKey(card));result.push(card)}}
+ for(const card of cards){if(card&&hazardAvailable(run,card)&&wtzAvailable(run,card)&&!(isWtz(card)&&result.some(isWtz))&&!seen.has(cardKey(card))&&!(card.kind==='z-crystal'&&result.some(c=>c.kind==='z-crystal'))&&!(card.kind==='tera'&&result.filter(c=>c.kind==='tera').length>=2)){seen.add(cardKey(card));result.push(card)}}
  return [...result,...drawDistinct(fallback,3-result.length,run,rng,result)].slice(0,3);
 }
 export function selectRewardCards(run,pool,partners,evolutions,rng=Math.random){
@@ -130,7 +134,7 @@ export function masterUpgrades(run){
 export function rollMasterCards(cards,run,rng=Math.random){
  if(!eliteUnlocked(run))return cards;
  const result=[...cards];for(let i=0;i<result.length;i++){
-  const c=result[i];if(['recruit','evolve'].includes(c.kind)||isTransformation(c)||isHazard(c)||rng()>=.1)continue;
+  const c=result[i];if(['recruit','evolve'].includes(c.kind)||isTransformation(c)||isHazard(c)||isWtz(c)||rng()>=.1)continue;
   const candidates=masterUpgrades(run).filter(m=>!result.some((other,j)=>j!==i&&cardKey(m)===cardKey(other))&&(i!==1||!ALL_TACTICS.some(t=>t.kind===c.kind)||ALL_TACTICS.some(t=>t.kind===m.kind)));
   if(candidates.length)result[i]=drawDistinct(candidates,1,run,rng)[0];
  }return result;
@@ -147,7 +151,7 @@ export function advanceStatus(enemy,dt){enemy.slowTime=Math.max(0,(enemy.slowTim
 export function absorbTowerHit(run,impact){const blocked=Math.min(run.shield||0,impact);run.shield=Math.max(0,(run.shield||0)-blocked);const hpDamage=impact-blocked;run.hp=Math.max(0,run.hp-hpDamage);return hpDamage}
 export function nextBounce(origin,enemies,visited){return enemies.filter(e=>e.hp>0&&!visited.includes(e)&&Math.hypot(e.x-origin.x,e.y-origin.y)<=160).sort((a,b)=>Math.hypot(a.x-origin.x,a.y-origin.y)-Math.hypot(b.x-origin.x,b.y-origin.y))[0]}
 
-export function repeatCount(run,card){return (run.upgradeHistory||[]).filter(c=>cardKey(c)===cardKey(card)&&!c.transformation).length}
+export function repeatCount(run,card){if(isWtz(card))return 0;return (run.upgradeHistory||[]).filter(c=>cardKey(c)===cardKey(card)&&!c.transformation).length}
 const repeatCache=new WeakMap();
 const passiveKinds=new Set(['offense','armor','health','type','stage','form','stealth-rock','spikes','toxic-spikes',...ALL_TACTICS.map(c=>c.kind)]);
 export function repeatPower(run){
